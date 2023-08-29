@@ -1,5 +1,6 @@
+import { NavigationProp } from '@react-navigation/native';
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { View, Button } from 'react-native';
 
 interface RouterProps {
 	navigation: NavigationProp<any, any>;
@@ -10,7 +11,6 @@ export const Home = ({
 }: RouterProps) => {
 	return (
 		<View>
-			{/* <Text>Hello user</Text>; */}
 			<Button
 				title="profile"
 				onPress={() => {

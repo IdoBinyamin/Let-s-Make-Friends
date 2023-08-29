@@ -36,10 +36,8 @@ const AppRouter = () => {
 	const auth = FIREBASE_AUTH;
 
 	useEffect(() => {
-		console.log('user', user);
-
 		onAuthStateChanged(auth, (user) => {
-			console.log('user', user);
+			// console.log('user', user);
 			setUser(user);
 		});
 	}, []);
