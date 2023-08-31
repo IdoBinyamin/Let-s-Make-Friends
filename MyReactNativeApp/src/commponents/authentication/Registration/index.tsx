@@ -4,40 +4,35 @@ import {
 	Button,
 	KeyboardAvoidingView,
 	StyleSheet,
-	TextInput,
 	View,
 } from 'react-native';
-import { FIREBASE_AUTH } from '../../../FirebaseConfig';
-import {
-	signInWithEmailAndPassword,
-	createUserWithEmailAndPassword,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { FIREBASE_AUTH } from '../../../../FirebaseConfig';
+import { AuthInputs } from '../../Generic';
 
-export const Login = () => {
+export const Registration = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const auth = FIREBASE_AUTH;
 
-	const signIn = async () => {
-		setLoading(true);
-		try {
-			const response =
-				await signInWithEmailAndPassword(
-					auth,
-					email,
-					password
-				);
-			console.log(response);
-		} catch (error: any) {
-			console.log(error);
-			alert(
-				'Sign in failed: ' + error.message
-			);
-		} finally {
-			setLoading(false);
-		}
-	};
+	const inputs = [
+		{
+			value: email,
+			name: 'Email',
+			autoCapitalize: 'none',
+			onChangeText: (text: string) =>
+				setEmail(text),
+		},
+		{
+			secureTextEntry: true,
+			value: password,
+			name: 'Password',
+			autoCapitalize: 'none',
+			onChangeText: (text: string) =>
+				setPassword(text),
+		},
+	];
 
 	const signUp = async () => {
 		setLoading(true);
@@ -59,28 +54,18 @@ export const Login = () => {
 			setLoading(false);
 		}
 	};
-
 	return (
 		<View style={styles.container}>
 			<KeyboardAvoidingView behavior="padding">
-				<TextInput
-					value={email}
-					style={styles.input}
-					placeholder="Email"
-					autoCapitalize="none"
-					onChangeText={(text) =>
-						setEmail(text)
-					}
-				/>
-				<TextInput
-					secureTextEntry={true}
-					value={password}
-					style={styles.input}
-					placeholder="Password"
-					autoCapitalize="none"
-					onChangeText={(text) =>
-						setPassword(text)
-					}
+				<AuthInputs
+					email={email}
+					password={password}
+					setEmail={() => {
+						setEmail;
+					}}
+					setPassword={() => {
+						setPassword;
+					}}
 				/>
 				{loading ? (
 					<ActivityIndicator
@@ -88,16 +73,10 @@ export const Login = () => {
 						color={'#0000ff'}
 					/>
 				) : (
-					<View>
-						<Button
-							title="Login"
-							onPress={signIn}
-						/>
-						<Button
-							title="SignUp"
-							onPress={signUp}
-						/>
-					</View>
+					<Button
+						title="Sign Up"
+						onPress={signUp}
+					/>
 				)}
 			</KeyboardAvoidingView>
 		</View>

@@ -1,5 +1,5 @@
-import { Text, View, Button } from 'react-native';
-import React = require('react');
+import React from 'react';
+import { View, Button } from 'react-native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 
 export const Profile = () => {

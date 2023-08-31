@@ -1,6 +1,6 @@
 import { Home } from './HomeScreen/index';
-import { Login } from './LoginScreen/index';
-import { SignUp } from './SignUpScreen/index';
+import { Authetication } from './AuthScreens/index';
 import { Profile } from './ProfileScreen';
+import { Chat } from './ChatScreen';
 
-export { Home, Login, SignUp, Profile };
+export { Home, Authetication, Profile, Chat };
