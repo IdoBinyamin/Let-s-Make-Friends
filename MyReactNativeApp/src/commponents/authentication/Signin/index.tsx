@@ -4,7 +4,6 @@ import {
 	Button,
 	KeyboardAvoidingView,
 	StyleSheet,
-	TextInput,
 	View,
 } from 'react-native';
 import { FIREBASE_AUTH } from '../../../../FirebaseConfig';
