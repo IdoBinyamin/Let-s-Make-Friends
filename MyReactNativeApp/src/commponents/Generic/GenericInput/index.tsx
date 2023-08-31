@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 interface inputProps {
 	value: string;
-	name: string;
-	handleChange?: (text: string) => void;
+	placeholder?: string;
+	onChangeText?: (text: string) => void;
 	onBlur?: () => void;
 	secureTextEntry?: boolean;
 	autoCapitalize?: string;
@@ -16,11 +16,9 @@ export const Input = (props: inputProps) => {
 	return (
 		<TextInput
 			value={props.value}
-			placeholder={props.name}
+			placeholder={props.placeholder}
 			autoCapitalize="none"
-			onChange={() => {
-				props.handleChange;
-			}}
+			onChangeText={props.onChangeText}
 			onBlur={props.onBlur}
 			style={styles.input}
 			secureTextEntry={
