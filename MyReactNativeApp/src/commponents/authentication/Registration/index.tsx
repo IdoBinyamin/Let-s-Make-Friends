@@ -16,24 +16,6 @@ export const Registration = () => {
 	const [loading, setLoading] = useState(false);
 	const auth = FIREBASE_AUTH;
 
-	const inputs = [
-		{
-			value: email,
-			name: 'Email',
-			autoCapitalize: 'none',
-			onChangeText: (text: string) =>
-				setEmail(text),
-		},
-		{
-			secureTextEntry: true,
-			value: password,
-			name: 'Password',
-			autoCapitalize: 'none',
-			onChangeText: (text: string) =>
-				setPassword(text),
-		},
-	];
-
 	const signUp = async () => {
 		setLoading(true);
 		try {
@@ -54,18 +36,21 @@ export const Registration = () => {
 			setLoading(false);
 		}
 	};
+
+	const updateEmail = (text: string) => {
+		setEmail(text);
+	};
+	const updatePassword = (text: string) => {
+		setPassword(text);
+	};
 	return (
 		<View style={styles.container}>
 			<KeyboardAvoidingView behavior="padding">
 				<AuthInputs
 					email={email}
 					password={password}
-					setEmail={() => {
-						setEmail;
-					}}
-					setPassword={() => {
-						setPassword;
-					}}
+					setEmail={updateEmail}
+					setPassword={updatePassword}
 				/>
 				{loading ? (
 					<ActivityIndicator

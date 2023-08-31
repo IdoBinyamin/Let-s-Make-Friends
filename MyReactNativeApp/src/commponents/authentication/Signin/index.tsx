@@ -37,18 +37,21 @@ export const Login = () => {
 		}
 	};
 
+	const updateEmail = (text: string) => {
+		setEmail(text);
+	};
+	const updatePassword = (text: string) => {
+		setPassword(text);
+	};
+
 	return (
 		<View style={styles.container}>
 			<KeyboardAvoidingView behavior="padding">
 				<AuthInputs
 					email={email}
 					password={password}
-					setEmail={() => {
-						setEmail;
-					}}
-					setPassword={() => {
-						setPassword;
-					}}
+					setEmail={updateEmail}
+					setPassword={updatePassword}
 				/>
 				{loading ? (
 					<ActivityIndicator
