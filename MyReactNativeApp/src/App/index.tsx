@@ -9,6 +9,7 @@ import {
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { NavigationContainer } from '@react-navigation/native';
 import { MainNavigator } from '../Navigation';
+import { AuthProvider } from '../../context/AuthContext';
 
 const App = () => {
 	const [user, setUser] = useState<User | null>(
@@ -24,9 +25,11 @@ const App = () => {
 	}, []);
 
 	return (
-		<NavigationContainer>
-			<MainNavigator user={user} />
-		</NavigationContainer>
+		<AuthProvider>
+			<NavigationContainer>
+				<MainNavigator user={user} />
+			</NavigationContainer>
+		</AuthProvider>
 	);
 };
 

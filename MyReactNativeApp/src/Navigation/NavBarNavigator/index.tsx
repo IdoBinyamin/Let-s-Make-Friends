@@ -14,14 +14,17 @@ export const InsideLayout = () => {
 			<Tab.Screen
 				name="Home"
 				component={Home}
+				options={{ headerShown: false }}
 			/>
 			<Tab.Screen
 				name="Profile"
 				component={Profile}
+				options={{ headerShown: false }}
 			/>
 			<Tab.Screen
 				name="Chat"
 				component={Chat}
+				options={{ headerShown: false }}
 			/>
 		</Tab.Navigator>
 	);

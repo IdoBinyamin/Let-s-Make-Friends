@@ -6,8 +6,13 @@ import React, {
 } from 'react';
 
 interface AuthProps {
-	user: any;
-	initialized: boolean;
+	username: string;
+	email: string;
+	password: string;
+	usernameChangeHandler: (text: string) => void;
+	emailChangeHandler: (text: string) => void;
+	passwordChangeHandler: (text: string) => void;
+	loadingChangeHandler: (x: boolean) => void;
 }
 
 export const AuthContext =
@@ -16,9 +21,41 @@ export const AuthContext =
 export const AuthProvider = ({
 	children,
 }: any) => {
-	const value: {} = {};
+	const [username, setUsername] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+
+	const usernameChangeHandler = (
+		text: string
+	) => {
+		setUsername(text);
+	};
+	const emailChangeHandler = (text: string) => {
+		setEmail(text);
+	};
+	const passwordChangeHandler = (
+		text: string
+	) => {
+		setPassword(text);
+	};
+	const loadingChangeHandler = (x: boolean) => {
+		setLoading(x);
+	};
+
+	const values = {
+		username,
+		email,
+		password,
+		loading,
+		usernameChangeHandler,
+		emailChangeHandler,
+		passwordChangeHandler,
+		loadingChangeHandler,
+	};
+
 	return (
-		<AuthContext.Provider value={value}>
+		<AuthContext.Provider value={values}>
 			{children}
 		</AuthContext.Provider>
 	);

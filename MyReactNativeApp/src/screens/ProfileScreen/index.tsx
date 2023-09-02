@@ -1,16 +1,20 @@
-import React from 'react';
-import { View, Button } from 'react-native';
-import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+import React, { useContext } from 'react';
+import {
+	View,
+	Text,
+	Button,
+	Image,
+} from 'react-native';
+import { AuthContext } from '../../../context/AuthContext';
 
 export const Profile = () => {
+	const { username } = useContext(AuthContext);
 	return (
 		<View>
-			<Button
-				title="Log-Out"
-				onPress={() =>
-					FIREBASE_AUTH.signOut()
-				}
-			/>
+			<Text>Hello {username} </Text>
+			<Button title="Change name" />
+			<Button title="Change email" />
+			<Button title="Change passward" />
 		</View>
 	);
 };

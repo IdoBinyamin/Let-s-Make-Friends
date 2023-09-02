@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import {
 	ActivityIndicator,
 	Button,
@@ -8,19 +8,22 @@ import {
 	View,
 } from 'react-native';
 import { FIREBASE_AUTH } from '../../../config/FirebaseConfig';
-import {
-	signInWithEmailAndPassword,
-	createUserWithEmailAndPassword,
-} from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { AuthContext } from '../../../context/AuthContext';
 
 export const Login = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [loading, setLoading] = useState(false);
+	const {
+		email,
+		password,
+		loading,
+		emailChangeHandler,
+		passwordChangeHandler,
+		loadingChangeHandler,
+	} = useContext(AuthContext);
 	const auth = FIREBASE_AUTH;
 
 	const signIn = async () => {
-		setLoading(true);
+		loadingChangeHandler(true);
 		try {
 			const response =
 				await signInWithEmailAndPassword(
@@ -35,28 +38,7 @@ export const Login = () => {
 				'Sign in failed: ' + error.message
 			);
 		} finally {
-			setLoading(false);
-		}
-	};
-
-	const signUp = async () => {
-		setLoading(true);
-		try {
-			const response =
-				await createUserWithEmailAndPassword(
-					auth,
-					email,
-					password
-				);
-			console.log(response);
-			alert('Check your emails!');
-		} catch (error: any) {
-			console.log(error);
-			alert(
-				'Sign up failed: ' + error.message
-			);
-		} finally {
-			setLoading(false);
+			loadingChangeHandler(false);
 		}
 	};
 
@@ -69,7 +51,7 @@ export const Login = () => {
 					placeholder="Email"
 					autoCapitalize="none"
 					onChangeText={(text) =>
-						setEmail(text)
+						emailChangeHandler(text)
 					}
 				/>
 				<TextInput
@@ -79,7 +61,9 @@ export const Login = () => {
 					placeholder="Password"
 					autoCapitalize="none"
 					onChangeText={(text) =>
-						setPassword(text)
+						passwordChangeHandler(
+							text
+						)
 					}
 				/>
 				{loading ? (
@@ -93,10 +77,6 @@ export const Login = () => {
 							title="Login"
 							onPress={signIn}
 						/>
-						<Button
-							title="SignUp"
-							onPress={signUp}
-						/>
 					</View>
 				)}
 			</KeyboardAvoidingView>
@@ -106,7 +86,7 @@ export const Login = () => {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		flex: 0.8,
 		marginHorizontal: 20,
 		justifyContent: 'center',
 	},
