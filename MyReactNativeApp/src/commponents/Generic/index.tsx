@@ -1,3 +1,3 @@
 import { Input } from './GenericInput';
-
-export { Input };
+import { CameraButton } from './CameraButton';
+export { Input, CameraButton };

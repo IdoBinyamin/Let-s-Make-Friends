@@ -5,6 +5,7 @@ import {
 	Profile,
 	Chat,
 } from '../../screens';
+import { Camera } from '../../screens/CameraScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,6 +25,11 @@ export const InsideLayout = () => {
 			<Tab.Screen
 				name="Chat"
 				component={Chat}
+				options={{ headerShown: false }}
+			/>
+			<Tab.Screen
+				name="Camera"
+				component={Camera}
 				options={{ headerShown: false }}
 			/>
 		</Tab.Navigator>
