@@ -21,34 +21,52 @@ export const CameraButton = ({
 	color,
 }: ButtonProps) => {
 	return (
-		<View>
-			<TouchableOpacity onPress={onPress}>
+		<View style={styles.container}>
+			<TouchableOpacity
+				onPress={onPress}
+				style={styles.button}
+			>
 				<Entypo
 					name={icon}
-					size={20}
+					size={38}
 					color={
-						color ? color : '#f1f1f1'
+						color ? color : 'black'
 					}
 				/>
-				<Text style={styles.text}>
-					{title}
-				</Text>
+				{title ? (
+					<Text style={styles.text}>
+						{title}
+					</Text>
+				) : (
+					''
+				)}
 			</TouchableOpacity>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		borderWidth: 1,
+		borderColor: 'black',
+		borderRadius: 70,
+		backgroundColor: 'white',
+		height: 70,
+		width: 70,
+		alignSelf: 'center',
+		padding: 5,
+	},
 	button: {
-		height: 40,
+		height: 70,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
+		alignSelf: 'center',
 		paddingBottom: 15,
 	},
 	text: {
 		fontWeight: 'bold',
-		fontSize: 16,
+		fontSize: 20,
 		color: '#f1f1f1',
 		marginLeft: 10,
 	},

@@ -1,10 +1,6 @@
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import React, {
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import React, { useRef, useState } from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -17,8 +13,6 @@ const CameraHolder = () => {
 	const [type, setType] = useState(
 		CameraType.back
 	);
-	const [permission, setPermission] =
-		useState(null);
 
 	const [image, setImage] = useState(null);
 	const [flash, setFlash] = useState(
@@ -27,22 +21,11 @@ const CameraHolder = () => {
 
 	const cameraRef = useRef(null);
 
-	useEffect(() => {
-		(async () => {
-			MediaLibrary.requestPermissionsAsync();
-			const cameraStatus =
-				await Camera.requestCameraPermissionsAsync();
-			setPermission(
-				cameraStatus.status === 'granted'
-			);
-		})();
-	}, []);
-
 	const takePicture = async () => {
 		if (cameraRef) {
 			try {
 				const data =
-					await cameraRef.current.takePictureAsync();
+					await cameraRef.current?.takePictureAsync();
 				console.log(data);
 				setImage(data.uri);
 			} catch (error) {
@@ -94,7 +77,7 @@ const CameraHolder = () => {
 				>
 					<View style={styles.flash}>
 						<CameraButton
-							icon="retweet"
+							icon="switch"
 							onPress={
 								toggleCameraType
 							}
@@ -108,46 +91,50 @@ const CameraHolder = () => {
 								flash ===
 								Camera.Constants
 									.FlashMode.off
-									? 'gray'
-									: '#f1f1f1'
+									? '#f1f1f1'
+									: 'black'
 							}
+						/>
+					</View>
+					<View
+						style={
+							styles.takePictureButton
+						}
+					>
+						<CameraButton
+							// title={'take a picture'}
+							icon={'camera'}
+							onPress={takePicture}
 						/>
 					</View>
 				</Camera>
 			) : (
-				<Image
-					source={{ uri: image }}
-					style={styles.camera}
-				/>
-			)}
-			{image ? (
 				<View
-					style={{
-						flexDirection: 'row',
-						justifyContent:
-							'space-between',
-						paddingHorizontal: 15,
-					}}
+					style={styles.imageContainer}
 				>
-					<CameraButton
-						title="Re-take"
-						icon="retweet"
-						onPress={() => {
-							setImage(null);
-						}}
+					<Image
+						source={{ uri: image }}
+						style={styles.camera}
 					/>
-					<CameraButton
-						title="Save"
-						icon="check"
-						onPress={saveImage}
-					/>
+					<View
+						style={
+							styles.imgeTookButtons
+						}
+					>
+						<CameraButton
+							// title="Re-take"
+							icon="back"
+							onPress={() => {
+								setImage(null);
+							}}
+						/>
+						<CameraButton
+							// title="Save"
+							icon="check"
+							onPress={saveImage}
+						/>
+					</View>
 				</View>
-			) : (
-				<CameraButton
-					title={'take a picture'}
-					icon={'camera'}
-					onPress={takePicture}
-				/>
 			)}
 		</View>
 	);
@@ -158,7 +145,7 @@ export default CameraHolder;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#000',
+		backgroundColor: 'white',
 		justifyContent: 'center',
 	},
 	camera: {
@@ -171,9 +158,7 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		flexDirection: 'row',
-		// backgroundColor: 'transparent',
 		justifyContent: 'space-between',
-		// margin: 64,
 	},
 	button: {
 		flex: 1,
@@ -184,5 +169,16 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: 'bold',
 		color: 'white',
+	},
+	takePictureButton: {
+		marginTop: '125%',
+	},
+	imageContainer: {
+		flex: 1,
+	},
+	imgeTookButtons: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingHorizontal: 15,
 	},
 });

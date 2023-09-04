@@ -3,9 +3,9 @@ import { InsideLayout } from './NavBarNavigator/index';
 import { Authetication } from '../screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserModel } from '../models';
-import { Button } from 'react-native';
+import { Button, View } from 'react-native';
 import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
-
+import { Entypo } from '@expo/vector-icons';
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = ({
@@ -24,12 +24,19 @@ export const MainNavigator = ({
 						headerTitle: '',
 						headerRight: () => {
 							return (
-								<Button
-									title="logout"
-									onPress={
-										doLogout
-									}
-								/>
+								<>
+									<Entypo
+										name="retweet"
+										size={20}
+										color="blue"
+									/>
+									<Button
+										title="logout"
+										onPress={
+											doLogout
+										}
+									/>
+								</>
 							);
 						},
 					}}
