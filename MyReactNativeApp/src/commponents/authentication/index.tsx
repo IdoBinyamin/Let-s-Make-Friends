@@ -22,12 +22,11 @@ export const Auth = () => {
 
 	const handleAuthentication = async () => {
 		if (mode === 'SignUp') {
-			return <Profile />;
+			<Profile />;
 			await signup({ email, password });
 		}
 		if (mode === 'Signin') {
-			console.log('sigin');
-
+			// console.log('sigin');
 			await signin({ email, password });
 		}
 	};

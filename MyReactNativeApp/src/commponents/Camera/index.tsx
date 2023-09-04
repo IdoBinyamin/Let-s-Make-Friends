@@ -26,7 +26,7 @@ const CameraHolder = () => {
 			try {
 				const data =
 					await cameraRef.current?.takePictureAsync();
-				console.log(data);
+				// console.log(data);
 				setImage(data.uri);
 			} catch (error) {
 				console.log(error);
@@ -59,7 +59,7 @@ const CameraHolder = () => {
 		);
 	}
 	function toggleCameraFlash() {
-		setFlash((current) =>
+		setFlash((current: any) =>
 			current ===
 			Camera.Constants.FlashMode.off
 				? Camera.Constants.FlashMode.on

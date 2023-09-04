@@ -1,10 +1,7 @@
 // import 'react-native-get-random-values';
 import * as ImagePicker from 'expo-image-picker';
 
-import {
-	FIREBASE_STORAGE,
-	USERS_REF,
-} from './FirebaseConfig';
+
 
 export async function pickImage() {
 	let result =

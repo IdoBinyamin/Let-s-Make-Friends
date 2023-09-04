@@ -15,11 +15,10 @@ import { Entypo } from '@expo/vector-icons';
 import {
 	pickImage,
 	askForPermission,
-	uploadImage,
 } from '../../../util';
 import {
 	FIREBASE_AUTH,
-	addPicture,
+	addUserInfo,
 } from '../../../config/FirebaseConfig';
 
 export const Profile = () => {
@@ -45,9 +44,16 @@ export const Profile = () => {
 	}, []);
 
 	async function handlePress() {
-		const user = FIREBASE_AUTH.currentUser;
+		const user = {
+			id: FIREBASE_AUTH.currentUser?.uid,
+			name: displayName,
+			profilePicture: selectedImage,
+			messages: [],
+			permissionStatus: permissionStatus,
+		};
+		// console.log(user);
 		try {
-			addPicture(selectedImage);
+			addUserInfo(user);
 		} catch (error: any) {
 			console.log(error.message);
 		}

@@ -2,15 +2,15 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { MainNavigator } from '../Navigation';
+import { LogBox } from 'react-native';
+import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
 import {
 	User,
 	onAuthStateChanged,
 } from 'firebase/auth';
-import { FIREBASE_AUTH } from '../../FirebaseConfig';
-import { NavigationContainer } from '@react-navigation/native';
-import { MainNavigator } from '../Navigation';
-import { AuthProvider } from '../../context/AuthContext';
-import { LogBox, Text } from 'react-native';
 
 LogBox.ignoreLogs([
 	'Setting a timer',
@@ -26,7 +26,7 @@ const App = () => {
 		onAuthStateChanged(
 			FIREBASE_AUTH,
 			(user) => {
-				console.log('user', user);
+				// console.log('user', user);
 				setUser(user);
 			}
 		);
@@ -40,6 +40,5 @@ const App = () => {
 		// </AuthProvider>
 	);
 };
-
 
 export default App;
