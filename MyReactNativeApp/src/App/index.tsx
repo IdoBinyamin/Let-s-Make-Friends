@@ -11,7 +11,7 @@ import {
 	User,
 	onAuthStateChanged,
 } from 'firebase/auth';
-import { AuthProvider } from '../../context/AuthContext';
+import { ChatProvider } from '../../context/ChatContext';
 
 LogBox.ignoreLogs([
 	'Setting a timer',
@@ -34,11 +34,11 @@ const App = () => {
 	}, []);
 
 	return (
-		<AuthProvider>
+		<ChatProvider>
 			<NavigationContainer>
 				<MainNavigator user={user} />
 			</NavigationContainer>
-		</AuthProvider>
+		</ChatProvider>
 	);
 };
 

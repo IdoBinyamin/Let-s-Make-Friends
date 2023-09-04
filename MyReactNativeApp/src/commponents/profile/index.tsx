@@ -22,7 +22,7 @@ import {
 	addUserInfo,
 	getUserInfo,
 } from '../../../config/FirebaseConfig';
-import { AuthContext } from '../../../context/AuthContext';
+import { AuthContext } from '../../../context/ChatContext';
 
 export const Register = () => {
 	const [selectedImage, setSelectedImage] =
