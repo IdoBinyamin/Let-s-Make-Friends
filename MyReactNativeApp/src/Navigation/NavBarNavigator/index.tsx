@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'react-native';
 import {
 	Home,
@@ -42,6 +42,7 @@ export const InsideLayout = () => {
 					),
 				}}
 			/>
+
 			<Tab.Screen
 				name="Chat"
 				component={Chat}

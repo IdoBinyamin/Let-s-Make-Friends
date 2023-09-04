@@ -4,7 +4,6 @@ import {
 	getAuth,
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
-	initializeAuth,
 } from 'firebase/auth';
 import {
 	collection,
@@ -12,12 +11,7 @@ import {
 	getFirestore,
 	addDoc,
 } from 'firebase/firestore';
-import {
-	getDownloadURL,
-	getStorage,
-	ref,
-	uploadBytesResumable,
-} from 'firebase/storage';
+import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthProps {
@@ -80,22 +74,24 @@ export function addUserInfo(userInfo: {}) {
 }
 export function getUserInfo(userInfo: {}) {
 	const collectionName = 'users';
-	let users: any[] = [];
 	const colRef = collection(
 		FIREBASE_DB,
 		`${collectionName}`
 	);
 	getDocs(colRef)
 		.then((snapshot) => {
-			snapshot.docs.forEach((doc) => {
-				users.push({
-					...doc.data(),
-					id: doc.id,
-				});
-			});
-			console.log('We got the users');
+			let loggedUser = snapshot.docs.filter(
+				(doc) => {
+					return (
+						userInfo.id === doc.uid
+					);
+				}
+			);
+			console.log('We got the user');
+			return loggedUser;
 		})
 		.catch((e) => {
 			console.log(e);
 		});
+	return;
 }

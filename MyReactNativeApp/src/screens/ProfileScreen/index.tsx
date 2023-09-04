@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
-import { Profile as Register } from '../../commponents/profile';
+import { Register } from '../../commponents/profile';
+import { AuthContext } from '../../../context/AuthContext';
 
 export const Profile = () => {
-	return <Register />;
+	return (
+		<View>
+			<Text>Welcome</Text>
+		</View>
+	);
 };
 
 export default Profile;

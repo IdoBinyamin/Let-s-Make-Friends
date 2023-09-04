@@ -1,6 +1,7 @@
 import React, {
 	useState,
 	useEffect,
+	useContext,
 } from 'react';
 import {
 	View,
@@ -19,15 +20,19 @@ import {
 import {
 	FIREBASE_AUTH,
 	addUserInfo,
+	getUserInfo,
 } from '../../../config/FirebaseConfig';
+import { AuthContext } from '../../../context/AuthContext';
 
-export const Profile = () => {
+export const Register = () => {
 	const [selectedImage, setSelectedImage] =
 		useState<string>('');
 	const [
 		permissionStatus,
 		setPermissionStatus,
 	] = useState<any>(null);
+	const { updateCurrentUser } =
+		useContext<any>(AuthContext);
 	const [displayName, setDisplayName] =
 		useState('');
 
@@ -50,10 +55,16 @@ export const Profile = () => {
 			profilePicture: selectedImage,
 			messages: [],
 			permissionStatus: permissionStatus,
+			isNew: false,
 		};
 		// console.log(user);
 		try {
 			addUserInfo(user);
+		} catch (error: any) {
+			console.log(error.message);
+		}
+		try {
+			updateCurrentUser(getUserInfo(user));
 		} catch (error: any) {
 			console.log(error.message);
 		}

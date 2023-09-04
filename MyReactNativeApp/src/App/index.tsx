@@ -11,6 +11,7 @@ import {
 	User,
 	onAuthStateChanged,
 } from 'firebase/auth';
+import { AuthProvider } from '../../context/AuthContext';
 
 LogBox.ignoreLogs([
 	'Setting a timer',
@@ -33,11 +34,11 @@ const App = () => {
 	}, []);
 
 	return (
-		// <AuthProvider>
-		<NavigationContainer>
-			<MainNavigator user={user} />
-		</NavigationContainer>
-		// </AuthProvider>
+		<AuthProvider>
+			<NavigationContainer>
+				<MainNavigator user={user} />
+			</NavigationContainer>
+		</AuthProvider>
 	);
 };
 

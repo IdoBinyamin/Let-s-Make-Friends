@@ -1,9 +1,9 @@
 import React from 'react';
 import { InsideLayout } from './NavBarNavigator/index';
-import { Authetication } from '../screens';
+import { Authetication } from '../commponents/authentication/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserModel } from '../models';
-import { Button, View } from 'react-native';
+import { Button } from 'react-native';
 import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
 import { Entypo } from '@expo/vector-icons';
 const Stack = createNativeStackNavigator();
