@@ -1,14 +1,19 @@
 import React from 'react';
 import { InsideLayout } from './NavBarNavigator/index';
-import { Authetication } from '../screens';
+import { Authetication } from '../commponents/authentication/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserModel } from '../models';
-
+import { Button } from 'react-native';
+import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
+import { Entypo } from '@expo/vector-icons';
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = ({
 	user,
 }: UserModel) => {
+	const doLogout = () => {
+		FIREBASE_AUTH.signOut();
+	};
 	return (
 		<Stack.Navigator>
 			{user ? (
@@ -16,7 +21,24 @@ export const MainNavigator = ({
 					name="InsideLayout"
 					component={InsideLayout}
 					options={{
-						headerShown: false,
+						headerTitle: '',
+						headerRight: () => {
+							return (
+								<>
+									<Entypo
+										name="retweet"
+										size={20}
+										color="blue"
+									/>
+									<Button
+										title="logout"
+										onPress={
+											doLogout
+										}
+									/>
+								</>
+							);
+						},
 					}}
 				/>
 			) : (

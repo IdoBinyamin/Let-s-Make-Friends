@@ -1,24 +1,32 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
-	initializeAuth,
 	getAuth,
+	signInWithEmailAndPassword,
+	createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import {
+	collection,
+	getDocs,
+	getFirestore,
+	addDoc,
+} from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+interface AuthProps {
+	email: string;
+	password: string;
+}
+
 const firebaseConfig = {
-	apiKey: 'AIzaSyDmf0eALDO_sL4m2wR6w7GCjw3xw9O3UY8',
-	authDomain:
-		'reactnativeexpo-ts.firebaseapp.com',
-	databaseURL:
-		'https://reactnativeexpo-ts-default-rtdb.firebaseio.com',
-	projectId: 'reactnativeexpo-ts',
-	storageBucket:
-		'reactnativeexpo-ts.appspot.com',
-	messagingSenderId: '926541269351',
-	appId: '1:926541269351:web:f372934d408281c571c7c2',
-	measurementId: 'G-VHHH8JKNJ0',
+	apiKey: 'AIzaSyD49SzibpIW2y_21ySSYdfg_6bpE-qxU9k',
+	authDomain: 'rnexpo-ts.firebaseapp.com',
+	projectId: 'rnexpo-ts',
+	storageBucket: 'rnexpo-ts.appspot.com',
+	messagingSenderId: '741091590325',
+	appId: '1:741091590325:web:d83c70b20c63fc13ec3efc',
+	measurementId: 'G-K392XGKS61',
 };
 
 // Initialize Firebase
@@ -27,5 +35,63 @@ export const FIREBASE_APP = initializeApp(
 );
 export const FIREBASE_AUTH =
 	getAuth(FIREBASE_APP);
+
 export const FIREBASE_DB =
 	getFirestore(FIREBASE_APP);
+export const FIREBASE_STORAGE =
+	getStorage(FIREBASE_APP);
+
+export function signin({
+	email,
+	password,
+}: AuthProps) {
+	return signInWithEmailAndPassword(
+		FIREBASE_AUTH,
+		email,
+		password
+	);
+}
+export function signup({
+	email,
+	password,
+}: AuthProps) {
+	return createUserWithEmailAndPassword(
+		FIREBASE_AUTH,
+		email,
+		password
+	);
+}
+
+export function addUserInfo(userInfo: {}) {
+	const collectionName = 'users';
+	const colRef = collection(
+		FIREBASE_DB,
+		`${collectionName}`
+	);
+	addDoc(colRef, userInfo).then(() => {
+		alert('You ar all set!');
+	});
+}
+export function getUserInfo(userInfo: {}) {
+	const collectionName = 'users';
+	const colRef = collection(
+		FIREBASE_DB,
+		`${collectionName}`
+	);
+	getDocs(colRef)
+		.then((snapshot) => {
+			let loggedUser = snapshot.docs.filter(
+				(doc) => {
+					return (
+						userInfo.id === doc.uid
+					);
+				}
+			);
+			console.log('We got the user');
+			return loggedUser;
+		})
+		.catch((e) => {
+			console.log(e);
+		});
+	return;
+}

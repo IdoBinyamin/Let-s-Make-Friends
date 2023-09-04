@@ -5,20 +5,27 @@ import React, {
 	createContext,
 } from 'react';
 
-interface AuthProps {
-	user: any;
-	initialized: boolean;
-}
+interface AuthCtxProps {}
 
 export const AuthContext =
-	createContext<AuthProps>({});
+	createContext<AuthCtxProps>({});
 
 export const AuthProvider = ({
 	children,
 }: any) => {
-	const value: {} = {};
+	const [currUser, setCurrUser] =
+		useState<any>(null);
+
+	const updateCurrentUser = (user: {}) => {
+		setCurrUser(user);
+	};
+	const values = {
+		currUser,
+		updateCurrentUser,
+	};
+
 	return (
-		<AuthContext.Provider value={value}>
+		<AuthContext.Provider value={values}>
 			{children}
 		</AuthContext.Provider>
 	);

@@ -1,16 +1,14 @@
-import React from 'react';
-import { View, Button } from 'react-native';
-import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+import React, { useContext } from 'react';
+import { Text, View } from 'react-native';
+import { Register } from '../../commponents/profile';
+import { AuthContext } from '../../../context/AuthContext';
 
 export const Profile = () => {
 	return (
 		<View>
-			<Button
-				title="Log-Out"
-				onPress={() =>
-					FIREBASE_AUTH.signOut()
-				}
-			/>
+			<Text>Welcome</Text>
 		</View>
 	);
 };
+
+export default Profile;
