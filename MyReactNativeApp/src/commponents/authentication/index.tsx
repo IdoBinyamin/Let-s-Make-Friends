@@ -13,6 +13,7 @@ import {
 	View,
 } from 'react-native';
 import {
+	addUserInfo,
 	signin,
 	signup,
 } from '../../../config/FirebaseConfig';
@@ -50,6 +51,12 @@ export const Authetication = ({}: any) => {
 		if (mode === 'SignUp') {
 			try {
 				await signup({ email, password });
+				addUserInfo({
+					name: displayName,
+					email,
+					profilePicture: selectedImage,
+					permissionStatus,
+				});
 			} catch (error: any) {
 				console.log(error.message);
 				if (

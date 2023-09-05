@@ -27,7 +27,6 @@ const App = () => {
 		onAuthStateChanged(
 			FIREBASE_AUTH,
 			(user) => {
-				// console.log('user', user);
 				setUser(user);
 			}
 		);
