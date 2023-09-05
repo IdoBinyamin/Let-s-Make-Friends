@@ -15,6 +15,7 @@ import {
 import {
 	collection,
 	doc,
+	setDoc,
 } from 'firebase/firestore';
 
 const randomId = nanoid();
@@ -24,7 +25,7 @@ export default function Chat() {
 	const route = useRoute();
 	const room = route.params?.room;
 	const selectedImage = route.params?.image;
-	const userB = route.params?.user;
+	const userB = route.params?.user.item;
 	const senderUser = currentUser?.photoURL
 		? {
 				name: currentUser.displayName,
@@ -61,7 +62,7 @@ export default function Chat() {
 				}
 				const userBData = {
 					displayName:
-						userB?.item.contactName ||
+						userB?.contactName ||
 						userB.displayName ||
 						'',
 					email: userB.item.email,
