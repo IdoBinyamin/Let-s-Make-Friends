@@ -176,7 +176,7 @@ export default function Chat() {
 
 	// This useCallback hook memoizes the appendMessages function
 	const appendMessages = useCallback(
-		(newMessages) =>
+		(newMessages: any) =>
 			setMessages((prevMessages) => {
 				// Append the new messages to the chat
 				return GiftedChat.append(
@@ -187,38 +187,43 @@ export default function Chat() {
 		[]
 	);
 
-	// This async function handles sending new messages
-	async function onSendHandler(messages: []) {
-		const writes = messages.map((message) =>
-			addDoc(roomMessagesRef, message)
-		);
-
-		const lastMessage =
-			messages[messages.length - 1];
-
-		writes.push(
-			updateDoc(roomRef, { lastMessage })
-		);
-
-		await Promise.all(writes);
-	}
-
-	return (
-		<ImageBackground
-			resizeMethod={'cover'}
-			source={require('../../../assets/chatbg.png')}
-			style={{ flex: 1 }}
-		>
-			{/* GiftedChat component for displaying and sending messages */}
-			<GiftedChat
-				onSend={onSendHandler}
-				messages={messages}
-				user={{
-					_id: `${currentUser?.uid}`,
-				}}
-				renderAvatar={null}
-			/>
-			<Text>Chat</Text>
-		</ImageBackground>
+// This async function handles sending new messages
+async function onSendHandler(messages: []) {
+	const writes = messages.map((message) =>
+		addDoc(roomMessagesRef, message)
 	);
+
+	const lastMessage =
+		messages[messages.length - 1];
+	writes.push(
+		updateDoc(roomRef, {
+			lastMessage,
+		})
+	);
+
+	try {
+		await Promise.all(writes);
+	} catch (error: any) {
+		console.log(error.message);
+	}
+}
+
+return (
+	<ImageBackground
+		resizeMethod={'cover'}
+		source={require('../../../assets/chatbg.png')}
+		style={{ flex: 1 }}
+	>
+		{/* GiftedChat component for displaying and sending messages */}
+		<GiftedChat
+			onSend={onSendHandler}
+			messages={messages}
+			user={{
+				_id: `${currentUser?.uid}`,
+			}}
+			renderAvatar={null}
+		/>
+		<Text></Text>
+	</ImageBackground>
+);
 }
