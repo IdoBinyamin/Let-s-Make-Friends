@@ -75,9 +75,12 @@ export default function useContacts() {
 	const mapFirebaseDataToContact = (
 		data: any
 	) => {
+		// console.log(data);
+
 		return {
 			contactName: data.name,
 			email: data.email,
+			photoURL: data.profilePicture,
 			// Add other contact properties as needed
 		};
 	};

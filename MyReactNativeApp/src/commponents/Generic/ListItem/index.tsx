@@ -39,6 +39,7 @@ export function ListItem({
 			image,
 		});
 	};
+
 	return (
 		<TouchableOpacity
 			style={{
