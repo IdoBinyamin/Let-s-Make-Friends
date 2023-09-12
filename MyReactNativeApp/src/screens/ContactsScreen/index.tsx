@@ -17,19 +17,27 @@ import {
 	query,
 	where,
 } from 'firebase/firestore';
-import { FIREBASE_DB } from '../../../config/FirebaseConfig';
+import {
+	FIREBASE_AUTH,
+	FIREBASE_DB,
+} from '../../../config/FirebaseConfig';
 import { ListItem } from '../../commponents/Generic';
 import { useRoute } from '@react-navigation/native';
 
 export function Contacts() {
+	const { currentUser } = FIREBASE_AUTH;
 	const contacts = useContacts();
+	const fillteredContacts = contacts.filter(
+		(contact: any) =>
+			contact.email !== currentUser?.email
+	);
 	const route = useRoute();
 	const image =
 		route.params && route.params.image;
 	return (
 		<FlatList
 			style={{ flex: 1, padding: 10 }}
-			data={contacts}
+			data={fillteredContacts}
 			keyExtractor={(_, i) => i.toString()}
 			renderItem={(item) => (
 				<ContactPriview
@@ -50,6 +58,7 @@ function ContactPriview({
 }) {
 	const { rooms } = useContext(ChatContext);
 	const [user, setUser] = useState(contact);
+
 	useEffect(() => {
 		const colRef = collection(
 			FIREBASE_DB,
@@ -84,6 +93,27 @@ function ContactPriview({
 			contact.item.email
 		)
 	);
+	// const colRef = collection(
+	// 	FIREBASE_DB,
+	// 	`rooms`
+	// );
+	// const room = getDocs(colRef)
+	// 	.then((snapshot) => {
+	// 		let rooms = snapshot.docs.filter(
+	// 			(doc) => {
+	// 				return doc
+	// 					.data()
+	// 					.participants.filter(
+	// 						(participant: any) =>
+	// 							participant.email ===
+	// 							user?.email
+	// 					);
+	// 			}
+	// 		);
+	// 	})
+	// 	.catch((e) => {
+	// 		console.log(e);
+	// 	});
 
 	return (
 		<ListItem

@@ -8,7 +8,7 @@ import React, {
 	useContext,
 	useEffect,
 } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import {
 	FIREBASE_AUTH,
 	FIREBASE_DB,
@@ -45,7 +45,7 @@ export const Chat = () => {
 					await getDocs(
 						collection(
 							FIREBASE_DB,
-							'chatCollection'
+							'rooms'
 						)
 					);
 
@@ -62,7 +62,9 @@ export const Chat = () => {
 									.participants;
 							const userB =
 								participants.find(
-									(person) =>
+									(
+										person: any
+									) =>
 										person.email !==
 										currentUser.email
 								);
@@ -88,7 +90,7 @@ export const Chat = () => {
 
 	function getUserB(user: any, contacts: any) {
 		const userContact = contacts.find(
-			(c) => c.email === user.email
+			(c: any) => c.email === user.email
 		);
 		if (
 			userContact &&

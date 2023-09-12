@@ -7,8 +7,6 @@ type AvatarProps = {
 };
 
 const Avatar = ({ size, user }: AvatarProps) => {
-	// console.log(user);
-
 	return (
 		<Image
 			style={{
@@ -21,7 +19,7 @@ const Avatar = ({ size, user }: AvatarProps) => {
 					? { uri: user.item.photoURL }
 					: require('../../../assets/user-icon.png')
 			}
-			resizeMode={'cover'}
+			resizeMode={'stretch'}
 		/>
 	);
 };

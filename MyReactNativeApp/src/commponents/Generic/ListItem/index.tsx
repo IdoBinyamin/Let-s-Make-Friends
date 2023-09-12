@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
-	View,
 	Text,
 	TouchableOpacity,
 } from 'react-native';
@@ -31,7 +30,7 @@ export function ListItem({
 	image,
 	style,
 }: ItemProps) {
-	const navigation = useNavigation();
+	const navigation = useNavigation<any>();
 	const moveToChat = () => {
 		navigation.navigate('chat', {
 			user,

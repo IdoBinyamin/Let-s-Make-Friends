@@ -18,14 +18,12 @@ import {
 	FIREBASE_DB,
 } from '../../../config/FirebaseConfig';
 import {
-	QuerySnapshot,
 	addDoc,
 	collection,
 	doc,
 	getDoc,
 	getDocs,
 	onSnapshot,
-	query,
 	setDoc,
 	updateDoc,
 } from 'firebase/firestore';
@@ -63,85 +61,59 @@ export default function Chat() {
 		roomId,
 		'message'
 	);
+	const addRoom = async () => {
+		let roomData;
+		if (!room) {
+			const currentUserData = {
+				displayName:
+					currentUser?.displayName,
+				email: currentUser?.email,
+			};
+			if (currentUser?.photoURL) {
+				currentUserData.photoURL =
+					currentUser.photoURL;
+			}
+			const userBData = {
+				displayName:
+					userB?.contactName ||
+					userB.displayName ||
+					'',
+				email: userB.email,
+			};
+			if (userB?.photoURL) {
+				userBData.photoURL =
+					userB.photoURL;
+			}
+			roomData = {
+				participants: [
+					currentUserData,
+					userBData,
+				],
+				participantsArray: [
+					currentUser?.email,
+					userB.email,
+				],
+			};
+		}
+
+		try {
+			// Create the room document
+			await setDoc(roomRef, roomData);
+
+			// Calculate and set the roomHash
+			const emailHash = `${currentUser?.email}: ${userB.email}`;
+			setRoomHash(emailHash);
+		} catch (error: any) {
+			console.error(
+				'Error checking/creating room:',
+				error.message
+			);
+		}
+	};
 
 	// This useEffect initializes the chat room if it doesn't exist
 	useEffect(() => {
-		(async () => {
-			if (!room) {
-				const currentUserData = {
-					displayName:
-						currentUser?.displayName,
-					email: currentUser?.email,
-				};
-				if (currentUser?.photoURL) {
-					currentUserData.photoURL =
-						currentUser.photoURL;
-				}
-				const userBData = {
-					displayName:
-						userB?.contactName ||
-						userB.displayName ||
-						'',
-					email: userB.email,
-				};
-				if (userB?.photoURL) {
-					userBData.photoURL =
-						userB.photoURL;
-				}
-				const roomData = {
-					participants: [
-						currentUserData,
-						userBData,
-					],
-					participantsArray: [
-						currentUser?.email || '',
-						userB.email || '',
-					],
-				};
-
-				try {
-					const roomsCollectionRef =
-						collection(
-							FIREBASE_DB,
-							'rooms'
-						);
-
-					// Check if the "rooms" collection exists
-					const roomsCollectionSnapshot =
-						await getDocs(
-							roomsCollectionRef
-						);
-					if (
-						roomsCollectionSnapshot.empty
-					) {
-						// The "rooms" collection does not exist, so create it
-
-						await setDoc(
-							doc(
-								FIREBASE_DB,
-								'rooms'
-							),
-							{}
-						);
-					}
-
-					// Create the room document
-					await setDoc(
-						roomRef,
-						roomData
-					);
-
-					// Calculate and set the roomHash
-					const emailHash = `${currentUser?.email}: ${userB.email}`;
-					setRoomHash(emailHash);
-				} catch (error: any) {
-					console.error(
-						'Error checking/creating room:',
-						error.message
-					);
-				}
-			}
-		})();
+		addRoom();
 	}, []);
 
 	// This useEffect listens for changes in the chat messages
@@ -187,43 +159,43 @@ export default function Chat() {
 		[]
 	);
 
-// This async function handles sending new messages
-async function onSendHandler(messages: []) {
-	const writes = messages.map((message) =>
-		addDoc(roomMessagesRef, message)
-	);
+	// This async function handles sending new messages
+	async function onSendHandler(messages: []) {
+		const writes = messages.map((message) =>
+			addDoc(roomMessagesRef, message)
+		);
 
-	const lastMessage =
-		messages[messages.length - 1];
-	writes.push(
-		updateDoc(roomRef, {
-			lastMessage,
-		})
-	);
+		const lastMessage =
+			messages[messages.length - 1];
+		writes.push(
+			updateDoc(roomRef, {
+				lastMessage,
+			})
+		);
 
-	try {
-		await Promise.all(writes);
-	} catch (error: any) {
-		console.log(error.message);
+		try {
+			await Promise.all(writes);
+		} catch (error: any) {
+			console.log(error.message);
+		}
 	}
-}
 
-return (
-	<ImageBackground
-		resizeMethod={'cover'}
-		source={require('../../../assets/chatbg.png')}
-		style={{ flex: 1 }}
-	>
-		{/* GiftedChat component for displaying and sending messages */}
-		<GiftedChat
-			onSend={onSendHandler}
-			messages={messages}
-			user={{
-				_id: `${currentUser?.uid}`,
-			}}
-			renderAvatar={null}
-		/>
-		<Text></Text>
-	</ImageBackground>
-);
+	return (
+		<ImageBackground
+			resizeMethod={'auto'}
+			source={require('../../../assets/chatbg.png')}
+			style={{ flex: 1 }}
+		>
+			{/* GiftedChat component for displaying and sending messages */}
+			<GiftedChat
+				onSend={onSendHandler}
+				messages={messages}
+				user={{
+					_id: `${currentUser?.uid}`,
+				}}
+				renderAvatar={null}
+			/>
+			<Text></Text>
+		</ImageBackground>
+	);
 }

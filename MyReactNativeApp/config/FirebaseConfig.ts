@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
-	getAuth,
 	getReactNativePersistence,
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
@@ -14,7 +13,6 @@ import {
 	addDoc,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthProps {
@@ -80,19 +78,18 @@ export function addUserInfo(userInfo: {}) {
 		`${collectionName}`
 	);
 	addDoc(colRef, userInfo).then(() => {
-		alert('You ar all set!');
+		alert('Welcome!');
 	});
 }
-export function getUserInfo(userInfo: {}) {
-	const collectionName = 'users';
+export function getUserInfo(userInfo: any) {
 	const colRef = collection(
 		FIREBASE_DB,
-		`${collectionName}`
+		`users`
 	);
 	getDocs(colRef)
 		.then((snapshot) => {
 			let loggedUser = snapshot.docs.filter(
-				(doc) => {
+				(doc: any) => {
 					return (
 						userInfo.id === doc.uid
 					);
