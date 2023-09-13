@@ -25,7 +25,7 @@ export const Chat = () => {
 	const chatQuery = query(
 		collection(FIREBASE_DB, 'rooms'),
 		where(
-			'participansArray',
+			'participantsArray',
 			'array-contains',
 			currentUser?.email
 		)
