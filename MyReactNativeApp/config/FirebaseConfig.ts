@@ -50,6 +50,15 @@ export const FIREBASE_DB =
 export const FIREBASE_STORAGE =
 	getStorage(FIREBASE_APP);
 
+export const USERS_COL = collection(
+	FIREBASE_DB,
+	'users'
+);
+export const ROOMS_COL = collection(
+	FIREBASE_DB,
+	'rooms'
+);
+
 export function signin({
 	email,
 	password,
@@ -72,21 +81,12 @@ export function signup({
 }
 
 export function addUserInfo(userInfo: {}) {
-	const collectionName = 'users';
-	const colRef = collection(
-		FIREBASE_DB,
-		`${collectionName}`
-	);
-	addDoc(colRef, userInfo).then(() => {
+	addDoc(USERS_COL, userInfo).then(() => {
 		alert('Welcome!');
 	});
 }
 export function getUserInfo(userInfo: any) {
-	const colRef = collection(
-		FIREBASE_DB,
-		`users`
-	);
-	getDocs(colRef)
+	getDocs(USERS_COL)
 		.then((snapshot) => {
 			let loggedUser = snapshot.docs.filter(
 				(doc: any) => {

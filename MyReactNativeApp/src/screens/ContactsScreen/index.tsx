@@ -10,7 +10,6 @@ import React, {
 import useContacts from '../../hooks/useHooks';
 import { ChatContext } from '../../../context/ChatContext';
 import {
-	collection,
 	getDocs,
 	query,
 	where,
@@ -18,6 +17,7 @@ import {
 import {
 	FIREBASE_AUTH,
 	FIREBASE_DB,
+	USERS_COL,
 } from '../../../config/FirebaseConfig';
 import { ListItem } from '../../commponents/Generic';
 import { useRoute } from '@react-navigation/native';
@@ -59,12 +59,8 @@ function ContactPriview({
 	const [user, setUser] = useState(contact);
 
 	useEffect(() => {
-		const colRef = collection(
-			FIREBASE_DB,
-			`users`
-		);
 		const q = query(
-			colRef,
+			USERS_COL,
 			where('email', '==', contact.item)
 		);
 
@@ -93,36 +89,6 @@ function ContactPriview({
 		)
 	);
 	console.log('room: ', room);
-	// console.log(
-	// 	unfilteredrooms.find((room) =>
-	// 		room.participantsArray.includes(
-	// 			contact.item.email &&
-	// 				contact.userB.email
-	// 		)
-	// 	)
-	// );
-
-	// const colRef = collection(
-	// 	FIREBASE_DB,
-	// 	`rooms`
-	// );
-	// const room = getDocs(colRef)
-	// 	.then((snapshot) => {
-	// 		let rooms = snapshot.docs.filter(
-	// 			(doc) => {
-	// 				return doc
-	// 					.data()
-	// 					.participants.filter(
-	// 						(participant: any) =>
-	// 							participant.email ===
-	// 							user?.email
-	// 					);
-	// 			}
-	// 		);
-	// 	})
-	// 	.catch((e) => {
-	// 		console.log(e);
-	// 	});
 
 	return (
 		<ListItem

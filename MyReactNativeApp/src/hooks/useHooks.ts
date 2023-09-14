@@ -3,11 +3,8 @@ import React, {
 	useEffect,
 } from 'react';
 import * as Contacts from 'expo-contacts';
-import { FIREBASE_DB } from '../../config/FirebaseConfig';
-import {
-	getDocs,
-	collection,
-} from 'firebase/firestore';
+import { getDocs } from 'firebase/firestore';
+import { USERS_COL } from '../../config/FirebaseConfig';
 
 export default function useContacts() {
 	const [contacts, setContacts] = useState([]);
@@ -38,23 +35,16 @@ export default function useContacts() {
 	const fetchContactsFromFirebase =
 		async () => {
 			try {
-				const contactsCollection =
-					collection(
-						FIREBASE_DB,
-						'users'
-					);
 				const querySnapshot =
-					await getDocs(
-						contactsCollection
-					);
+					await getDocs(USERS_COL);
 				const contactsData: [] = [];
 
 				querySnapshot.forEach((doc) => {
 					const data = doc.data();
 					// Map Firebase data to desired contact format
 					const contact: {
-						contactName: any;
-						email: any;
+						contactName: string;
+						email: string;
 					} =
 						mapFirebaseDataToContact(
 							data
@@ -75,8 +65,6 @@ export default function useContacts() {
 	const mapFirebaseDataToContact = (
 		data: any
 	) => {
-		// console.log(data);
-
 		return {
 			contactName: data.name,
 			email: data.email,

@@ -1,9 +1,4 @@
-import {
-	collection,
-	getDocs,
-	query,
-	where,
-} from 'firebase/firestore';
+import { getDocs } from 'firebase/firestore';
 import React, {
 	useContext,
 	useEffect,
@@ -11,7 +6,7 @@ import React, {
 import { View } from 'react-native';
 import {
 	FIREBASE_AUTH,
-	FIREBASE_DB,
+	ROOMS_COL,
 } from '../../../config/FirebaseConfig';
 import { ChatContext } from '../../../context/ChatContext';
 import ContacsFloatingIcon from '../../commponents/ContacsFloatingIcon';
@@ -32,10 +27,7 @@ export const Chat = () => {
 			let chatSnapshot;
 			try {
 				chatSnapshot = await getDocs(
-					collection(
-						FIREBASE_DB,
-						'rooms'
-					)
+					ROOMS_COL
 				);
 			} catch (error) {
 				console.error(
@@ -43,6 +35,10 @@ export const Chat = () => {
 					error
 				);
 			}
+			return console.log(
+				'roomsCol: ',
+				chatSnapshot
+			);
 			if (chatSnapshot) {
 				const parsedChat =
 					chatSnapshot.docs.map(

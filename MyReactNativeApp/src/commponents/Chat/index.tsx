@@ -15,7 +15,7 @@ import { nanoid } from 'nanoid';
 import { useRoute } from '@react-navigation/native';
 import {
 	FIREBASE_AUTH,
-	FIREBASE_DB,
+	ROOMS_COL,
 } from '../../../config/FirebaseConfig';
 import {
 	addDoc,
@@ -48,21 +48,11 @@ export default function Chat() {
 				_id: currentUser?.uid,
 		  };
 	const roomId = room ? room.id : randomId;
-	const roomRef = doc(
-		FIREBASE_DB,
-		'rooms',
-		roomId
-	);
-	const messagesCollection = collection(
-		FIREBASE_DB,
-		'rooms',
-		roomId,
+	const roomRef = doc(ROOMS_COL, roomId);
+	const MESSAGES_COL = collection(
+		roomRef,
 		'message'
 	);
-	// const roomsCollection = collection(
-	// 	FIREBASE_DB,
-	// 	'rooms'
-	// );
 	const addRoom = async () => {
 		let roomData;
 
@@ -102,9 +92,6 @@ export default function Chat() {
 			// Calculate and set the roomHash
 			const emailHash = `${currentUser?.email}: ${userB.email}`;
 			setRoomHash(emailHash);
-			// await updateDoc(roomDocRef, {
-			// 	roomHash,
-			// });
 		} catch (error: any) {
 			console.error(
 				'Error checking/creating room:',
@@ -121,7 +108,7 @@ export default function Chat() {
 	// This useEffect listens for changes in the chat messages
 	useEffect(() => {
 		const unsubscribe = onSnapshot(
-			messagesCollection,
+			MESSAGES_COL,
 			(querySnapshot) => {
 				// Retrieve and process new messages
 				const newMessages = querySnapshot
@@ -164,7 +151,7 @@ export default function Chat() {
 	// This async function handles sending new messages
 	async function onSendHandler(messages: []) {
 		const writes = messages.map((message) =>
-			addDoc(messagesCollection, message)
+			addDoc(MESSAGES_COL, message)
 		);
 
 		const lastMessage =
