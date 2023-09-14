@@ -10,7 +10,10 @@ export const ChatHeader = ({}) => {
 			<View>
 				<Avatar
 					size={40}
-					user={rout.params?.user}
+					url={
+						rout.params?.user.item
+							.photoURL
+					}
 				/>
 			</View>
 			<View

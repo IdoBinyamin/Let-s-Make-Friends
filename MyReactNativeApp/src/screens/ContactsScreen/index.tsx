@@ -1,8 +1,6 @@
 import {
 	FlatList,
 	StyleSheet,
-	Text,
-	View,
 } from 'react-native';
 import React, {
 	useContext,
@@ -56,7 +54,8 @@ function ContactPriview({
 	contact: any;
 	image: any;
 }) {
-	const { rooms } = useContext(ChatContext);
+	const { unfilteredrooms } =
+		useContext(ChatContext);
 	const [user, setUser] = useState(contact);
 
 	useEffect(() => {
@@ -88,11 +87,21 @@ function ContactPriview({
 			});
 	}, [contact.item.email]);
 
-	const room = rooms.find((room) =>
+	const room = unfilteredrooms.find((room) =>
 		room.participantsArray.includes(
 			contact.item.email
 		)
 	);
+	console.log('room: ', room);
+	// console.log(
+	// 	unfilteredrooms.find((room) =>
+	// 		room.participantsArray.includes(
+	// 			contact.item.email &&
+	// 				contact.userB.email
+	// 		)
+	// 	)
+	// );
+
 	// const colRef = collection(
 	// 	FIREBASE_DB,
 	// 	`rooms`
@@ -117,7 +126,7 @@ function ContactPriview({
 
 	return (
 		<ListItem
-			style={{ marginTop: 7 }}
+			style={styles.container}
 			type={'contacts'}
 			user={user}
 			image={image}
@@ -126,4 +135,8 @@ function ContactPriview({
 	);
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	container: {
+		marginTop: 7,
+	},
+});

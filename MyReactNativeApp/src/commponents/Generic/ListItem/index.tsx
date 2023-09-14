@@ -3,6 +3,7 @@ import React from 'react';
 import {
 	Text,
 	TouchableOpacity,
+	StyleSheet,
 } from 'react-native';
 import {
 	Grid,
@@ -12,12 +13,12 @@ import {
 import { Avatar } from '../../../consts';
 
 type ItemProps = {
-	type?: any;
-	description?: any;
-	user?: any;
+	type?: string;
+	description?: string;
+	user?: {};
 	time?: any;
-	room?: any;
-	image?: any;
+	room?: {};
+	image?: string;
 	style?: any;
 };
 
@@ -41,22 +42,12 @@ export function ListItem({
 
 	return (
 		<TouchableOpacity
-			style={{
-				height: 80,
-				...style,
-				flexDirection: 'row',
-			}}
+			style={[styles.container, style]}
 			onPress={moveToChat}
 		>
-			<Col
-				style={{
-					width: 80,
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}
-			>
+			<Col style={styles.avatarHolder}>
 				<Avatar
-					user={user}
+					url={user?.item.photoURL}
 					size={
 						type === 'contacts'
 							? 40
@@ -64,7 +55,7 @@ export function ListItem({
 					}
 				/>
 			</Col>
-			<Col style={{ marginLeft: 10 }}>
+			<Col style={styles.userNameHolder}>
 				<Row
 					style={{
 						alignItems: 'center',
@@ -72,29 +63,25 @@ export function ListItem({
 				>
 					<Col>
 						<Text
-							style={{
-								fontWeight:
-									'bold',
-								fontSize: 16,
-								color: 'gray', //take color
-							}}
+							style={
+								styles.userNameText
+							}
 						>
-							{user.item
-								.contactName ||
-								user.name}
+							{user?.name ||
+								user?.item
+									.contactName}
 						</Text>
 					</Col>
 					{time && (
 						<Col
-							style={{
-								alignItems:
-									'flex-end',
-							}}
+							style={
+								styles.dateHolder
+							}
 						>
 							<Text
-								style={{
-									color: 'black', //take color
-								}}
+								style={
+									styles.dateText
+								}
 							>
 								{new Date(
 									time.second *
@@ -106,7 +93,9 @@ export function ListItem({
 				</Row>
 				{description && (
 					<Row
-						style={{ marginTop: -5 }}
+						style={
+							styles.descriptionHolder
+						}
 					>
 						<Text
 							style={{
@@ -125,3 +114,32 @@ export function ListItem({
 		</TouchableOpacity>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		height: 80,
+		flexDirection: 'row',
+	},
+	avatarHolder: {
+		width: 80,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	userNameHolder: {
+		marginLeft: 10,
+	},
+	userNameText: {
+		fontWeight: 'bold',
+		fontSize: 16,
+		color: 'gray', //take color
+	},
+	dateHolder: {
+		alignItems: 'flex-end',
+	},
+	dateText: {
+		color: 'black', //take color
+	},
+	descriptionHolder: {
+		marginTop: -5,
+	},
+});

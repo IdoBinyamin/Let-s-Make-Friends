@@ -21,8 +21,6 @@ import {
 	addDoc,
 	collection,
 	doc,
-	getDoc,
-	getDocs,
 	onSnapshot,
 	setDoc,
 	updateDoc,
@@ -55,54 +53,58 @@ export default function Chat() {
 		'rooms',
 		roomId
 	);
-	const roomMessagesRef = collection(
+	const messagesCollection = collection(
 		FIREBASE_DB,
 		'rooms',
 		roomId,
 		'message'
 	);
+	// const roomsCollection = collection(
+	// 	FIREBASE_DB,
+	// 	'rooms'
+	// );
 	const addRoom = async () => {
 		let roomData;
-		if (!room) {
-			const currentUserData = {
-				displayName:
-					currentUser?.displayName,
-				email: currentUser?.email,
-			};
-			if (currentUser?.photoURL) {
-				currentUserData.photoURL =
-					currentUser.photoURL;
-			}
-			const userBData = {
-				displayName:
-					userB?.contactName ||
-					userB.displayName ||
-					'',
-				email: userB.email,
-			};
-			if (userB?.photoURL) {
-				userBData.photoURL =
-					userB.photoURL;
-			}
-			roomData = {
-				participants: [
-					currentUserData,
-					userBData,
-				],
-				participantsArray: [
-					currentUser?.email,
-					userB.email,
-				],
-			};
+
+		const currentUserData = {
+			displayName: currentUser?.displayName,
+			email: currentUser?.email,
+		};
+		if (currentUser?.photoURL) {
+			currentUserData.photoURL =
+				currentUser.photoURL;
 		}
+		const userBData = {
+			displayName:
+				userB?.contactName ||
+				userB.displayName ||
+				'',
+			email: userB.email,
+		};
+		if (userB?.photoURL) {
+			userBData.photoURL = userB.photoURL;
+		}
+		roomData = {
+			participants: [
+				currentUserData,
+				userBData,
+			],
+			participantsArray: [
+				currentUser?.email,
+				userB.email,
+			],
+			createdAt: new Date(),
+		};
 
 		try {
-			// Create the room document
+			// Use the updateDoc function to update the document.
 			await setDoc(roomRef, roomData);
-
 			// Calculate and set the roomHash
 			const emailHash = `${currentUser?.email}: ${userB.email}`;
 			setRoomHash(emailHash);
+			// await updateDoc(roomDocRef, {
+			// 	roomHash,
+			// });
 		} catch (error: any) {
 			console.error(
 				'Error checking/creating room:',
@@ -113,13 +115,13 @@ export default function Chat() {
 
 	// This useEffect initializes the chat room if it doesn't exist
 	useEffect(() => {
-		addRoom();
+		if (!room) addRoom();
 	}, []);
 
 	// This useEffect listens for changes in the chat messages
 	useEffect(() => {
 		const unsubscribe = onSnapshot(
-			roomMessagesRef,
+			messagesCollection,
 			(querySnapshot) => {
 				// Retrieve and process new messages
 				const newMessages = querySnapshot
@@ -156,13 +158,13 @@ export default function Chat() {
 					newMessages
 				);
 			}),
-		[]
+		[messages]
 	);
 
 	// This async function handles sending new messages
 	async function onSendHandler(messages: []) {
 		const writes = messages.map((message) =>
-			addDoc(roomMessagesRef, message)
+			addDoc(messagesCollection, message)
 		);
 
 		const lastMessage =

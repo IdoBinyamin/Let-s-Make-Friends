@@ -71,7 +71,6 @@ export const Authetication = ({}: any) => {
 		}
 		if (mode === 'Signin') {
 			try {
-				// console.log('sigin');
 				await signin({ email, password });
 			} catch (error: any) {
 				console.log(error.message);
@@ -224,7 +223,12 @@ export const Authetication = ({}: any) => {
 					<Button
 						color={'green'}
 						disabled={
-							!password || !email
+							mode === 'SignUp'
+								? !password ||
+								  !email ||
+								  !selectedImage
+								: !password ||
+								  !email
 						}
 						title={
 							mode === 'SignUp'

@@ -19,54 +19,46 @@ import { ListItem } from '../../commponents/Generic';
 import useContacts from '../../hooks/useHooks';
 export const Chat = () => {
 	const { currentUser } = FIREBASE_AUTH;
-	const { rooms, setRooms } =
-		useContext(ChatContext);
+	const {
+		rooms,
+		setRooms,
+		unfilteredrooms,
+		setUnfilteredRooms,
+	} = useContext(ChatContext);
 	const contacts = useContacts();
-	const chatQuery = query(
-		collection(FIREBASE_DB, 'rooms'),
-		where(
-			'participantsArray',
-			'array-contains',
-			currentUser?.email
-		)
-	);
 
 	useEffect(() => {
 		const fetchChatRooms = async () => {
+			let chatSnapshot;
 			try {
-				// Check if a user is authenticated before fetching data
-				const currentUser =
-					FIREBASE_AUTH.currentUser;
-				if (!currentUser) {
-					return; // You can choose to handle this case differently (e.g., redirect to login)
-				}
-
-				const chatSnapshot =
-					await getDocs(
-						collection(
-							FIREBASE_DB,
-							'rooms'
-						)
-					);
-
+				chatSnapshot = await getDocs(
+					collection(
+						FIREBASE_DB,
+						'rooms'
+					)
+				);
+			} catch (error) {
+				console.error(
+					'Error fetching chat rooms:',
+					error
+				);
+			}
+			if (chatSnapshot) {
 				const parsedChat =
-					chatSnapshot.docs
-						.filter(
-							(doc) =>
-								doc.data()
-									.lastMessage
-						)
-						.map((doc) => {
+					chatSnapshot.docs.map(
+						(doc) => {
 							const participants =
 								doc.data()
 									.participants;
+							console.log(
+								'participants: ',
+								participants
+							);
 							const userB =
 								participants.find(
-									(
-										person: any
-									) =>
-										person.email !==
-										currentUser.email
+									(person) =>
+										person.email ===
+										currentUser?.email
 								);
 
 							return {
@@ -74,14 +66,14 @@ export const Chat = () => {
 								id: doc.id,
 								userB,
 							};
-						});
-
-				setRooms(parsedChat);
-			} catch (error) {
-				console.error(
-					'Error fetching chat rooms:',
-					error
+						}
+					);
+				setRooms(
+					parsedChat.filter(
+						(doc) => doc.lastMessage
+					)
 				);
+				setUnfilteredRooms(parsedChat);
 			}
 		};
 
@@ -98,8 +90,8 @@ export const Chat = () => {
 		) {
 			return {
 				...user,
-				contactName:
-					userContact.contactName,
+				// contactName:
+				// 	userContact?.contactName,
 			};
 		}
 		return user;
@@ -113,12 +105,10 @@ export const Chat = () => {
 				paddingRight: 10,
 			}}
 		>
-			{rooms.map((room) => (
+			{unfilteredrooms.map((room) => (
 				<ListItem
 					type={'chat'}
-					description={
-						room.lastMessage.text
-					}
+					description={room.lastMessage}
 					key={room.id}
 					time={
 						room.lastMessage.createdAt

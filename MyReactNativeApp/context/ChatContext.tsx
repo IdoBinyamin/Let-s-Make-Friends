@@ -8,18 +8,23 @@ import React, {
 interface ChatCtxProps {
 	rooms: any[];
 	setRooms: (room: any) => void;
+	unfilteredrooms: any[];
+	setUnfilteredRooms: (room: any) => void;
 }
 
-export const ChatContext =
-	createContext<ChatCtxProps>({
-		rooms: [],
-		setRooms: () => {},
-	});
+export const ChatContext = createContext<ChatCtxProps>({
+	rooms: [],
+	setRooms: () => {},
+	unfilteredrooms: [],
+	setUnfilteredRooms: (room: {}) => {},
+});
 
 export const ChatProvider = ({
 	children,
 }: any) => {
 	const [rooms, setRooms] = useState([]);
+	const [unfilteredrooms, setUnfilteredRooms] =
+		useState([]);
 
 	// const updateRooms = (room: {}) => {
 	// 	setRooms([...rooms, room]);
@@ -27,6 +32,8 @@ export const ChatProvider = ({
 	const values = {
 		rooms,
 		setRooms,
+		unfilteredrooms,
+		setUnfilteredRooms,
 	};
 
 	return (
