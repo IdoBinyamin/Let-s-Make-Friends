@@ -12,17 +12,17 @@ import {
 } from 'react-native-easy-grid';
 import { Avatar } from '../../../consts';
 
-type ItemProps = {
+interface ItemProps {
 	type?: string;
 	description?: string;
 	user?: {};
 	time?: any;
 	room?: {};
 	image?: string;
-	style?: any;
-};
+	style?: ViewStyle;
+}
 
-export function ListItem({
+export const ListItem: React.FC<ItemProps> = ({
 	type,
 	description,
 	user,
@@ -30,7 +30,7 @@ export function ListItem({
 	room,
 	image,
 	style,
-}: ItemProps) {
+}) => {
 	const navigation = useNavigation<any>();
 	const moveToChat = () => {
 		navigation.navigate('chat', {
@@ -113,7 +113,7 @@ export function ListItem({
 			></Grid>
 		</TouchableOpacity>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {

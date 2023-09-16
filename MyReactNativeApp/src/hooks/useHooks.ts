@@ -23,7 +23,7 @@ export default function useContacts() {
 					setContacts(firebaseContacts);
 				}
 			}
-		} catch (error: any) {
+		} catch (error: Error) {
 			console.error(error.message);
 		}
 	}
@@ -65,10 +65,12 @@ export default function useContacts() {
 	const mapFirebaseDataToContact = (
 		data: any
 	) => {
+		// console.log('data: ', data);
+
 		return {
 			contactName: data.name,
 			email: data.email,
-			photoURL: data.profilePicture,
+			photoURL: data.photoURL,
 			// Add other contact properties as needed
 		};
 	};

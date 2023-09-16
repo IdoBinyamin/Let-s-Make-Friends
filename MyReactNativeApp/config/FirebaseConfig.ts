@@ -8,17 +8,16 @@ import {
 } from 'firebase/auth';
 import {
 	collection,
-	getDocs,
 	getFirestore,
 	addDoc,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface AuthProps {
+type AuthProps = {
 	email: string;
 	password: string;
-}
+};
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyD49SzibpIW2y_21ySSYdfg_6bpE-qxU9k',
@@ -80,26 +79,17 @@ export function signup({
 	);
 }
 
-export function addUserInfo(userInfo: {}) {
+type UserInfoProps = {
+	name: string;
+	email: string;
+	photoURL: string;
+	permissionStatus: string;
+};
+
+export function addUserInfo(
+	userInfo: UserInfoProps
+) {
 	addDoc(USERS_COL, userInfo).then(() => {
 		alert('Welcome!');
 	});
-}
-export function getUserInfo(userInfo: any) {
-	getDocs(USERS_COL)
-		.then((snapshot) => {
-			let loggedUser = snapshot.docs.filter(
-				(doc: any) => {
-					return (
-						userInfo.id === doc.uid
-					);
-				}
-			);
-			console.log('We got the user');
-			return loggedUser;
-		})
-		.catch((e) => {
-			console.log(e);
-		});
-	return;
 }

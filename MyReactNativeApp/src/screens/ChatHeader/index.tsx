@@ -32,7 +32,7 @@ export const ChatHeader = ({}) => {
 					{rout.params?.user.item
 						.contactName ||
 						rout.params?.user.item
-							.displayName}
+							.userName}
 				</Text>
 			</View>
 		</View>

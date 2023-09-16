@@ -1,22 +1,20 @@
 import React, {
-	useContext,
 	useState,
-	useEffect,
 	createContext,
 } from 'react';
 
 interface ChatCtxProps {
-	rooms: any[];
-	setRooms: (room: any) => void;
-	unfilteredrooms: any[];
-	setUnfilteredRooms: (room: any) => void;
+	rooms: [];
+	setRooms: (rooms: []) => void;
+	unfilteredrooms: [];
+	setUnfilteredRooms: (rooms: []) => void;
 }
 
 export const ChatContext = createContext<ChatCtxProps>({
 	rooms: [],
 	setRooms: () => {},
 	unfilteredrooms: [],
-	setUnfilteredRooms: (room: {}) => {},
+	setUnfilteredRooms: () => {},
 });
 
 export const ChatProvider = ({
@@ -26,9 +24,6 @@ export const ChatProvider = ({
 	const [unfilteredrooms, setUnfilteredRooms] =
 		useState([]);
 
-	// const updateRooms = (room: {}) => {
-	// 	setRooms([...rooms, room]);
-	// };
 	const values = {
 		rooms,
 		setRooms,

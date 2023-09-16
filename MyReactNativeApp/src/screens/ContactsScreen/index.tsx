@@ -16,19 +16,26 @@ import {
 } from 'firebase/firestore';
 import {
 	FIREBASE_AUTH,
-	FIREBASE_DB,
 	USERS_COL,
 } from '../../../config/FirebaseConfig';
 import { ListItem } from '../../commponents/Generic';
 import { useRoute } from '@react-navigation/native';
 
+type ContactProps = {
+	email: string;
+	name: string;
+	permissionStatus: string;
+	photoURL: string;
+};
+
 export function Contacts() {
 	const { currentUser } = FIREBASE_AUTH;
 	const contacts = useContacts();
 	const fillteredContacts = contacts.filter(
-		(contact: any) =>
+		(contact: ContactProps) =>
 			contact.email !== currentUser?.email
 	);
+
 	const route = useRoute();
 	const image =
 		route.params && route.params.image;
