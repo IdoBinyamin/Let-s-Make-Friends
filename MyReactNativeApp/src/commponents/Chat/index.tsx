@@ -1,5 +1,6 @@
 //@refresh reset
 import {
+	Image,
 	ImageBackground,
 	StyleSheet,
 	Text,
@@ -16,6 +17,7 @@ import { useRoute } from '@react-navigation/native';
 import {
 	FIREBASE_AUTH,
 	ROOMS_COL,
+	addRoom,
 } from '../../../config/FirebaseConfig';
 import {
 	addDoc,
@@ -34,75 +36,54 @@ export default function Chat() {
 	const [messages, setMessages] = useState([]);
 	const { currentUser } = FIREBASE_AUTH;
 	const route = useRoute();
-	const room = route.params?.room;
+	const room = route.params?.room; //room when choose conversasion
 	const selectedImage = route.params?.image;
-	const userB = route.params?.user.item;
-	const senderUser = currentUser?.photoURL
-		? {
-				name: currentUser.displayName,
-				_id: currentUser.uid,
-				avatar: currentUser.photoURL,
-		  }
-		: {
-				name: currentUser?.displayName,
-				_id: currentUser?.uid,
-		  };
+	const userB = route.params?.user;
+	const senderUser = {
+		name: '', // get from contacts
+		_id: currentUser?.uid,
+		avatar: currentUser?.photoURL,
+	};
+
 	const roomId = room ? room.id : randomId;
-	const roomRef = doc(ROOMS_COL, roomId);
+	const ROOM_REF = doc(ROOMS_COL, roomId);
 	const MESSAGES_COL = collection(
-		roomRef,
+		ROOM_REF,
 		'message'
 	);
-	const addRoom = async () => {
-		let roomData;
-
-		const currentUserData = {
-			displayName: currentUser?.displayName,
-			email: currentUser?.email,
-		};
-		if (currentUser?.photoURL) {
-			currentUserData.photoURL =
-				currentUser.photoURL;
-		}
-		const userBData = {
-			displayName:
-				userB?.contactName ||
-				userB.displayName ||
-				'',
-			email: userB.email,
-		};
-		if (userB?.photoURL) {
-			userBData.photoURL = userB.photoURL;
-		}
-		roomData = {
-			participants: [
-				currentUserData,
-				userBData,
-			],
-			participantsArray: [
-				currentUser?.email,
-				userB.email,
-			],
-			createdAt: new Date(),
-		};
-
-		try {
-			// Use the updateDoc function to update the document.
-			await setDoc(roomRef, roomData);
-			// Calculate and set the roomHash
-			const emailHash = `${currentUser?.email}: ${userB.email}`;
-			setRoomHash(emailHash);
-		} catch (error: any) {
-			console.error(
-				'Error checking/creating room:',
-				error.message
-			);
-		}
-	};
 
 	// This useEffect initializes the chat room if it doesn't exist
 	useEffect(() => {
-		if (!room) addRoom();
+		let currentUserData;
+		let userBData;
+		if (!room) {
+			currentUserData = {
+				userName: '', // get from
+				email: currentUser?.email,
+				photoURL: currentUser?.photoURL,
+			};
+			userBData = {
+				userName:
+					userB?.contactName || '',
+
+				email: userB.email,
+				photoURL: userB.photoURL,
+			};
+			addRoom(
+				{
+					participants: [
+						currentUserData,
+						userBData,
+					],
+					participantsArray: [
+						currentUser?.email,
+						userB.email,
+					],
+					roomId: `${currentUser?.email}${userB.email}`,
+				},
+				ROOM_REF
+			);
+		}
 	}, []);
 
 	// This useEffect listens for changes in the chat messages
@@ -134,7 +115,6 @@ export default function Chat() {
 
 		return () => unsubscribe();
 	}, []);
-
 	// This useCallback hook memoizes the appendMessages function
 	const appendMessages = useCallback(
 		(newMessages: any) =>
@@ -157,7 +137,7 @@ export default function Chat() {
 		const lastMessage =
 			messages[messages.length - 1];
 		writes.push(
-			updateDoc(roomRef, {
+			updateDoc(ROOM_REF, {
 				lastMessage,
 			})
 		);

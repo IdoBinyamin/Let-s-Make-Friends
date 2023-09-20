@@ -61,7 +61,7 @@ function ContactPriview({
 	contact: any;
 	image: any;
 }) {
-	const { unfilteredrooms } =
+	const { unfilteredRooms } =
 		useContext(ChatContext);
 	const [user, setUser] = useState(contact);
 
@@ -90,18 +90,19 @@ function ContactPriview({
 			});
 	}, [contact.item.email]);
 
-	const room = unfilteredrooms.find((room) =>
+	const room = unfilteredRooms.find((room) =>
 		room.participantsArray.includes(
 			contact.item.email
 		)
 	);
-	console.log('room: ', room);
+	// console.log('room: ', room);
+	console.log('user: ', user.item);
 
 	return (
 		<ListItem
 			style={styles.container}
 			type={'contacts'}
-			user={user}
+			user={user.item}
 			image={image}
 			room={room}
 		/>

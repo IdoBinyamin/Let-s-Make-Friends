@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	Text,
 	TouchableOpacity,
@@ -13,13 +13,14 @@ import {
 import { Avatar } from '../../../consts';
 
 interface ItemProps {
-	type?: string;
+	type: string;
 	description?: string;
-	user?: {};
+	user: {};
 	time?: any;
 	room?: {};
 	image?: string;
 	style?: ViewStyle;
+	key?: string;
 }
 
 export const ListItem: React.FC<ItemProps> = ({
@@ -47,7 +48,7 @@ export const ListItem: React.FC<ItemProps> = ({
 		>
 			<Col style={styles.avatarHolder}>
 				<Avatar
-					url={user?.item.photoURL}
+					url={user?.photoURL}
 					size={
 						type === 'contacts'
 							? 40
@@ -68,8 +69,7 @@ export const ListItem: React.FC<ItemProps> = ({
 							}
 						>
 							{user?.name ||
-								user?.item
-									.contactName}
+								user?.contactName}
 						</Text>
 					</Col>
 					{time && (

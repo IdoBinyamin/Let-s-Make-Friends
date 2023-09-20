@@ -2,8 +2,9 @@ import { getDocs } from 'firebase/firestore';
 import React, {
 	useContext,
 	useEffect,
+	useState,
 } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import {
 	FIREBASE_AUTH,
 	ROOMS_COL,
@@ -14,10 +15,9 @@ import { ListItem } from '../../commponents/Generic';
 import useContacts from '../../hooks/useHooks';
 export const Chat = () => {
 	const { currentUser } = FIREBASE_AUTH;
+	const [rooms, setRooms] = useState([]);
 	const {
-		rooms,
-		setRooms,
-		unfilteredrooms,
+		unfilteredRooms,
 		setUnfilteredRooms,
 	} = useContext(ChatContext);
 	const contacts = useContacts();
@@ -35,44 +35,33 @@ export const Chat = () => {
 					error
 				);
 			}
-			return console.log(
-				'roomsCol: ',
-				chatSnapshot
-			);
-			if (chatSnapshot) {
-				const parsedChat =
-					chatSnapshot.docs.map(
-						(doc) => {
-							const participants =
-								doc.data()
-									.participants;
-							console.log(
-								'participants: ',
-								participants
-							);
-							const userB =
-								participants.find(
-									(person) =>
-										person.email ===
-										currentUser?.email
-								);
+			const parsedChat =
+				chatSnapshot?.docs.map((doc) => {
+					const participants =
+						doc.data().participants;
+					const participantsArray =
+						doc.data()
+							.participantsArray;
+					const userB =
+						participants.filter(
+							(person) =>
+								person.email !==
+								currentUser?.email
+						);
 
-							return {
-								...doc.data(),
-								id: doc.id,
-								userB,
-							};
-						}
-					);
-				setRooms(
-					parsedChat.filter(
-						(doc) => doc.lastMessage
-					)
-				);
-				setUnfilteredRooms(parsedChat);
-			}
+					return {
+						...doc.data(),
+						id: doc.id,
+						userB,
+						participants,
+						participantsArray,
+					};
+				});
+			console.log('?', parsedChat); //TODO: find the way to get all the messages in an array to handle them after
+			// console.log('!', parsedChat[0]);
+
+			setUnfilteredRooms(parsedChat);
 		};
-
 		fetchChatRooms();
 	}, []);
 
@@ -86,8 +75,8 @@ export const Chat = () => {
 		) {
 			return {
 				...user,
-				// contactName:
-				// 	userContact?.contactName,
+				contactName:
+					userContact?.contactName,
 			};
 		}
 		return user;
@@ -101,14 +90,17 @@ export const Chat = () => {
 				paddingRight: 10,
 			}}
 		>
-			{unfilteredrooms.map((room) => (
+			{unfilteredRooms.map((room) => (
 				<ListItem
-					type={'chat'}
-					description={room.lastMessage}
 					key={room.id}
-					time={
-						room.lastMessage.createdAt
+					type={'chat'}
+					description={
+						room?.lastMessage
+							? room?.lastMessage
+									.text
+							: room?.userB.email
 					}
+					time={room.lastMessage.createdAt.toLocaleString()}
 					user={getUserB(
 						room.userB,
 						contacts

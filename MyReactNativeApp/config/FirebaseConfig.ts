@@ -10,6 +10,7 @@ import {
 	collection,
 	getFirestore,
 	addDoc,
+	setDoc,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -93,3 +94,24 @@ export function addUserInfo(
 		alert('Welcome!');
 	});
 }
+
+type RoomProps = {
+	participants: any[];
+	participantsArray: string[];
+	roomId: string;
+};
+
+export const addRoom = async (
+	roomProps: RoomProps,
+	ROOM_REF: any
+) => {
+	try {
+		// Use the updateDoc function to update the document.
+		await setDoc(ROOM_REF, roomProps);
+	} catch (error: any) {
+		console.error(
+			'Error checking/creating room:',
+			error.message
+		);
+	}
+};
