@@ -26,6 +26,7 @@ import {
 	onSnapshot,
 	setDoc,
 	updateDoc,
+
 } from 'firebase/firestore';
 import { GiftedChat } from 'react-native-gifted-chat';
 
@@ -45,6 +46,7 @@ export default function Chat() {
 		avatar: currentUser?.photoURL,
 	};
 
+
 	const roomId = room ? room.id : randomId;
 	const ROOM_REF = doc(ROOMS_COL, roomId);
 	const MESSAGES_COL = collection(
@@ -54,6 +56,7 @@ export default function Chat() {
 
 	// This useEffect initializes the chat room if it doesn't exist
 	useEffect(() => {
+
 		let currentUserData;
 		let userBData;
 		if (!room) {
