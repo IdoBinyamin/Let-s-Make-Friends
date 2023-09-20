@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
-	getAuth,
 	getReactNativePersistence,
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
@@ -9,18 +8,17 @@ import {
 } from 'firebase/auth';
 import {
 	collection,
-	getDocs,
 	getFirestore,
 	addDoc,
+	setDoc,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface AuthProps {
+type AuthProps = {
 	email: string;
 	password: string;
-}
+};
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyD49SzibpIW2y_21ySSYdfg_6bpE-qxU9k',
@@ -52,6 +50,15 @@ export const FIREBASE_DB =
 export const FIREBASE_STORAGE =
 	getStorage(FIREBASE_APP);
 
+export const USERS_COL = collection(
+	FIREBASE_DB,
+	'users'
+);
+export const ROOMS_COL = collection(
+	FIREBASE_DB,
+	'rooms'
+);
+
 export function signin({
 	email,
 	password,
@@ -73,36 +80,38 @@ export function signup({
 	);
 }
 
-export function addUserInfo(userInfo: {}) {
-	const collectionName = 'users';
-	const colRef = collection(
-		FIREBASE_DB,
-		`${collectionName}`
-	);
-	addDoc(colRef, userInfo).then(() => {
-		alert('You ar all set!');
+type UserInfoProps = {
+	name: string;
+	email: string;
+	photoURL: string;
+	permissionStatus: string;
+};
+
+export function addUserInfo(
+	userInfo: UserInfoProps
+) {
+	addDoc(USERS_COL, userInfo).then(() => {
+		alert('Welcome!');
 	});
 }
-export function getUserInfo(userInfo: {}) {
-	const collectionName = 'users';
-	const colRef = collection(
-		FIREBASE_DB,
-		`${collectionName}`
-	);
-	getDocs(colRef)
-		.then((snapshot) => {
-			let loggedUser = snapshot.docs.filter(
-				(doc) => {
-					return (
-						userInfo.id === doc.uid
-					);
-				}
-			);
-			console.log('We got the user');
-			return loggedUser;
-		})
-		.catch((e) => {
-			console.log(e);
-		});
-	return;
-}
+
+type RoomProps = {
+	participants: any[];
+	participantsArray: string[];
+	roomId: string;
+};
+
+export const addRoom = async (
+	roomProps: RoomProps,
+	ROOM_REF: any
+) => {
+	try {
+		// Use the updateDoc function to update the document.
+		await setDoc(ROOM_REF, roomProps);
+	} catch (error: any) {
+		console.error(
+			'Error checking/creating room:',
+			error.message
+		);
+	}
+};

@@ -1,17 +1,13 @@
-import {
-	collection,
-	getDocs,
-	query,
-	where,
-} from 'firebase/firestore';
+import { getDocs } from 'firebase/firestore';
 import React, {
 	useContext,
 	useEffect,
+	useState,
 } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import {
 	FIREBASE_AUTH,
-	FIREBASE_DB,
+	ROOMS_COL,
 } from '../../../config/FirebaseConfig';
 import { ChatContext } from '../../../context/ChatContext';
 import ContacsFloatingIcon from '../../commponents/ContacsFloatingIcon';
@@ -19,76 +15,59 @@ import { ListItem } from '../../commponents/Generic';
 import useContacts from '../../hooks/useHooks';
 export const Chat = () => {
 	const { currentUser } = FIREBASE_AUTH;
-	const { rooms, setRooms } =
-		useContext(ChatContext);
+	const [rooms, setRooms] = useState([]);
+	const {
+		unfilteredRooms,
+		setUnfilteredRooms,
+	} = useContext(ChatContext);
 	const contacts = useContacts();
-	const chatQuery = query(
-		collection(FIREBASE_DB, 'rooms'),
-		where(
-			'participansArray',
-			'array-contains',
-			currentUser?.email
-		)
-	);
 
 	useEffect(() => {
 		const fetchChatRooms = async () => {
+			let chatSnapshot;
 			try {
-				// Check if a user is authenticated before fetching data
-				const currentUser =
-					FIREBASE_AUTH.currentUser;
-				if (!currentUser) {
-					return; // You can choose to handle this case differently (e.g., redirect to login)
-				}
-
-				const chatSnapshot =
-					await getDocs(
-						collection(
-							FIREBASE_DB,
-							'chatCollection'
-						)
-					);
-
-				const parsedChat =
-					chatSnapshot.docs
-						.filter(
-							(doc) =>
-								doc.data()
-									.lastMessage
-						)
-						.map((doc) => {
-							const participants =
-								doc.data()
-									.participants;
-							const userB =
-								participants.find(
-									(person) =>
-										person.email !==
-										currentUser.email
-								);
-
-							return {
-								...doc.data(),
-								id: doc.id,
-								userB,
-							};
-						});
-
-				setRooms(parsedChat);
+				chatSnapshot = await getDocs(
+					ROOMS_COL
+				);
 			} catch (error) {
 				console.error(
 					'Error fetching chat rooms:',
 					error
 				);
 			}
-		};
+			const parsedChat =
+				chatSnapshot?.docs.map((doc) => {
+					const participants =
+						doc.data().participants;
+					const participantsArray =
+						doc.data()
+							.participantsArray;
+					const userB =
+						participants.filter(
+							(person) =>
+								person.email !==
+								currentUser?.email
+						);
 
+					return {
+						...doc.data(),
+						id: doc.id,
+						userB,
+						participants,
+						participantsArray,
+					};
+				});
+			console.log('?', parsedChat); //TODO: find the way to get all the messages in an array to handle them after
+			// console.log('!', parsedChat[0]);
+
+			setUnfilteredRooms(parsedChat);
+		};
 		fetchChatRooms();
 	}, []);
 
 	function getUserB(user: any, contacts: any) {
 		const userContact = contacts.find(
-			(c) => c.email === user.email
+			(c: any) => c.email === user.email
 		);
 		if (
 			userContact &&
@@ -97,7 +76,7 @@ export const Chat = () => {
 			return {
 				...user,
 				contactName:
-					userContact.contactName,
+					userContact?.contactName,
 			};
 		}
 		return user;
@@ -111,16 +90,17 @@ export const Chat = () => {
 				paddingRight: 10,
 			}}
 		>
-			{rooms.map((room) => (
+			{unfilteredRooms.map((room) => (
 				<ListItem
+					key={room.id}
 					type={'chat'}
 					description={
-						room.lastMessage.text
+						room?.lastMessage
+							? room?.lastMessage
+									.text
+							: room?.userB.email
 					}
-					key={room.id}
-					time={
-						room.lastMessage.createdAt
-					}
+					time={room.lastMessage.createdAt.toLocaleString()}
 					user={getUserB(
 						room.userB,
 						contacts

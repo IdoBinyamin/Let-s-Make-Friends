@@ -5,12 +5,14 @@ import { useRoute } from '@react-navigation/native';
 
 export const ChatHeader = ({}) => {
 	const rout = useRoute();
+	const user = rout.params?.user;
+
 	return (
 		<View style={{ flexDirection: 'row' }}>
 			<View>
 				<Avatar
 					size={40}
-					user={rout.params?.user}
+					url={user.photoURL}
 				/>
 			</View>
 			<View
@@ -26,10 +28,8 @@ export const ChatHeader = ({}) => {
 						fontSize: 18,
 					}}
 				>
-					{rout.params?.user.item
-						.contactName ||
-						rout.params?.user.item
-							.displayName}
+					{user.contactName ||
+						user.userName}
 				</Text>
 			</View>
 		</View>

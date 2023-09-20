@@ -29,12 +29,11 @@ export const Authetication = ({}: any) => {
 	const [mode, setMode] = useState('SignUp');
 	const [selectedImage, setSelectedImage] =
 		useState<string>('');
-	const [displayName, setDisplayName] =
-		useState('');
+	const [userName, setUserName] = useState('');
 	const [
 		permissionStatus,
 		setPermissionStatus,
-	] = useState<any>(null);
+	] = useState<string>('');
 
 	useEffect(() => {
 		(async () => {
@@ -52,12 +51,12 @@ export const Authetication = ({}: any) => {
 			try {
 				await signup({ email, password });
 				addUserInfo({
-					name: displayName,
-					email,
-					profilePicture: selectedImage,
+					name: userName,
+					email: email.toLowerCase(),
+					photoURL: selectedImage,
 					permissionStatus,
 				});
-			} catch (error: any) {
+			} catch (error: Error) {
 				console.log(error.message);
 				if (
 					error.message ===
@@ -71,9 +70,8 @@ export const Authetication = ({}: any) => {
 		}
 		if (mode === 'Signin') {
 			try {
-				// console.log('sigin');
 				await signin({ email, password });
-			} catch (error: any) {
+			} catch (error: Error) {
 				console.log(error.message);
 				if (
 					error.message ===
@@ -91,9 +89,11 @@ export const Authetication = ({}: any) => {
 		try {
 			const result = await pickImage();
 			if (!result.canceled) {
-				setSelectedImage(result.uri);
+				setSelectedImage(
+					result.assets[0].uri
+				);
 			}
-		} catch (error: any) {
+		} catch (error: Error) {
 			console.log(error);
 		}
 
@@ -181,10 +181,8 @@ export const Authetication = ({}: any) => {
 					</TouchableOpacity>
 					<TextInput
 						placeholder="Type your name"
-						value={displayName}
-						onChangeText={
-							setDisplayName
-						}
+						value={userName}
+						onChangeText={setUserName}
 						keyboardType="default"
 						style={{
 							borderBottomWidth: 2,
@@ -224,7 +222,12 @@ export const Authetication = ({}: any) => {
 					<Button
 						color={'green'}
 						disabled={
-							!password || !email
+							mode === 'SignUp'
+								? !password ||
+								  !email ||
+								  !selectedImage
+								: !password ||
+								  !email
 						}
 						title={
 							mode === 'SignUp'

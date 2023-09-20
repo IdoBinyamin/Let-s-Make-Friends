@@ -3,12 +3,10 @@ import React from 'react';
 
 type AvatarProps = {
 	size: number;
-	user: any;
+	url: string;
 };
 
-const Avatar = ({ size, user }: AvatarProps) => {
-	// console.log(user);
-
+const Avatar = ({ size, url }: AvatarProps) => {
 	return (
 		<Image
 			style={{
@@ -17,11 +15,11 @@ const Avatar = ({ size, user }: AvatarProps) => {
 				borderRadius: size,
 			}}
 			source={
-				user.item.photoURL
-					? { uri: user.item.photoURL }
+				url
+					? { uri: url }
 					: require('../../../assets/user-icon.png')
 			}
-			resizeMode={'cover'}
+			resizeMode={'stretch'}
 		/>
 	);
 };
