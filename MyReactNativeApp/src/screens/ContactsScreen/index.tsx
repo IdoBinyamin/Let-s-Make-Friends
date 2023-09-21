@@ -8,7 +8,7 @@ import React, {
 	useState,
 } from 'react';
 import useContacts from '../../hooks/useHooks';
-import { ChatContext } from '../../../context/ChatContext';
+import { ChatContext } from '../../../context';
 import {
 	getDocs,
 	query,
@@ -59,7 +59,7 @@ function ContactPriview({
 	image,
 }: {
 	contact: any;
-	image: any;
+	image: string;
 }) {
 	const { unfilteredRooms } =
 		useContext(ChatContext);

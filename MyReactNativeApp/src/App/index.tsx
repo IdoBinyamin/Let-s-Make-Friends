@@ -11,7 +11,7 @@ import {
 	User,
 	onAuthStateChanged,
 } from 'firebase/auth';
-import { ChatProvider } from '../../context/ChatContext';
+import { ChatProvider } from '../../context/ChatCtx';
 
 LogBox.ignoreLogs([
 	'Setting a timer',

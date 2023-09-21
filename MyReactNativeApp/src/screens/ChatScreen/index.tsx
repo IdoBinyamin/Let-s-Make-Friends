@@ -9,7 +9,7 @@ import {
 	FIREBASE_AUTH,
 	ROOMS_COL,
 } from '../../../config/FirebaseConfig';
-import { ChatContext } from '../../../context/ChatContext';
+import { ChatContext } from '../../../context';
 import ContacsFloatingIcon from '../../commponents/ContacsFloatingIcon';
 import { ListItem } from '../../commponents/Generic';
 import useContacts from '../../hooks/useHooks';
@@ -63,6 +63,7 @@ export const Chat = () => {
 			setUnfilteredRooms(parsedChat);
 		};
 		fetchChatRooms();
+		// console.log('chats: ', chatsRooms);
 	}, []);
 
 	function getUserB(user: any, contacts: any) {
@@ -100,7 +101,9 @@ export const Chat = () => {
 									.text
 							: room?.userB.email
 					}
-					time={room.lastMessage.createdAt.toLocaleString()}
+					time={
+						room.lastMessage.createdAt
+					}
 					user={getUserB(
 						room.userB,
 						contacts

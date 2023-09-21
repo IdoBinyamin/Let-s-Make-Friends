@@ -2,9 +2,7 @@
 import {
 	Image,
 	ImageBackground,
-	StyleSheet,
 	Text,
-	View,
 } from 'react-native';
 import React, {
 	useCallback,
@@ -24,28 +22,26 @@ import {
 	collection,
 	doc,
 	onSnapshot,
-	setDoc,
 	updateDoc,
-
 } from 'firebase/firestore';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 const randomId = nanoid();
 
 export default function Chat() {
-	const [roomHash, setRoomHash] = useState('');
+	// const [roomHash, setRoomHash] = useState('');
 	const [messages, setMessages] = useState([]);
 	const { currentUser } = FIREBASE_AUTH;
 	const route = useRoute();
-	const room = route.params?.room; //room when choose conversasion
-	const selectedImage = route.params?.image;
-	const userB = route.params?.user;
-	const senderUser = {
-		name: '', // get from contacts
-		_id: currentUser?.uid,
-		avatar: currentUser?.photoURL,
-	};
-
+	let room = route.params && route.params?.room; //room when choose conversasion
+	// const selectedImage = route.params?.image;
+	const userB =
+		route.params && route.params?.user;
+	// const senderUser = {
+	// 	name: '', // get from contacts
+	// 	_id: currentUser?.uid,
+	// 	avatar: currentUser?.photoURL,
+	// };
 
 	const roomId = room ? room.id : randomId;
 	const ROOM_REF = doc(ROOMS_COL, roomId);
@@ -56,9 +52,10 @@ export default function Chat() {
 
 	// This useEffect initializes the chat room if it doesn't exist
 	useEffect(() => {
-
 		let currentUserData;
 		let userBData;
+		// console.log('room: ', room);
+
 		if (!room) {
 			currentUserData = {
 				userName: '', // get from
@@ -72,6 +69,7 @@ export default function Chat() {
 				email: userB.email,
 				photoURL: userB.photoURL,
 			};
+
 			addRoom(
 				{
 					participants: [

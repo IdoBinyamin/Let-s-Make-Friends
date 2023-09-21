@@ -1,7 +1,13 @@
 import { Home } from './HomeScreen/index';
 import { Profile } from './ProfileScreen';
 import { Chat } from './ChatScreen';
-import { Camera } from './CameraScreen';
 import { Contacts } from './ContactsScreen';
+import { ChatHeader } from './ChatHeader';
 
-export { Home, Profile, Chat, Camera, Contacts };
+export {
+	Home,
+	Profile,
+	Chat,
+	Contacts,
+	ChatHeader,
+};

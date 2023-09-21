@@ -8,7 +8,7 @@ import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
 import { Entypo } from '@expo/vector-icons';
 import { Contacts } from '../screens/index';
 import Chat from '../commponents/Chat';
-import { ChatHeader } from '../screens/ChatHeader';
+import { ChatHeader } from '../screens/index';
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = ({
