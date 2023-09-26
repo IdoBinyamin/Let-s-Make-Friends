@@ -27,9 +27,9 @@ export const Authetication = ({}: any) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [mode, setMode] = useState('Signin');
-	const [selectedImage, setSelectedImage] =
+	const [photoURL, setPhotoURL] =
 		useState<string>('');
-	const [userName, setUserName] = useState('');
+	const [name, setName] = useState('');
 	const [
 		permissionStatus,
 		setPermissionStatus,
@@ -52,13 +52,13 @@ export const Authetication = ({}: any) => {
 				await signup({
 					email,
 					password,
-					userName,
-					selectedImage,
+					name,
+					photoURL,
 				});
 				addUserInfo({
-					name: userName,
+					name: name,
 					email: email.toLowerCase(),
-					photoURL: selectedImage,
+					photoURL: photoURL,
 					permissionStatus,
 				});
 			} catch (error: Error) {
@@ -94,9 +94,7 @@ export const Authetication = ({}: any) => {
 		try {
 			const result = await pickImage();
 			if (!result.canceled) {
-				setSelectedImage(
-					result.assets[0].uri
-				);
+				setPhotoURL(result.assets[0].uri);
 			}
 		} catch (error: Error) {
 			console.log(error);
@@ -165,7 +163,7 @@ export const Authetication = ({}: any) => {
 							alignItems: 'center',
 						}}
 					>
-						{!selectedImage ? (
+						{!photoURL ? (
 							<Entypo
 								size={45}
 								color={'white'}
@@ -174,7 +172,7 @@ export const Authetication = ({}: any) => {
 						) : (
 							<Image
 								source={{
-									uri: selectedImage,
+									uri: photoURL,
 								}}
 								style={{
 									height: '100%',
@@ -186,8 +184,8 @@ export const Authetication = ({}: any) => {
 					</TouchableOpacity>
 					<TextInput
 						placeholder="Type your name"
-						value={userName}
-						onChangeText={setUserName}
+						value={name}
+						onChangeText={setName}
 						keyboardType="default"
 						style={{
 							borderBottomWidth: 2,
@@ -231,7 +229,7 @@ export const Authetication = ({}: any) => {
 							mode === 'SignUp'
 								? !password ||
 								  !email ||
-								  !selectedImage
+								  !photoURL
 								: !password ||
 								  !email
 						}

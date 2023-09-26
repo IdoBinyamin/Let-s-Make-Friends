@@ -79,7 +79,7 @@ export const ROOMS_COL = collection(
 	'rooms'
 );
 
-export function signin({
+export async function signin({
 	email,
 	password,
 }: AuthProps) {
@@ -89,7 +89,7 @@ export function signin({
 		password
 	);
 }
-export function signup({
+export async function signup({
 	email,
 	password,
 	name,
@@ -101,7 +101,6 @@ export function signup({
 		password
 	)
 		.then((userCredential) => {
-			// Registered
 			const user = userCredential.user;
 			updateProfile(user, {
 				displayName: name,
@@ -118,7 +117,7 @@ export function signup({
 		});
 }
 
-export function addUserInfo(
+export async function addUserInfo(
 	userInfo: UserInfoProps
 ) {
 	addDoc(USERS_COL, userInfo).then(() => {

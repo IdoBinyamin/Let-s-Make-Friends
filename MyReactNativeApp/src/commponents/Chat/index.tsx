@@ -48,7 +48,9 @@ export default function Chat() {
 		ROOM_REF,
 		'chats'
 	);
-
+	useEffect(() => {
+		console.log('user from db', currentUser);
+	}, []);
 	// useEffect(() => {
 	// 	if (!room) {
 	// 		// console.log('i got the room', room);
