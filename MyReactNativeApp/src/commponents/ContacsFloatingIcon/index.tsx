@@ -1,5 +1,5 @@
 import { TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -24,8 +24,8 @@ export default function ContacsFloatingIcon() {
 				justifyContent: 'center',
 			}}
 		>
-			<MaterialCommunityIcons
-				name="android-messages"
+			<Entypo
+				name="chat"
 				size={30}
 				color={'white'}
 				style={{

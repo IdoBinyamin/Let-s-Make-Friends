@@ -3,9 +3,9 @@ import { InsideLayout } from './NavBarNavigator/index';
 import { Authetication } from '../commponents/authentication/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserModel } from '../models';
-import { Button } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
-import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { Contacts } from '../screens/index';
 import Chat from '../commponents/Chat';
 import { ChatHeader } from '../screens/index';
@@ -28,21 +28,27 @@ export const MainNavigator = ({
 							headerTitle: '',
 							headerRight: () => {
 								return (
-									<>
-										<Entypo
-											name="retweet"
+									<TouchableOpacity
+										style={{
+											marginRight: 10,
+										}}
+										onPress={
+											doLogout
+										}
+									>
+										<AntDesign
+											name="logout"
 											size={
-												20
+												24
 											}
-											color="blue"
-										/>
-										<Button
-											title="logout"
-											onPress={
-												doLogout
+											color={
+												'gray'
 											}
+											style={{
+												marginRight: 10,
+											}}
 										/>
-									</>
+									</TouchableOpacity>
 								);
 							},
 						}}
@@ -57,15 +63,6 @@ export const MainNavigator = ({
 					<Stack.Screen
 						name="chat"
 						component={Chat}
-						options={{
-							headerTitle: (
-								props
-							) => (
-								<ChatHeader
-									{...props}
-								/>
-							),
-						}}
 					/>
 				</>
 			) : (

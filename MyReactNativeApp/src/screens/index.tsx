@@ -1,13 +1,15 @@
-import { Home } from './HomeScreen/index';
+import { Feed } from './HomeScreen/index';
 import { Profile } from './ProfileScreen';
 import { Chat } from './ChatScreen';
 import { Contacts } from './ContactsScreen';
-import { ChatHeader } from './ChatHeader';
+import { Upload } from './UploadScreen';
+import { Board } from './BoardScreen';
 
 export {
-	Home,
+	Feed,
 	Profile,
 	Chat,
 	Contacts,
-	ChatHeader,
+	Upload,
+	Board,
 };

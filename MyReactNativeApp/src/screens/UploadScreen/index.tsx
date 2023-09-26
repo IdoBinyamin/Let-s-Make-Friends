@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export const Feed = () => {
+// export interface IAppProps {}
+
+export function Upload() {
 	return (
 		<View>
-			<Text>Home sweet home</Text>
+			<Text>Upload</Text>
 		</View>
 	);
-};
+}

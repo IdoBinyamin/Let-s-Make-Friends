@@ -26,7 +26,7 @@ import { Entypo } from '@expo/vector-icons';
 export const Authetication = ({}: any) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [mode, setMode] = useState('SignUp');
+	const [mode, setMode] = useState('Signin');
 	const [selectedImage, setSelectedImage] =
 		useState<string>('');
 	const [userName, setUserName] = useState('');
@@ -49,7 +49,12 @@ export const Authetication = ({}: any) => {
 	const handleAuthentication = async () => {
 		if (mode === 'SignUp') {
 			try {
-				await signup({ email, password });
+				await signup({
+					email,
+					password,
+					userName,
+					selectedImage,
+				});
 				addUserInfo({
 					name: userName,
 					email: email.toLowerCase(),
@@ -189,6 +194,7 @@ export const Authetication = ({}: any) => {
 							borderBottomColor:
 								'blue',
 							width: 200,
+							marginRight: 10,
 						}}
 					/>
 				</>
@@ -239,16 +245,41 @@ export const Authetication = ({}: any) => {
 						}
 					/>
 				</View>
-				<TouchableOpacity
-					style={{ marginTop: 15 }}
-					onPress={modeHandler}
+				<View
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'center',
+						alignContent: 'center',
+					}}
 				>
-					<Text>
+					<Text
+						style={{
+							color: 'gray',
+							fontWeight: '600',
+							fontSize: 14,
+						}}
+					>
 						{mode === 'SignUp'
-							? 'Already have an acount? Sign in'
-							: 'Dont have an acount? Sign Up'}
+							? 'Already have an acount? '
+							: 'Dont have an acount? '}
 					</Text>
-				</TouchableOpacity>
+					<TouchableOpacity
+						// style={{ marginTop: 15 }}
+						onPress={modeHandler}
+					>
+						<Text
+							style={{
+								color: '#f57c00',
+								fontWeight: '600',
+								fontSize: 14,
+							}}
+						>
+							{mode === 'SignUp'
+								? 'Signin '
+								: 'Sign-up'}
+						</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		</KeyboardAvoidingView>
 	);

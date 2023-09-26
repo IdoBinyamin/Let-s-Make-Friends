@@ -1,17 +1,17 @@
 //@refresh reset
-import {
-	Image,
-	ImageBackground,
-	Text,
-} from 'react-native';
+
 import React, {
 	useCallback,
 	useEffect,
+	useLayoutEffect,
 	useState,
 } from 'react';
 import 'react-native-get-random-values';
 import { nanoid } from 'nanoid';
-import { useRoute } from '@react-navigation/native';
+import {
+	useNavigation,
+	useRoute,
+} from '@react-navigation/native';
 import {
 	FIREBASE_AUTH,
 	ROOMS_COL,
@@ -22,150 +22,157 @@ import {
 	collection,
 	doc,
 	onSnapshot,
-	updateDoc,
+	orderBy,
+	query,
 } from 'firebase/firestore';
 import { GiftedChat } from 'react-native-gifted-chat';
+import { Text, View } from 'react-native';
+import { Avatar } from '../../consts';
 
 const randomId = nanoid();
 
 export default function Chat() {
 	// const [roomHash, setRoomHash] = useState('');
 	const [messages, setMessages] = useState([]);
+	const navigation = useNavigation();
 	const { currentUser } = FIREBASE_AUTH;
 	const route = useRoute();
 	let room = route.params && route.params?.room; //room when choose conversasion
 	// const selectedImage = route.params?.image;
 	const userB =
 		route.params && route.params?.user;
-	// const senderUser = {
-	// 	name: '', // get from contacts
-	// 	_id: currentUser?.uid,
-	// 	avatar: currentUser?.photoURL,
-	// };
 
 	const roomId = room ? room.id : randomId;
 	const ROOM_REF = doc(ROOMS_COL, roomId);
-	const MESSAGES_COL = collection(
+	const CHATS_COL = collection(
 		ROOM_REF,
-		'message'
+		'chats'
 	);
 
-	// This useEffect initializes the chat room if it doesn't exist
-	useEffect(() => {
-		let currentUserData;
-		let userBData;
-		// console.log('room: ', room);
+	// useEffect(() => {
+	// 	if (!room) {
+	// 		// console.log('i got the room', room);
+	// 		addRoom(
+	// 			{
+	// 				participants: [
+	// 					currentUser,
+	// 					userB,
+	// 				],
+	// 				participantsArray: [
+	// 					`${currentUser?.email}`,
+	// 					` ${userB.email}`,
+	// 				],
+	// 				roomId,
+	// 			},
+	// 			ROOM_REF
+	// 		);
+	// 	}
+	// }, []);
 
-		if (!room) {
-			currentUserData = {
-				userName: '', // get from
-				email: currentUser?.email,
-				photoURL: currentUser?.photoURL,
-			};
-			userBData = {
-				userName:
-					userB?.contactName || '',
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerShowen: false,
+			headerRight: () => (
+				<View
+					style={{
+						flexDirection: 'row',
+					}}
+				>
+					<View
+						style={{
+							justifyContent:
+								'center',
+							alignContent:
+								'center',
+							marginRight: 15,
+						}}
+					>
+						<Text
+							style={{
+								color: 'gray', //get from colors
+								fontSize: 18,
+							}}
+						>
+							{userB?.contactName ||
+								userB?.userName}
+						</Text>
+					</View>
+					<Avatar
+						size={40}
+						url={userB.photoURL}
+					/>
+				</View>
+			),
+		});
+	}, [navigation]);
+	useLayoutEffect(() => {
+		const q = query(
+			CHATS_COL,
+			orderBy('createdAt', 'desc')
+		);
 
-				email: userB.email,
-				photoURL: userB.photoURL,
-			};
-
-			addRoom(
-				{
-					participants: [
-						currentUserData,
-						userBData,
-					],
-					participantsArray: [
-						currentUser?.email,
-						userB.email,
-					],
-					roomId: `${currentUser?.email}${userB.email}`,
-				},
-				ROOM_REF
-			);
-		}
-	}, []);
-
-	// This useEffect listens for changes in the chat messages
-	useEffect(() => {
 		const unsubscribe = onSnapshot(
-			MESSAGES_COL,
+			q,
 			(querySnapshot) => {
-				// Retrieve and process new messages
-				const newMessages = querySnapshot
-					.docChanges()
-					.filter(
-						({ type }) =>
-							type === 'added'
+				// console.log(
+				// 	'querySnapshot unsusbscribe'
+				// );
+				setMessages(
+					querySnapshot.docs.map(
+						(doc) => ({
+							_id: doc.data()._id,
+							createdAt: doc
+								.data()
+								.createdAt.toDate(),
+							text: doc.data().text,
+							user: doc.data().user,
+						})
 					)
-					.map((change) => {
-						const message =
-							change.doc.data();
-						return {
-							...message,
-							createdAt:
-								message.createdAt.toDate(),
-						};
-					});
-
-				// Append the new messages to the chat
-				appendMessages(newMessages);
+				);
 			}
 		);
-
-		return () => unsubscribe();
+		return unsubscribe;
 	}, []);
-	// This useCallback hook memoizes the appendMessages function
-	const appendMessages = useCallback(
-		(newMessages: any) =>
-			setMessages((prevMessages) => {
-				// Append the new messages to the chat
-				return GiftedChat.append(
-					prevMessages,
-					newMessages
-				);
-			}),
-		[messages]
+
+	const onSend = useCallback(
+		(messages = []) => {
+			setMessages((previousMessages) =>
+				GiftedChat.append(
+					previousMessages,
+					messages
+				)
+			);
+			const { _id, createdAt, text, user } =
+				messages[0];
+			addDoc(CHATS_COL, {
+				_id,
+				createdAt,
+				text,
+				user,
+			});
+		},
+		[]
 	);
 
-	// This async function handles sending new messages
-	async function onSendHandler(messages: []) {
-		const writes = messages.map((message) =>
-			addDoc(MESSAGES_COL, message)
-		);
-
-		const lastMessage =
-			messages[messages.length - 1];
-		writes.push(
-			updateDoc(ROOM_REF, {
-				lastMessage,
-			})
-		);
-
-		try {
-			await Promise.all(writes);
-		} catch (error: any) {
-			console.log(error.message);
-		}
-	}
-
 	return (
-		<ImageBackground
-			resizeMethod={'auto'}
-			source={require('../../../assets/chatbg.png')}
-			style={{ flex: 1 }}
-		>
-			{/* GiftedChat component for displaying and sending messages */}
-			<GiftedChat
-				onSend={onSendHandler}
-				messages={messages}
-				user={{
-					_id: `${currentUser?.uid}`,
-				}}
-				renderAvatar={null}
-			/>
-			<Text></Text>
-		</ImageBackground>
+		<GiftedChat
+			messages={messages}
+			showAvatarForEveryMessage={true}
+			showUserAvatar={false}
+			onSend={(messages) =>
+				onSend(messages)
+			}
+			messagesContainerStyle={{
+				backgroundColor: '#fff',
+			}}
+			textInputStyle={{
+				backgroundColor: '#fff',
+				borderRadius: 20,
+			}}
+			user={{
+				_id: currentUser?.email,
+				avatar: currentUser?.photoURL,
+			}}
+		/>
 	);
 }

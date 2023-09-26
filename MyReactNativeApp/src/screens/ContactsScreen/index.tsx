@@ -64,7 +64,7 @@ function ContactPriview({
 	const { unfilteredRooms } =
 		useContext(ChatContext);
 	const [user, setUser] = useState(contact);
-
+	const { currentUser } = FIREBASE_AUTH;
 	useEffect(() => {
 		const q = query(
 			USERS_COL,

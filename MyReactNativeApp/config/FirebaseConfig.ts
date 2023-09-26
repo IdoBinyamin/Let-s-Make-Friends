@@ -5,6 +5,7 @@ import {
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
 	initializeAuth,
+	updateProfile,
 } from 'firebase/auth';
 import {
 	collection,
@@ -18,6 +19,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type AuthProps = {
 	email: string;
 	password: string;
+};
+type SignUpProps = {
+	email: string;
+	password: string;
+	name: string;
+	photoURL: string;
+};
+
+type UserInfoProps = {
+	name: string;
+	email: string;
+	photoURL: string;
+	permissionStatus: string;
+};
+
+type RoomProps = {
+	participants: any[];
+	participantsArray: string[];
+	roomId: string;
 };
 
 const firebaseConfig = {
@@ -72,20 +92,31 @@ export function signin({
 export function signup({
 	email,
 	password,
-}: AuthProps) {
+	name,
+	photoURL,
+}: SignUpProps) {
 	return createUserWithEmailAndPassword(
 		FIREBASE_AUTH,
 		email,
 		password
-	);
+	)
+		.then((userCredential) => {
+			// Registered
+			const user = userCredential.user;
+			updateProfile(user, {
+				displayName: name,
+				photoURL: photoURL
+					? photoURL
+					: 'https://gravatar.com/avatar/94d45dbdba988afacf30d916e7aaad69?s=200&d=mp&r=x',
+			}).catch((error) => {
+				alert(error.message);
+			});
+		})
+		.catch((error) => {
+			const errorMessage = error.message;
+			alert(errorMessage);
+		});
 }
-
-type UserInfoProps = {
-	name: string;
-	email: string;
-	photoURL: string;
-	permissionStatus: string;
-};
 
 export function addUserInfo(
 	userInfo: UserInfoProps
@@ -94,12 +125,6 @@ export function addUserInfo(
 		alert('Welcome!');
 	});
 }
-
-type RoomProps = {
-	participants: any[];
-	participantsArray: string[];
-	roomId: string;
-};
 
 export const addRoom = async (
 	roomProps: RoomProps,

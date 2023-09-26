@@ -1,11 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {
-	Home,
+	Feed,
 	Profile,
 	Chat,
+	Upload,
+	Board,
 } from '../../screens';
-import { Entypo } from '@expo/vector-icons';
+import {
+	Entypo,
+	MaterialCommunityIcons,
+	Octicons,
+	FontAwesome5,
+} from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,27 +20,13 @@ export const InsideLayout = () => {
 	return (
 		<Tab.Navigator>
 			<Tab.Screen
-				name="Home"
-				component={Home}
+				name="Feed"
+				component={Feed}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
-						<Entypo
-							name="home"
-							size={20}
-							color={'black'}
-						/>
-					),
-				}}
-			/>
-			<Tab.Screen
-				name="Profile"
-				component={Profile}
-				options={{
-					headerShown: false,
-					tabBarIcon: () => (
-						<Entypo
-							name="user"
+						<MaterialCommunityIcons
+							name="account-group"
 							size={20}
 							color={'black'}
 						/>
@@ -41,6 +34,49 @@ export const InsideLayout = () => {
 				}}
 			/>
 
+			<Tab.Screen
+				name="Skillz"
+				component={Profile}
+				options={{
+					headerShown: false,
+					tabBarIcon: () => (
+						<FontAwesome5
+							name="toolbox"
+							size={20}
+							color="black"
+						/>
+					),
+				}}
+			/>
+
+			<Tab.Screen
+				name="Upload"
+				component={Upload}
+				options={{
+					headerShown: false,
+					tabBarIcon: () => (
+						<Octicons
+							name="diff-added"
+							size={20}
+							color="black"
+						/>
+					),
+				}}
+			/>
+			<Tab.Screen
+				name="Board"
+				component={Board}
+				options={{
+					headerShown: false,
+					tabBarIcon: () => (
+						<MaterialCommunityIcons
+							name="snowboard"
+							size={20}
+							color="black"
+						/>
+					),
+				}}
+			/>
 			<Tab.Screen
 				name="Chat"
 				component={Chat}
