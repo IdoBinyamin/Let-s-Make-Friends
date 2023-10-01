@@ -1,4 +1,4 @@
-import { Input } from './GenericInput';
-import { CameraButton } from './CameraButton';
-import { ListItem } from './ListItem';
-export { Input, CameraButton, ListItem };
+import { Input } from './Input';
+import { Button } from './Button';
+
+export { Input, Button };

@@ -10,6 +10,8 @@ interface inputProps {
 	onBlur?: () => void;
 	secureTextEntry?: boolean;
 	autoCapitalize?: string;
+	keyboardType?: string;
+	style?: any;
 }
 
 export const Input = (props: inputProps) => {
@@ -20,7 +22,7 @@ export const Input = (props: inputProps) => {
 			autoCapitalize="none"
 			onChangeText={props.onChangeText}
 			onBlur={props.onBlur}
-			style={styles.input}
+			style={[styles.input, props.style]}
 			secureTextEntry={
 				props.secureTextEntry
 			}
@@ -30,11 +32,12 @@ export const Input = (props: inputProps) => {
 
 const styles = StyleSheet.create({
 	input: {
-		marginVertical: 4,
-		height: 50,
 		borderWidth: 1,
-		borderRadius: 4,
+		borderColor: '#C7C7C7',
+		height: 48,
+		width: 296,
+		borderRadius: 5,
+		marginTop: 5,
 		padding: 10,
-		backgroundColor: '#fff',
 	},
 });

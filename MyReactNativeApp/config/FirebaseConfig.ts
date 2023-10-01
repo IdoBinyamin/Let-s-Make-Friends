@@ -31,7 +31,6 @@ type UserInfoProps = {
 	name: string;
 	email: string;
 	photoURL: string;
-	permissionStatus: string;
 };
 
 type RoomProps = {
@@ -39,6 +38,7 @@ type RoomProps = {
 	participantsArray: string[];
 	roomId: string;
 };
+//TODO: move all Types to models files
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyD49SzibpIW2y_21ySSYdfg_6bpE-qxU9k',
@@ -78,6 +78,10 @@ export const ROOMS_COL = collection(
 	FIREBASE_DB,
 	'rooms'
 );
+export const CHATS_COL = collection(
+	FIREBASE_DB,
+	'chats'
+);
 
 export async function signin({
 	email,
@@ -107,9 +111,11 @@ export async function signup({
 				photoURL: photoURL
 					? photoURL
 					: 'https://gravatar.com/avatar/94d45dbdba988afacf30d916e7aaad69?s=200&d=mp&r=x',
-			}).catch((error) => {
-				alert(error.message);
-			});
+			})
+				.then(alert('Welcome!'))
+				.catch((error) => {
+					alert(error.message);
+				});
 		})
 		.catch((error) => {
 			const errorMessage = error.message;
@@ -120,14 +126,18 @@ export async function signup({
 export async function addUserInfo(
 	userInfo: UserInfoProps
 ) {
-	addDoc(USERS_COL, userInfo).then(() => {
-		alert('Welcome!');
-	});
+	addDoc(USERS_COL, userInfo)
+		.then(() => {
+			console.log('User is inserted');
+		})
+		.catch((error) =>
+			console.log(error.message)
+		);
 }
 
 export const addRoom = async (
-	roomProps: RoomProps,
-	ROOM_REF: any
+	ROOM_REF: any,
+	roomProps: RoomProps
 ) => {
 	try {
 		// Use the updateDoc function to update the document.
