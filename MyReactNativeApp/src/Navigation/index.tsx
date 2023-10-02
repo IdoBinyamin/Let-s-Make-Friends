@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
 import { AntDesign } from '@expo/vector-icons';
-import { AuthNavigation } from './AuthNavigation';
+import { Auth } from '../commponents/authentication/index';
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = ({
@@ -63,8 +63,8 @@ export const MainNavigator = ({
 				/>
 			) : (
 				<Stack.Screen
-					name="AuthNavigation"
-					component={AuthNavigation}
+					name="AuthScreen"
+					component={Auth}
 					options={{
 						headerShown: false,
 					}}

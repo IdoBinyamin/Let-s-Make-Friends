@@ -3,8 +3,8 @@ import { Profile } from './ProfileScreen';
 import { Chat } from './ChatScreen';
 import { Upload } from './UploadScreen';
 import { Board } from './BoardScreen';
-import { Login } from './AuthScreen/LoginScreen';
 import { SignUp } from './AuthScreen/SignUpScreen';
+import { Login } from './AuthScreen/LoginScreen';
 
 export {
 	Feed,
@@ -12,6 +12,6 @@ export {
 	Chat,
 	Upload,
 	Board,
-	Login,
 	SignUp,
+	Login,
 };

@@ -1,32 +1,111 @@
 import React, {
-	useState,
 	useEffect,
+	useState,
 } from 'react';
+import { Login, SignUp } from '../../screens';
 import {
-	Button,
-	KeyboardAvoidingView,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
-	View,
+	KeyboardAvoidingView,
 } from 'react-native';
+
+import {
+	askForPermission,
+	pickImage,
+} from '../../../util';
 import {
 	addUserInfo,
 	signin,
 	signup,
 } from '../../../config/FirebaseConfig';
-import { askForPermission } from '../../../util';
-import { Input } from '../Generic';
 
-export const Authetication = ({}: any) => {
+export const Auth = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [mode, setMode] = useState('Signin');
+	const [mode, setMode] = useState(true);
+
 	const [photoURL, setPhotoURL] =
 		useState<string>('');
 	const [name, setName] = useState('');
+	const [
+		permissionStatus,
+		setPermissionStatus,
+	] = useState<string>('');
 
-	const handleAuthentication = async () => {
+	useEffect(() => {
+		const premitionStatus = async () => {
+			try {
+				const status =
+					await askForPermission();
+				setPermissionStatus(status);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		premitionStatus();
+	}, []);
+
+	const profilePictureHandler =
+		async (): Promise<
+			JSX.Element | undefined
+		> => {
+			try {
+				const result = await pickImage();
+				if (!result.canceled) {
+					setPhotoURL(
+						result.assets[0].uri
+					);
+				}
+			} catch (error: Error) {
+				console.log(error);
+			}
+
+			if (!permissionStatus) {
+				return <Text>Loading</Text>;
+			}
+			if (permissionStatus !== 'granted') {
+				return (
+					<Text>
+						You must need to allow the
+						app using camera and
+						microphon
+					</Text>
+				);
+			}
+		};
+
+	const registerHandler = async () => {
+		try {
+			await signup({
+				email,
+				password,
+				name,
+				photoURL,
+			});
+			addUserInfo({
+				name: name,
+				email: email.toLowerCase(),
+				photoURL: photoURL,
+			});
+		} catch (error: Error) {
+			console.log(error.message);
+			if (
+				error.message ===
+				'Firebase: Error (auth/email-already-in-use).'
+			) {
+				alert(
+					'Exsist User please switch to Login'
+				);
+			}
+		}
+	};
+
+	const updateMode = () => {
+		setMode(!mode);
+	};
+
+	const signinHandler = async () => {
 		try {
 			await signin({ email, password });
 		} catch (error: Error) {
@@ -39,101 +118,48 @@ export const Authetication = ({}: any) => {
 			}
 		}
 	};
-
-	const modeHandler = () => {
-		mode === 'SignUp'
-			? setMode('Signin')
-			: setMode('SignUp');
-	};
-
 	return (
 		<KeyboardAvoidingView
 			behavior="padding"
 			style={styles.container}
 		>
-			<Text
-				style={{
-					color: 'blue',
-					fontSize: 24,
-					marginBottom: 20,
-				}}
+			{mode ? (
+				<Login
+					updateMode={updateMode}
+					setEmail={setEmail}
+					setPassword={setPassword}
+					email={email}
+					password={password}
+				/>
+			) : (
+				<SignUp
+					updateMode={updateMode}
+					setEmail={setEmail}
+					setPassword={setPassword}
+					setName={setName}
+					profilePictureHandler={
+						profilePictureHandler
+					}
+					name={name}
+					email={email}
+					password={password}
+					photoURL={photoURL}
+				/>
+			)}
+			<TouchableOpacity
+				onPress={
+					mode
+						? signinHandler
+						: registerHandler
+				}
+				style={styles.inOrUpBtn}
 			>
-				Welcome to My App
-			</Text>
-
-			<View style={{ marginTop: 20 }}>
-				<Input
-					placeholder="email"
-					value={email}
-					onChangeText={setEmail}
-					keyboardType="email-address"
-				/>
-				<Input
-					placeholder="password"
-					value={password}
-					onChangeText={setPassword}
-					keyboardType="visible-password"
-					secureTextEntry={true}
-					style={{
-						marginTop: 20,
-					}}
-				/>
-				<View>
-					<Button
-						color={'green'}
-						disabled={
-							mode === 'SignUp'
-								? !password ||
-								  !email ||
-								  !photoURL
-								: !password ||
-								  !email
-						}
-						title={
-							mode === 'SignUp'
-								? 'Sign-Up'
-								: 'Log-in'
-						}
-						onPress={
-							handleAuthentication
-						}
-					/>
-				</View>
-				<View
-					style={{
-						flexDirection: 'row',
-						justifyContent: 'center',
-						alignContent: 'center',
-					}}
+				<Text
+					style={styles.inOrUpBtnText}
 				>
-					<Text
-						style={{
-							color: 'gray',
-							fontWeight: '600',
-							fontSize: 14,
-						}}
-					>
-						{mode === 'SignUp'
-							? 'Already have an acount? '
-							: 'Dont have an acount? '}
-					</Text>
-					<TouchableOpacity
-						onPress={modeHandler}
-					>
-						<Text
-							style={{
-								color: '#f57c00',
-								fontWeight: '600',
-								fontSize: 14,
-							}}
-						>
-							{mode === 'SignUp'
-								? 'Signin '
-								: 'Sign-up'}
-						</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
+					{mode ? 'Sign-in' : 'Apply'}
+				</Text>
+			</TouchableOpacity>
 		</KeyboardAvoidingView>
 	);
 };
@@ -145,12 +171,30 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: 'white',
 	},
-	input: {
-		marginVertical: 4,
-		height: 50,
+	inOrUpBtn: {
+		height: 48,
+		width: 296,
+		marginBottom: 90,
+		borderColor: '#2CE4C5',
 		borderWidth: 1,
-		borderRadius: 4,
-		padding: 10,
-		backgroundColor: '#fff',
+		justifyContent: 'center',
+		alignItems: 'center',
+		alignSelf: 'center',
+		backgroundColor: '#2CE4C5',
+		background:
+			'transparent linear-gradient(26deg, #06DBDB 0%, #2CE4C5 100%) 0% 0% no-repeat padding-box',
+		shadowColor: '#1FE1CC',
+		shadowOffset: {
+			width: 0,
+			height: 5,
+		},
+		shadowOpacity: 0.8,
+		shadowRadius: 20,
+		borderRadius: 5,
+		opacity: 1,
+	},
+	inOrUpBtnText: {
+		color: 'white',
+		fontSize: 20,
 	},
 });

@@ -1,113 +1,46 @@
-import React, {
-	useEffect,
-	useState,
-} from 'react';
+import React from 'react';
 import {
 	Image,
-	KeyboardAvoidingView,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import {
-	askForPermission,
-	pickImage,
-} from '../../../../util';
-import { Input } from '../../../commponents/Generic';
+import { Input } from '../../../Generic';
 import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import {
-	addUserInfo,
-	signup,
-} from '../../../../config/FirebaseConfig';
 
-export const SignUp = () => {
-	const navigation = useNavigation();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [photoURL, setPhotoURL] =
-		useState<string>('');
-	const [name, setName] = useState('');
-	const [
-		permissionStatus,
-		setPermissionStatus,
-	] = useState<string>('');
+type SignUpProps = {
+	updateMode: (mode: string) => void;
+	setEmail: React.Dispatch<
+		React.SetStateAction<string>
+	>;
+	setPassword: React.Dispatch<
+		React.SetStateAction<string>
+	>;
+	setName: React.Dispatch<
+		React.SetStateAction<string>
+	>;
+	profilePictureHandler: () => void;
+	name: string;
+	email: string;
+	password: string;
+	photoURL: string;
+};
 
-	useEffect(() => {
-		const premitionStatus = async () => {
-			try {
-				const status =
-					await askForPermission();
-				setPermissionStatus(status);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		premitionStatus();
-	}, []);
-
-	const profilePictureHandler =
-		async (): Promise<
-			JSX.Element | undefined
-		> => {
-			try {
-				const result = await pickImage();
-				if (!result.canceled) {
-					setPhotoURL(
-						result.assets[0].uri
-					);
-				}
-			} catch (error: Error) {
-				console.log(error);
-			}
-
-			if (!permissionStatus) {
-				return <Text>Loading</Text>;
-			}
-			if (permissionStatus !== 'granted') {
-				return (
-					<Text>
-						You must need to allow the
-						app using camera and
-						microphon
-					</Text>
-				);
-			}
-		};
-
-	const registerHandler = async () => {
-		try {
-			await signup({
-				email,
-				password,
-				name,
-				photoURL,
-			});
-			addUserInfo({
-				name: name,
-				email: email.toLowerCase(),
-				photoURL: photoURL,
-			});
-		} catch (error: Error) {
-			console.log(error.message);
-			if (
-				error.message ===
-				'Firebase: Error (auth/email-already-in-use).'
-			) {
-				alert(
-					'Exsist User please switch to Login'
-				);
-			}
-		}
-	};
-
+export const SignUp = ({
+	updateMode,
+	setEmail,
+	setPassword,
+	setName,
+	profilePictureHandler,
+	name,
+	email,
+	password,
+	photoURL,
+}: SignUpProps) => {
 	return (
-		<KeyboardAvoidingView
-			behavior="padding"
-			style={styles.container}
-		>
-			<View style={{ flex: 0.4 }}>
+		<View style={styles.container}>
+			<View>
 				<TouchableOpacity
 					onPress={
 						profilePictureHandler
@@ -188,11 +121,7 @@ export const SignUp = () => {
 						Already have an acount?
 					</Text>
 					<TouchableOpacity
-						onPress={() =>
-							navigation.navigate(
-								'Login'
-							)
-						}
+						onPress={updateMode}
 					>
 						<Text
 							style={{
@@ -206,41 +135,7 @@ export const SignUp = () => {
 					</TouchableOpacity>
 				</View>
 			</View>
-
-			<TouchableOpacity
-				onPress={registerHandler}
-				style={{
-					height: 48,
-					width: 296,
-					borderColor: '#2CE4C5',
-					borderWidth: 1,
-					marginTop: 230,
-					justifyContent: 'center',
-					alignItems: 'center',
-					backgroundColor: '#2CE4C5',
-					background:
-						'transparent linear-gradient(26deg, #06DBDB 0%, #2CE4C5 100%) 0% 0% no-repeat padding-box',
-					shadowColor: '#1FE1CC',
-					shadowOffset: {
-						width: 0,
-						height: 5,
-					},
-					shadowOpacity: 0.8,
-					shadowRadius: 20,
-					borderRadius: 5,
-					opacity: 1,
-				}}
-			>
-				<Text
-					style={{
-						color: 'white',
-						fontSize: 20,
-					}}
-				>
-					Apply
-				</Text>
-			</TouchableOpacity>
-		</KeyboardAvoidingView>
+		</View>
 	);
 };
 
@@ -248,7 +143,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
+		alignContent: 'center',
 		alignItems: 'center',
-		backgroundColor: 'white',
 	},
 });
