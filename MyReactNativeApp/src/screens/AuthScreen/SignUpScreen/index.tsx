@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Input } from '../../../Generic';
 import { FontAwesome } from '@expo/vector-icons';
+import { styles } from '../AuthStyles';
 
 type SignUpProps = {
 	updateMode: (mode: string) => void;
@@ -45,19 +46,9 @@ export const SignUp = ({
 					onPress={
 						profilePictureHandler
 					}
-					style={{
-						marginVertical: 10,
-						borderRadius: 120,
-						borderColor: '#2CE4C5',
-						borderWidth: 2,
-						width: 120,
-						height: 120,
-						backgroundColor:
-							'#EBEBEB',
-						justifyContent: 'center',
-						alignItems: 'center',
-						alignContent: 'center',
-					}}
+					style={
+						styles.choosePhotoContainer
+					}
 				>
 					{!photoURL ? (
 						<FontAwesome
@@ -81,11 +72,7 @@ export const SignUp = ({
 				<Text>Add a profile pic</Text>
 			</View>
 
-			<View
-				style={{
-					flex: 0.2,
-				}}
-			>
+			<View>
 				<Input
 					placeholder="Type your name"
 					value={name}
@@ -106,17 +93,14 @@ export const SignUp = ({
 					secureTextEntry={true}
 				/>
 				<View
-					style={{
-						flexDirection: 'row',
-						marginTop: 10,
-					}}
+					style={
+						styles.switchPageContainer
+					}
 				>
 					<Text
-						style={{
-							color: 'gray',
-							fontWeight: '600',
-							fontSize: 14,
-						}}
+						style={
+							styles.questionText
+						}
 					>
 						Already have an acount?
 					</Text>
@@ -124,11 +108,9 @@ export const SignUp = ({
 						onPress={updateMode}
 					>
 						<Text
-							style={{
-								color: '#2CE4C5',
-								fontWeight: '600',
-								fontSize: 14,
-							}}
+							style={
+								styles.onPressText
+							}
 						>
 							Signin
 						</Text>
@@ -139,11 +121,11 @@ export const SignUp = ({
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignContent: 'center',
-		alignItems: 'center',
-	},
-});
+// const styles = StyleSheet.create({
+// 	container: {
+// 		flex: 1,
+// 		justifyContent: 'center',
+// 		alignContent: 'center',
+// 		alignItems: 'center',
+// 	},
+// });

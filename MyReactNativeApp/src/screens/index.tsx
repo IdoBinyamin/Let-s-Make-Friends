@@ -3,6 +3,7 @@ import { Profile } from './ProfileScreen';
 import { Chat } from './ChatScreen';
 import { Upload } from './UploadScreen';
 import { Board } from './BoardScreen';
+import { Welcome } from './WelcomeScreen';
 import { SignUp } from './AuthScreen/SignUpScreen';
 import { Login } from './AuthScreen/LoginScreen';
 
@@ -14,4 +15,5 @@ export {
 	Board,
 	SignUp,
 	Login,
+	Welcome,
 };

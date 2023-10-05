@@ -8,6 +8,7 @@ import {
 import { Input } from '../../../Generic';
 
 import Icon from '../../../../assets/Svg/unknown-user.svg';
+import { styles } from '../AuthStyles';
 
 type LoginProps = {
 	updateMode: () => void;
@@ -65,30 +66,3 @@ export const Login = ({
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignContent: 'center',
-		alignItems: 'center',
-	},
-	logoContainer: {
-		height: 120,
-		width: 120,
-		backgroundColor: 'blue',
-	},
-	switchPageContainer: {
-		flexDirection: 'row',
-		marginTop: 10,
-	},
-	questionText: {
-		color: 'gray',
-		fontWeight: '600',
-		fontSize: 14,
-	},
-	onPressText: {
-		fontWeight: '600',
-		fontSize: 14,
-		color: '#2CE4C5',
-	},
-});
