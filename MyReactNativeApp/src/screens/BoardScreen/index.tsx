@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, Text } from 'react-native';
 
-export function Board() {
+export function BoardScreen() {
 	return (
 		<ScrollView>
 			<Text>Board</Text>

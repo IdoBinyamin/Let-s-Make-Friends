@@ -12,7 +12,7 @@ import {
 import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
 import { AntDesign } from '@expo/vector-icons';
 import { Auth } from '../commponents/authentication/index';
-import { Welcome } from '../screens';
+import { WelcomeScreen } from '../screens';
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = ({
@@ -39,7 +39,7 @@ export const MainNavigator = ({
 			{loading && (
 				<Stack.Screen
 					name="Welcome"
-					component={Welcome}
+					component={WelcomeScreen}
 					options={{
 						headerShown: false,
 					}}

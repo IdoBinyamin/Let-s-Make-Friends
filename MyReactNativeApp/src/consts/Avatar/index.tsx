@@ -1,19 +1,27 @@
 import { Image } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 
 type AvatarProps = {
 	size: number;
 	url: string;
+	style?: Record<string, number | string>;
 };
 
-const Avatar = ({ size, url }: AvatarProps) => {
+const Avatar: FC<AvatarProps> = ({
+	size,
+	url,
+	style,
+}) => {
 	return (
 		<Image
-			style={{
-				width: size,
-				height: size,
-				borderRadius: size,
-			}}
+			style={[
+				{
+					width: size,
+					height: size,
+					borderRadius: size,
+				},
+				style,
+			]}
 			source={
 				url
 					? { uri: url }

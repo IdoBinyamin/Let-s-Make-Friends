@@ -1,19 +1,21 @@
-import { Feed } from './HomeScreen/index';
-import { Profile } from './ProfileScreen';
-import { Chat } from './ChatScreen';
-import { Upload } from './UploadScreen';
-import { Board } from './BoardScreen';
-import { Welcome } from './WelcomeScreen';
-import { SignUp } from './AuthScreen/SignUpScreen';
-import { Login } from './AuthScreen/LoginScreen';
+import { FeedScreen } from './HomeScreen/index';
+import { ProfileScreen } from './ProfileScreen';
+import { ChatScreen } from './ChatScreen';
+import { UploadScreen } from './UploadScreen';
+import { BoardScreen } from './BoardScreen';
+import { WelcomeScreen } from './WelcomeScreen';
+import {
+	SignUpScreen,
+	LoginScreen,
+} from './AuthScreen';
 
 export {
-	Feed,
-	Profile,
-	Chat,
-	Upload,
-	Board,
-	SignUp,
-	Login,
-	Welcome,
+	FeedScreen,
+	ProfileScreen,
+	ChatScreen,
+	UploadScreen,
+	BoardScreen,
+	SignUpScreen,
+	LoginScreen,
+	WelcomeScreen,
 };

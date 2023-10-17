@@ -1,18 +1,19 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {
-	Feed,
-	Profile,
-	Chat,
-	Upload,
-	Board,
+	FeedScreen,
+	ProfileScreen,
+	ChatScreen,
+	UploadScreen,
+	BoardScreen,
 } from '../../screens';
+import IconSkilz from '../../../assets/Svg/Skillz Icon black.svg';
 import {
 	Entypo,
 	MaterialCommunityIcons,
 	Octicons,
-	FontAwesome5,
 } from '@expo/vector-icons';
+import lengConfig from '../../comons/leng';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,8 +21,23 @@ export const InsideLayout = () => {
 	return (
 		<Tab.Navigator>
 			<Tab.Screen
-				name="Feed"
-				component={Feed}
+				name={lengConfig.leng.skillz}
+				component={ProfileScreen}
+				options={{
+					headerShown: false,
+					tabBarIcon: () => (
+						<IconSkilz
+							height={30}
+							width={30}
+						/>
+					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
+				}}
+			/>
+			<Tab.Screen
+				name={lengConfig.leng.feedScreen}
+				component={FeedScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
@@ -31,27 +47,14 @@ export const InsideLayout = () => {
 							color={'black'}
 						/>
 					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
 				}}
 			/>
 
 			<Tab.Screen
-				name="Skillz"
-				component={Profile}
-				options={{
-					headerShown: false,
-					tabBarIcon: () => (
-						<FontAwesome5
-							name="toolbox"
-							size={20}
-							color="black"
-						/>
-					),
-				}}
-			/>
-
-			<Tab.Screen
-				name="Upload"
-				component={Upload}
+				name={lengConfig.leng.upload}
+				component={UploadScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
@@ -61,11 +64,13 @@ export const InsideLayout = () => {
 							color="black"
 						/>
 					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
 				}}
 			/>
 			<Tab.Screen
-				name="Board"
-				component={Board}
+				name={lengConfig.leng.board}
+				component={BoardScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
@@ -75,11 +80,13 @@ export const InsideLayout = () => {
 							color="black"
 						/>
 					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
 				}}
 			/>
 			<Tab.Screen
-				name="Chat"
-				component={Chat}
+				name={lengConfig.leng.chat}
+				component={ChatScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
@@ -89,6 +96,8 @@ export const InsideLayout = () => {
 							color={'black'}
 						/>
 					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
 				}}
 			/>
 		</Tab.Navigator>

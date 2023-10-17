@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export const Chat = () => {
+export const ChatScreen = () => {
 	return (
 		<View>
 			<Text>Chat</Text>

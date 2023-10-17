@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { FC } from 'react';
 import {
-	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
@@ -9,6 +8,7 @@ import { Input } from '../../../Generic';
 
 import Icon from '../../../../assets/Svg/unknown-user.svg';
 import { styles } from '../AuthStyles';
+import lengConfig from '../../../comons/leng';
 
 type LoginProps = {
 	updateMode: () => void;
@@ -22,28 +22,38 @@ type LoginProps = {
 	password: string;
 };
 
-export const Login = ({
+export const LoginScreen: FC<LoginProps> = ({
 	updateMode,
 	setEmail,
 	setPassword,
 	email,
 	password,
-}: LoginProps) => {
+}) => {
 	return (
 		<View style={styles.container}>
 			<Icon height={250} />
 
 			<Input
-				placeholder="email"
+				placeholder={
+					lengConfig.leng.email
+				}
 				value={email}
 				onChangeText={setEmail}
-				keyboardType="email-address"
+				keyboardType={
+					lengConfig.keyboardType
+						.emailAdrress
+				}
 			/>
 			<Input
-				placeholder="password"
+				placeholder={
+					lengConfig.leng.password
+				}
 				value={password}
 				onChangeText={setPassword}
-				keyboardType="visible-password"
+				keyboardType={
+					lengConfig.keyboardType
+						.visiblePass
+				}
 				secureTextEntry={true}
 			/>
 			<View
@@ -65,4 +75,3 @@ export const Login = ({
 		</View>
 	);
 };
-

@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import SkillzLogo from '../../../assets/Svg/Skillz Icon.svg';
 
-export const Welcome = () => {
+export const WelcomeScreen = () => {
 	return (
 		<View style={styles.container}>
 			<SkillzLogo

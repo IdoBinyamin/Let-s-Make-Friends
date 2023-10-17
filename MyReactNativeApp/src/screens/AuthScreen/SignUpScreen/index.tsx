@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
 	Image,
-	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
@@ -9,9 +8,10 @@ import {
 import { Input } from '../../../Generic';
 import { FontAwesome } from '@expo/vector-icons';
 import { styles } from '../AuthStyles';
+import lengConfig from '../../../comons/leng';
 
 type SignUpProps = {
-	updateMode: (mode: string) => void;
+	updateMode: () => void;
 	setEmail: React.Dispatch<
 		React.SetStateAction<string>
 	>;
@@ -28,7 +28,7 @@ type SignUpProps = {
 	photoURL: string;
 };
 
-export const SignUp = ({
+export const SignUpScreen: FC<SignUpProps> = ({
 	updateMode,
 	setEmail,
 	setPassword,
@@ -38,7 +38,7 @@ export const SignUp = ({
 	email,
 	password,
 	photoURL,
-}: SignUpProps) => {
+}) => {
 	return (
 		<View style={styles.container}>
 			<View>
@@ -61,11 +61,9 @@ export const SignUp = ({
 							source={{
 								uri: photoURL,
 							}}
-							style={{
-								height: '100%',
-								width: '100%',
-								borderRadius: 120,
-							}}
+							style={
+								styles.blanckImage
+							}
 						/>
 					)}
 				</TouchableOpacity>
@@ -74,22 +72,37 @@ export const SignUp = ({
 
 			<View>
 				<Input
-					placeholder="Type your name"
+					placeholder={
+						lengConfig.leng.enterEmail
+					}
 					value={name}
 					onChangeText={setName}
-					keyboardType="default"
+					keyboardType={
+						lengConfig.keyboardType
+							.default
+					}
 				/>
 				<Input
-					placeholder="email"
+					placeholder={
+						lengConfig.leng.email
+					}
 					value={email}
 					onChangeText={setEmail}
-					keyboardType="email-address"
+					keyboardType={
+						lengConfig.keyboardType
+							.emailAdrress
+					}
 				/>
 				<Input
-					placeholder="password"
+					placeholder={
+						lengConfig.leng.password
+					}
 					value={password}
 					onChangeText={setPassword}
-					keyboardType="visible-password"
+					keyboardType={
+						lengConfig.keyboardType
+							.visiblePass
+					}
 					secureTextEntry={true}
 				/>
 				<View
@@ -120,12 +133,3 @@ export const SignUp = ({
 		</View>
 	);
 };
-
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		justifyContent: 'center',
-// 		alignContent: 'center',
-// 		alignItems: 'center',
-// 	},
-// });

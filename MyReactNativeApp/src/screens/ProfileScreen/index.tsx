@@ -1,12 +1,15 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
+import SearchLine from '../../commponents/SearchLine';
+import PostCard from '../../commponents/PostCard';
 
-export const Profile = () => {
+export const ProfileScreen = () => {
 	return (
 		<View>
-			<Text>My skillz</Text>
+			<SearchLine photoURL={''} />
+			<PostCard />
 		</View>
 	);
 };
 
-export default Profile;
+export default ProfileScreen;

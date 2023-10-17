@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 // export interface IAppProps {}
 
-export function Upload() {
+export function UploadScreen() {
 	return (
 		<View>
 			<Text>Upload</Text>

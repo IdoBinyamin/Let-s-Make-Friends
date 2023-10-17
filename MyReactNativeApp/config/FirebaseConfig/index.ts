@@ -6,6 +6,7 @@ import {
 	createUserWithEmailAndPassword,
 	initializeAuth,
 	updateProfile,
+	UserCredential,
 } from 'firebase/auth';
 import {
 	collection,
@@ -15,29 +16,13 @@ import {
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+	AuthProps,
+	RoomProps,
+	SignUpProps,
+	UserInfoProps,
+} from './FirebaseTypes';
 
-type AuthProps = {
-	email: string;
-	password: string;
-};
-type SignUpProps = {
-	email: string;
-	password: string;
-	name: string;
-	photoURL: string;
-};
-
-type UserInfoProps = {
-	name: string;
-	email: string;
-	photoURL: string;
-};
-
-type RoomProps = {
-	participants: any[];
-	participantsArray: string[];
-	roomId: string;
-};
 //TODO: move all Types to models files
 
 const firebaseConfig = {
@@ -83,16 +68,20 @@ export const CHATS_COL = collection(
 	'chats'
 );
 
-export async function signin({
+export const signin = async ({
 	email,
 	password,
-}: AuthProps) {
+}: AuthProps): Promise<
+	//לקרוא דוקומנטציה
+	Partial<UserCredential & AuthProps>
+> => {
 	return signInWithEmailAndPassword(
 		FIREBASE_AUTH,
 		email,
 		password
 	);
-}
+};
+
 export async function signup({
 	email,
 	password,

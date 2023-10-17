@@ -2,7 +2,10 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { Login, SignUp } from '../../screens';
+import {
+	LoginScreen,
+	SignUpScreen,
+} from '../../screens';
 import {
 	StyleSheet,
 	Text,
@@ -124,7 +127,7 @@ export const Auth = () => {
 			style={styles.container}
 		>
 			{mode ? (
-				<Login
+				<LoginScreen
 					updateMode={updateMode}
 					setEmail={setEmail}
 					setPassword={setPassword}
@@ -132,7 +135,7 @@ export const Auth = () => {
 					password={password}
 				/>
 			) : (
-				<SignUp
+				<SignUpScreen
 					updateMode={updateMode}
 					setEmail={setEmail}
 					setPassword={setPassword}

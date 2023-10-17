@@ -24,6 +24,11 @@ export const styles = StyleSheet.create({
 		width: 120,
 		backgroundColor: 'blue',
 	},
+	blanckImage: {
+		height: '100%',
+		width: '100%',
+		borderRadius: 120,
+	},
 	switchPageContainer: {
 		flexDirection: 'row',
 		marginTop: 10,
