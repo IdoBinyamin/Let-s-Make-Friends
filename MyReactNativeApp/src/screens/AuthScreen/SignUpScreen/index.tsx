@@ -10,6 +10,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { styles } from '../AuthStyles';
 import lengConfig from '../../../comons/leng';
 
+
 type SignUpProps = {
 	updateMode: () => void;
 	setEmail: React.Dispatch<
@@ -73,7 +74,7 @@ export const SignUpScreen: FC<SignUpProps> = ({
 			<View>
 				<Input
 					placeholder={
-						lengConfig.leng.enterEmail
+						lengConfig.leng.enterName
 					}
 					value={name}
 					onChangeText={setName}
@@ -84,7 +85,7 @@ export const SignUpScreen: FC<SignUpProps> = ({
 				/>
 				<Input
 					placeholder={
-						lengConfig.leng.email
+						lengConfig.leng.enterEmail
 					}
 					value={email}
 					onChangeText={setEmail}
@@ -115,7 +116,7 @@ export const SignUpScreen: FC<SignUpProps> = ({
 							styles.questionText
 						}
 					>
-						Already have an acount?
+						Already have an account?{' '}
 					</Text>
 					<TouchableOpacity
 						onPress={updateMode}
@@ -125,7 +126,7 @@ export const SignUpScreen: FC<SignUpProps> = ({
 								styles.onPressText
 							}
 						>
-							Signin
+							Sign In
 						</Text>
 					</TouchableOpacity>
 				</View>

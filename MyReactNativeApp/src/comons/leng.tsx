@@ -1,8 +1,9 @@
 const lengConfig = {
 	leng: {
 		enterEmail: 'Enter your email',
-		email: 'email',
-		password: 'password',
+		enterName: 'Enter your name',
+		email: 'Email',
+		password: 'Password',
 		skillz: 'skillz',
 		feedScreen: 'FeedScreen',
 		upload: 'Upload',

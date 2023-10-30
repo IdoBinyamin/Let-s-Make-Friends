@@ -160,7 +160,7 @@ export const Auth = () => {
 				<Text
 					style={styles.inOrUpBtnText}
 				>
-					{mode ? 'Sign-in' : 'Apply'}
+					{mode ? 'Sign In' : 'Apply'}
 				</Text>
 			</TouchableOpacity>
 		</KeyboardAvoidingView>

@@ -60,7 +60,7 @@ export const LoginScreen: FC<LoginProps> = ({
 				style={styles.switchPageContainer}
 			>
 				<Text style={styles.questionText}>
-					Dont have an acount?
+					Don't have an account?{' '}
 				</Text>
 				<TouchableOpacity
 					onPress={updateMode}
@@ -68,7 +68,7 @@ export const LoginScreen: FC<LoginProps> = ({
 					<Text
 						style={styles.onPressText}
 					>
-						Sign-up
+						Sign Up
 					</Text>
 				</TouchableOpacity>
 			</View>
