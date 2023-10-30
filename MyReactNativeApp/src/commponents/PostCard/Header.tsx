@@ -20,7 +20,12 @@ const Header: FC<HeaderProps> = ({
 		useState(false);
 	return (
 		<View style={styles.container}>
-			<IconSkillz />
+			<View style={styles.iconContainer}>
+				<IconSkillz
+					height={110}
+					width={110}
+				/>
+			</View>
 			<View
 				style={
 					styles.descriptionContainer
@@ -33,6 +38,7 @@ const Header: FC<HeaderProps> = ({
 					{userName}
 				</Text>
 			</View>
+
 			<View
 				style={styles.followBtnContainer}
 			>
@@ -82,15 +88,31 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
+		height: 100,
+	},
+	iconContainer: {
+		position: 'absolute',
+		justifyContent: 'center',
+		alignItems: 'center',
+		left: 20,
+		top: 15,
+		right: 0,
+		height: 100,
+		width: 100,
+		borderWidth: 1,
+		borderRadius: 90,
 	},
 	descriptionContainer: {
 		justifyContent: 'center',
 		alignContent: 'center',
+		marginLeft: 120,
 	},
 	skilDesc: {
 		fontSize: 30,
 	},
-	name: {},
+	name: {
+		fontSize: 18,
+	},
 	followBtnContainer: {
 		width: 105,
 		justifyContent: 'center',

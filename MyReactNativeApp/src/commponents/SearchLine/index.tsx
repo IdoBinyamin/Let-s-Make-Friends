@@ -1,5 +1,4 @@
 import {
-	Image,
 	StyleSheet,
 	TextInput,
 	TouchableOpacity,
@@ -12,46 +11,80 @@ import lengConfig from '../../comons/leng';
 
 type Props = {
 	photoURL: string;
+	isProfilePage?: boolean;
+	moveToProfile?: () => void;
 };
 
-const SearchLine = ({ photoURL }: Props) => {
+const SearchLine = ({
+	photoURL,
+	moveToProfile,
+	isProfilePage = false,
+}: Props) => {
 	return (
-		<View style={styles.container}>
-			<Avatar
-				size={32}
-				url={photoURL}
-				style={styles.profilePhoto}
-			/>
-			<TextInput
-				placeholder={
-					lengConfig.leng.search
+		<>
+			<View
+				style={
+					!isProfilePage
+						? styles.container
+						: styles.containerProfile
 				}
-				style={styles.inputSearch}
-			/>
-			<TouchableOpacity
-				style={styles.searchBtn}
-				onPress={() => {
-					console.log('serching...');
-				}}
 			>
-				<Ionicons
-					name="search"
-					size={28}
-					color={'#2ce4c5'}
+				{!isProfilePage ? (
+					<TouchableOpacity
+						onPress={moveToProfile}
+					>
+						<Avatar
+							size={32}
+							url={photoURL}
+							style={
+								styles.profilePhoto
+							}
+						/>
+					</TouchableOpacity>
+				) : (
+					<View>
+						<Avatar
+							size={32}
+							url={photoURL}
+							style={
+								styles.profilePhoto
+							}
+						/>
+					</View>
+				)}
+				<TextInput
+					placeholder={
+						lengConfig.leng.search
+					}
+					style={styles.inputSearch}
 				/>
-			</TouchableOpacity>
-			<TouchableOpacity
-				style={styles.notification}
-				onPress={() => {
-					console.log('notifay!');
-				}}
-			>
-				<Ionicons
-					name="notifications-outline"
-					size={26}
-				/>
-			</TouchableOpacity>
-		</View>
+				<TouchableOpacity
+					style={styles.searchBtn}
+					onPress={() => {
+						console.log(
+							'serching...'
+						);
+					}}
+				>
+					<Ionicons
+						name="search"
+						size={28}
+						color={'#2ce4c5'}
+					/>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.notification}
+					onPress={() => {
+						console.log('notifay!');
+					}}
+				>
+					<Ionicons
+						name="notifications-outline"
+						size={26}
+					/>
+				</TouchableOpacity>
+			</View>
+		</>
 	);
 };
 
@@ -59,7 +92,8 @@ export default SearchLine;
 
 const styles = StyleSheet.create({
 	container: {
-		height: 100,
+		height: 120,
+		paddingTop: 55,
 		backgroundColor: 'white',
 		flexDirection: 'row',
 		alignContent: 'center',
@@ -70,6 +104,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.3,
 		shadowRadius: 3,
 		elevation: 3,
+		position: 'relative',
 	},
 	profilePhoto: {
 		marginRight: 10,
@@ -89,5 +124,13 @@ const styles = StyleSheet.create({
 		height: 25,
 		width: 25,
 		marginLeft: 25,
+	},
+	containerProfile: {
+		height: 60,
+		flexDirection: 'row',
+		backgroundColor: 'white',
+		alignContent: 'center',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });

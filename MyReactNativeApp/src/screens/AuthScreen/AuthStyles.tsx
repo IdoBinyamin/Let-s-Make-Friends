@@ -6,8 +6,10 @@ export const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignContent: 'center',
 		alignItems: 'center',
+		position: 'relative',
 	},
 	choosePhotoContainer: {
+		position: 'relative',
 		marginVertical: 10,
 		borderRadius: 120,
 		borderColor: '#2CE4C5',
@@ -32,6 +34,7 @@ export const styles = StyleSheet.create({
 	switchPageContainer: {
 		flexDirection: 'row',
 		marginTop: 10,
+		position: 'relative',
 	},
 	questionText: {
 		color: 'gray',

@@ -1,9 +1,10 @@
 import { FeedScreen } from './HomeScreen/index';
-import { ProfileScreen } from './ProfileScreen';
+import { SkillzScreen } from './SkillzScreen';
 import { ChatScreen } from './ChatScreen';
 import { UploadScreen } from './UploadScreen';
 import { BoardScreen } from './BoardScreen';
 import { WelcomeScreen } from './WelcomeScreen';
+import { ProfileScreen } from './ProfileScreen';
 import {
 	SignUpScreen,
 	LoginScreen,
@@ -11,11 +12,12 @@ import {
 
 export {
 	FeedScreen,
-	ProfileScreen,
+	SkillzScreen,
 	ChatScreen,
 	UploadScreen,
 	BoardScreen,
 	SignUpScreen,
 	LoginScreen,
 	WelcomeScreen,
+	ProfileScreen,
 };

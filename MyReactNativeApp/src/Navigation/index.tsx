@@ -5,14 +5,17 @@ import React, {
 import { InsideLayout } from './NavBarNavigator/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserModel } from '../models';
+import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
+import { Auth } from '../commponents/authentication/index';
+import {
+	ProfileScreen,
+	WelcomeScreen,
+} from '../screens';
 import {
 	Text,
 	TouchableOpacity,
 } from 'react-native';
-import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
 import { AntDesign } from '@expo/vector-icons';
-import { Auth } from '../commponents/authentication/index';
-import { WelcomeScreen } from '../screens';
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = ({
@@ -46,47 +49,58 @@ export const MainNavigator = ({
 				/>
 			)}
 			{user ? (
-				<Stack.Screen
-					name="InsideLayout"
-					component={InsideLayout}
-					options={{
-						headerTitle: '',
-						headerRight: () => {
-							return (
-								<TouchableOpacity
-									style={{
-										marginRight: 10,
-										flexDirection:
-											'row',
-									}}
-									onPress={
-										doLogout
-									}
-								>
-									<Text
+				<>
+					<Stack.Screen
+						name="InsideLayout"
+						component={InsideLayout}
+						options={{
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="ProfileScreen"
+						component={ProfileScreen}
+						options={{
+							headerTitle: '',
+							headerRight: () => {
+								return (
+									<TouchableOpacity
 										style={{
-											color: 'red',
-											alignSelf:
-												'center',
+											marginRight: 10,
+											flexDirection:
+												'row',
 										}}
-									>
-										Logout
-									</Text>
-									<AntDesign
-										name="logout"
-										size={24}
-										color={
-											'red'
+										onPress={
+											doLogout
 										}
-										style={{
-											marginLeft: 10,
-										}}
-									/>
-								</TouchableOpacity>
-							);
-						},
-					}}
-				/>
+									>
+										<Text
+											style={{
+												color: 'red',
+												alignSelf:
+													'center',
+											}}
+										>
+											Logout
+										</Text>
+										<AntDesign
+											name="logout"
+											size={
+												24
+											}
+											color={
+												'red'
+											}
+											style={{
+												marginLeft: 10,
+											}}
+										/>
+									</TouchableOpacity>
+								);
+							},
+						}}
+					/>
+				</>
 			) : (
 				<Stack.Screen
 					name="AuthScreen"

@@ -1,15 +1,28 @@
-import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	View,
+} from 'react-native';
+import React from 'react';
 import SearchLine from '../../commponents/SearchLine';
-import PostCard from '../../commponents/PostCard';
+import ProfileBody from '../../commponents/ProfileBody';
 
-export const ProfileScreen = () => {
+type Props = {};
+
+export const ProfileScreen = (props: Props) => {
 	return (
-		<View>
-			<SearchLine photoURL={''} />
-			<PostCard />
+		<View style={styles.container}>
+			<SearchLine
+				photoURL=""
+				isProfilePage={true}
+			/>
+			<ProfileBody />
 		</View>
 	);
 };
 
-export default ProfileScreen;
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+});

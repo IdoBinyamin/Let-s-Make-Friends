@@ -1,15 +1,16 @@
 import {
-	Image,
 	ScrollView,
 	StyleSheet,
-	Text,
 	View,
 } from 'react-native';
 import React from 'react';
 import Header from './Header';
-import Icon from '../../../assets/Svg/Skillz Icon black.svg';
-import Actions from './Actions';
-import MoreOrLess from '../../consts/MoreOrLessText';
+
+import PostButtonsBar from './PostButtonsBar';
+import {
+	HorizontalScroll,
+	MoreOrLess,
+} from '../../consts';
 import Comment from '../Comment';
 
 type Props = {};
@@ -23,13 +24,9 @@ const PostCard = (props: Props) => {
 				userName="Ido Binyamin"
 				userSkill="None"
 			/>
-			<ScrollView horizontal>
-				<Icon height={500} width={500} />
-				<Icon height={500} width={500} />
-				<Icon height={500} width={500} />
-			</ScrollView>
 
-			<Actions />
+			<HorizontalScroll />
+			<PostButtonsBar />
 			<MoreOrLess
 				fullText={desc}
 				maxLength={150}

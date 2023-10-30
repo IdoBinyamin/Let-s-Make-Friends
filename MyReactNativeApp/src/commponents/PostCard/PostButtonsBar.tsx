@@ -14,7 +14,7 @@ import {
 
 type Props = {};
 
-const Actions = (props: Props) => {
+const PostButtonsBar = (props: Props) => {
 	return (
 		<View style={styles.actionsLineContainer}>
 			<View style={styles.actionsContainer}>
@@ -48,7 +48,7 @@ const Actions = (props: Props) => {
 	);
 };
 
-export default Actions;
+export default PostButtonsBar;
 
 const styles = StyleSheet.create({
 	actionsLineContainer: {
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
 		height: 40,
 		justifyContent: 'space-evenly',
 		alignContent: 'center',
+		alignItems: 'center',
 	},
 	timeContainer: {
 		width: '50%',

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {
 	FeedScreen,
-	ProfileScreen,
+	SkillzScreen,
 	ChatScreen,
 	UploadScreen,
 	BoardScreen,
@@ -22,7 +22,7 @@ export const InsideLayout = () => {
 		<Tab.Navigator>
 			<Tab.Screen
 				name={lengConfig.leng.skillz}
-				component={ProfileScreen}
+				component={SkillzScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
