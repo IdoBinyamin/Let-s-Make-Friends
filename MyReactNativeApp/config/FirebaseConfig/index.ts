@@ -5,14 +5,13 @@ import {
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
 	initializeAuth,
-	updateProfile,
 	UserCredential,
 } from 'firebase/auth';
 import {
 	collection,
 	getFirestore,
-	addDoc,
 	setDoc,
+	doc,
 } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,7 +19,6 @@ import {
 	AuthProps,
 	RoomProps,
 	SignUpProps,
-	UserInfoProps,
 } from './FirebaseTypes';
 
 //TODO: move all Types to models files
@@ -88,41 +86,31 @@ export async function signup({
 	name,
 	photoURL,
 }: SignUpProps) {
-	return createUserWithEmailAndPassword(
+	return await createUserWithEmailAndPassword(
 		FIREBASE_AUTH,
 		email,
 		password
-	)
-		.then((userCredential) => {
-			const user = userCredential.user;
-			updateProfile(user, {
-				displayName: name,
-				photoURL: photoURL
-					? photoURL
-					: 'https://gravatar.com/avatar/94d45dbdba988afacf30d916e7aaad69?s=200&d=mp&r=x',
-			})
-				.then(alert('Welcome!'))
-				.catch((error) => {
-					alert(error.message);
-				});
-		})
-		.catch((error) => {
-			const errorMessage = error.message;
-			alert(errorMessage);
+	).then((userCredential) => {
+		const user = userCredential.user;
+
+		const data = {
+			_id: user.uid,
+			displayName: name,
+			photoURL: photoURL
+				? photoURL
+				: 'https://gravatar.com/avatar/94d45dbdba988afacf30d916e7aaad69?s=200&d=mp&r=x',
+			email: email,
+		};
+		setDoc(
+			doc(FIREBASE_DB, 'users', user.uid),
+			data
+		).catch((error) => {
+			alert(error.message);
 		});
+	});
 }
 
-export async function addUserInfo(
-	userInfo: UserInfoProps
-) {
-	addDoc(USERS_COL, userInfo)
-		.then(() => {
-			console.log('User is inserted');
-		})
-		.catch((error) =>
-			console.log(error.message)
-		);
-}
+
 
 export const addRoom = async (
 	ROOM_REF: any,

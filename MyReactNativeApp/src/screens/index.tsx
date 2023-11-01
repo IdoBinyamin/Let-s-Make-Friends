@@ -3,7 +3,7 @@ import { SkillzScreen } from './SkillzScreen';
 import { ChatScreen } from './ChatScreen';
 import { UploadScreen } from './UploadScreen';
 import { BoardScreen } from './BoardScreen';
-import { WelcomeScreen } from './WelcomeScreen';
+import { SplashScreen } from './SplashScreen';
 import { ProfileScreen } from './ProfileScreen';
 import {
 	SignUpScreen,
@@ -18,6 +18,6 @@ export {
 	BoardScreen,
 	SignUpScreen,
 	LoginScreen,
-	WelcomeScreen,
+	SplashScreen,
 	ProfileScreen,
 };

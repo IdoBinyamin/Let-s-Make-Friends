@@ -20,3 +20,4 @@ export type RoomProps = {
 	participantsArray: string[];
 	roomId: string;
 };
+

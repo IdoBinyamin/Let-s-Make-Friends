@@ -11,6 +11,7 @@ import {
 	Text,
 	TouchableOpacity,
 	KeyboardAvoidingView,
+	ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -18,7 +19,6 @@ import {
 	pickImage,
 } from '../../../util';
 import {
-	addUserInfo,
 	signin,
 	signup,
 } from '../../../config/FirebaseConfig';
@@ -30,6 +30,8 @@ export const Auth = () => {
 
 	const [photoURL, setPhotoURL] =
 		useState<string>('');
+	const [isLoading, setIsLoading] =
+		useState(false);
 	const [name, setName] = useState('');
 	const [
 		permissionStatus,
@@ -42,8 +44,8 @@ export const Auth = () => {
 				const status =
 					await askForPermission();
 				setPermissionStatus(status);
-			} catch (error) {
-				console.log(error);
+			} catch (error: Error) {
+				console.log(error.message);
 			}
 		};
 		premitionStatus();
@@ -61,7 +63,7 @@ export const Auth = () => {
 					);
 				}
 			} catch (error: Error) {
-				console.log(error);
+				console.log(error.message);
 			}
 
 			if (!permissionStatus) {
@@ -79,17 +81,13 @@ export const Auth = () => {
 		};
 
 	const registerHandler = async () => {
+		setIsLoading(true);
 		try {
 			await signup({
 				email,
 				password,
 				name,
 				photoURL,
-			});
-			addUserInfo({
-				name: name,
-				email: email.toLowerCase(),
-				photoURL: photoURL,
 			});
 		} catch (error: Error) {
 			console.log(error.message);
@@ -101,6 +99,7 @@ export const Auth = () => {
 					'Exsist User please switch to Login'
 				);
 			}
+			setIsLoading(false);
 		}
 	};
 
@@ -109,6 +108,8 @@ export const Auth = () => {
 	};
 
 	const signinHandler = async () => {
+		setIsLoading(true);
+
 		try {
 			await signin({ email, password });
 		} catch (error: Error) {
@@ -120,6 +121,9 @@ export const Auth = () => {
 				alert('Register first please');
 			}
 		}
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 4000);
 	};
 	return (
 		<KeyboardAvoidingView
@@ -149,20 +153,31 @@ export const Auth = () => {
 					photoURL={photoURL}
 				/>
 			)}
-			<TouchableOpacity
-				onPress={
-					mode
-						? signinHandler
-						: registerHandler
-				}
-				style={styles.inOrUpBtn}
-			>
-				<Text
-					style={styles.inOrUpBtnText}
+			{!isLoading ? (
+				<TouchableOpacity
+					onPress={
+						mode
+							? signinHandler
+							: registerHandler
+					}
+					style={styles.inOrUpBtn}
 				>
-					{mode ? 'Sign In' : 'Apply'}
-				</Text>
-			</TouchableOpacity>
+					<Text
+						style={
+							styles.inOrUpBtnText
+						}
+					>
+						{mode
+							? 'Sign In'
+							: 'Apply'}
+					</Text>
+				</TouchableOpacity>
+			) : (
+				<ActivityIndicator
+					size={'large'}
+					color={'black'}
+				/>
+			)}
 		</KeyboardAvoidingView>
 	);
 };

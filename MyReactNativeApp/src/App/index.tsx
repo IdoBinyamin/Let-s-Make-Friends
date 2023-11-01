@@ -1,17 +1,11 @@
-import React, {
-	useState,
-	useEffect,
-} from 'react';
+import React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { MainNavigator } from '../Navigation';
 import { LogBox } from 'react-native';
-import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
-import {
-	User,
-	onAuthStateChanged,
-} from 'firebase/auth';
+import { Provider } from 'react-redux';
 import { ChatProvider } from '../../context/ChatCtx';
+import Store from '../store/store';
 
 LogBox.ignoreLogs([
 	'Setting a timer',
@@ -19,25 +13,14 @@ LogBox.ignoreLogs([
 ]);
 
 const App = () => {
-	const [user, setUser] = useState<User | null>(
-		null
-	);
-
-	useEffect(() => {
-		onAuthStateChanged(
-			FIREBASE_AUTH,
-			(user) => {
-				setUser(user);
-			}
-		);
-	}, []);
-
 	return (
-		<ChatProvider>
-			<NavigationContainer>
-				<MainNavigator user={user} />
-			</NavigationContainer>
-		</ChatProvider>
+		<Provider store={Store}>
+			<ChatProvider>
+				<NavigationContainer>
+					<MainNavigator />
+				</NavigationContainer>
+			</ChatProvider>
+		</Provider>
 	);
 };
 
