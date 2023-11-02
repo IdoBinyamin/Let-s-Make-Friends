@@ -6,15 +6,22 @@ import {
 } from 'react-native';
 import React from 'react';
 import { Avatar } from '../../consts';
+import { useSelector } from 'react-redux';
 
 type Props = {};
 
 const Header = (props: Props) => {
+	const user = useSelector(
+		(state) => state?.user.user
+	);
 	return (
 		<View style={styles.container}>
 			<View style={styles.imageContainer}>
-				<Avatar size={80} url="" />
-				<Text>Ido Binyamin</Text>
+				<Avatar
+					size={80}
+					url={user.photoURL}
+				/>
+				<Text>{user.displayName}</Text>
 			</View>
 			<View style={styles.infoContainer}>
 				<View

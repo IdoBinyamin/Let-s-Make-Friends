@@ -12,6 +12,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { AddNewChat } from './NewChatNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export const MainNavigator = () => {
 				component={SplashScreen}
 				options={{
 					headerShown: false,
+					gestureEnabled: false,
 				}}
 			/>
 
@@ -35,12 +37,14 @@ export const MainNavigator = () => {
 				component={InsideLayout}
 				options={{
 					headerShown: false,
+					gestureEnabled: false,
 				}}
 			/>
 			<Stack.Screen
 				name="ProfileScreen"
 				component={ProfileScreen}
 				options={{
+					gestureEnabled: false,
 					headerTitle: '',
 					headerRight: () => {
 						return (
@@ -76,10 +80,20 @@ export const MainNavigator = () => {
 			/>
 
 			<Stack.Screen
+				name="addNewChat"
+				component={AddNewChat}
+				options={{
+					// headerShown: false,
+					gestureEnabled: false,
+				}}
+			/>
+
+			<Stack.Screen
 				name="AuthScreen"
 				component={Auth}
 				options={{
 					headerShown: false,
+					gestureEnabled: false,
 				}}
 			/>
 		</Stack.Navigator>

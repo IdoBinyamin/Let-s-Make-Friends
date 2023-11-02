@@ -68,7 +68,9 @@ export const SignUpScreen: FC<SignUpProps> = ({
 						/>
 					)}
 				</TouchableOpacity>
-				<Text>Add a profile pic</Text>
+				<Text style={styles.profileText}>
+					Add a profile pic
+				</Text>
 			</View>
 
 			<View>

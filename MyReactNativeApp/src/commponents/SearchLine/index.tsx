@@ -8,18 +8,29 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Avatar } from '../../consts';
 import lengConfig from '../../comons/leng';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { UserInfoProps } from '../../../config/FirebaseConfig/FirebaseTypes';
+import { RouterProps } from '../../models';
 
 type Props = {
-	photoURL: string;
 	isProfilePage?: boolean;
-	moveToProfile?: () => void;
+	isChatScreen?: boolean;
 };
 
 const SearchLine = ({
-	photoURL,
-	moveToProfile,
 	isProfilePage = false,
+	isChatScreen = false,
 }: Props) => {
+	const user = useSelector<UserInfoProps>(
+		(state) => state?.user.user
+	);
+	const navigation =
+		useNavigation<RouterProps>();
+	const moveToProfile = () => {
+		navigation.navigate('ProfileScreen');
+	};
+
 	return (
 		<>
 			<View
@@ -29,28 +40,21 @@ const SearchLine = ({
 						: styles.containerProfile
 				}
 			>
-				{!isProfilePage ? (
+				{!isProfilePage ||
+				isChatScreen ? (
 					<TouchableOpacity
 						onPress={moveToProfile}
 					>
 						<Avatar
 							size={32}
-							url={photoURL}
+							url={user?.photoURL}
 							style={
 								styles.profilePhoto
 							}
 						/>
 					</TouchableOpacity>
 				) : (
-					<View>
-						<Avatar
-							size={32}
-							url={photoURL}
-							style={
-								styles.profilePhoto
-							}
-						/>
-					</View>
+					<></>
 				)}
 				<TextInput
 					placeholder={
@@ -72,17 +76,23 @@ const SearchLine = ({
 						color={'#2ce4c5'}
 					/>
 				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.notification}
-					onPress={() => {
-						console.log('notifay!');
-					}}
-				>
-					<Ionicons
-						name="notifications-outline"
-						size={26}
-					/>
-				</TouchableOpacity>
+				{!isChatScreen && (
+					<TouchableOpacity
+						style={
+							styles.notification
+						}
+						onPress={() => {
+							console.log(
+								'notifay!'
+							);
+						}}
+					>
+						<Ionicons
+							name="notifications-outline"
+							size={26}
+						/>
+					</TouchableOpacity>
+				)}
 			</View>
 		</>
 	);

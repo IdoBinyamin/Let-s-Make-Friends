@@ -38,11 +38,6 @@ export const SplashScreen = () => {
 							if (
 								docSnap.exists()
 							) {
-								// console.log(
-								// 	'user data: ',
-								// 	docSnap.data()
-								// );
-
 								dispatch(
 									SET_USER(
 										docSnap.data()

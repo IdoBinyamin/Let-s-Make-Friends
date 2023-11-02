@@ -7,11 +7,13 @@ import {
 	SignUpScreen,
 } from '../../screens';
 import {
-	StyleSheet,
 	Text,
 	TouchableOpacity,
 	KeyboardAvoidingView,
 	ActivityIndicator,
+	Keyboard,
+	View,
+	Platform,
 } from 'react-native';
 
 import {
@@ -22,6 +24,7 @@ import {
 	signin,
 	signup,
 } from '../../../config/FirebaseConfig';
+import { styles } from './Style';
 
 export const Auth = () => {
 	const [email, setEmail] = useState('');
@@ -81,6 +84,7 @@ export const Auth = () => {
 		};
 
 	const registerHandler = async () => {
+		Keyboard.dismiss();
 		setIsLoading(true);
 		try {
 			await signup({
@@ -109,7 +113,7 @@ export const Auth = () => {
 
 	const signinHandler = async () => {
 		setIsLoading(true);
-
+		Keyboard.dismiss();
 		try {
 			await signin({ email, password });
 		} catch (error: Error) {
@@ -130,29 +134,37 @@ export const Auth = () => {
 			behavior="padding"
 			style={styles.container}
 		>
-			{mode ? (
-				<LoginScreen
-					updateMode={updateMode}
-					setEmail={setEmail}
-					setPassword={setPassword}
-					email={email}
-					password={password}
-				/>
-			) : (
-				<SignUpScreen
-					updateMode={updateMode}
-					setEmail={setEmail}
-					setPassword={setPassword}
-					setName={setName}
-					profilePictureHandler={
-						profilePictureHandler
-					}
-					name={name}
-					email={email}
-					password={password}
-					photoURL={photoURL}
-				/>
-			)}
+			<View
+				style={[
+					Platform.OS === 'android'
+						? styles.androidContainer
+						: styles.iosContainer,
+				]}
+			>
+				{mode ? (
+					<LoginScreen
+						updateMode={updateMode}
+						setEmail={setEmail}
+						setPassword={setPassword}
+						email={email}
+						password={password}
+					/>
+				) : (
+					<SignUpScreen
+						updateMode={updateMode}
+						setEmail={setEmail}
+						setPassword={setPassword}
+						setName={setName}
+						profilePictureHandler={
+							profilePictureHandler
+						}
+						name={name}
+						email={email}
+						password={password}
+						photoURL={photoURL}
+					/>
+				)}
+			</View>
 			{!isLoading ? (
 				<TouchableOpacity
 					onPress={
@@ -160,7 +172,11 @@ export const Auth = () => {
 							? signinHandler
 							: registerHandler
 					}
-					style={styles.inOrUpBtn}
+					style={[
+						Platform.OS === 'android'
+							? styles.androidInOrUpBtn
+							: styles.iosInOrUpBtn,
+					]}
 				>
 					<Text
 						style={
@@ -176,43 +192,14 @@ export const Auth = () => {
 				<ActivityIndicator
 					size={'large'}
 					color={'black'}
+					style={[
+						Platform.OS === 'android'
+							? styles.androidLoading
+							: styles.iosLoading,
+					]}
 				/>
 			)}
 		</KeyboardAvoidingView>
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: 'white',
-	},
-	inOrUpBtn: {
-		height: 48,
-		width: 296,
-		marginBottom: 90,
-		borderColor: '#2CE4C5',
-		borderWidth: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		alignSelf: 'center',
-		backgroundColor: '#2CE4C5',
-		background:
-			'transparent linear-gradient(26deg, #06DBDB 0%, #2CE4C5 100%) 0% 0% no-repeat padding-box',
-		shadowColor: '#1FE1CC',
-		shadowOffset: {
-			width: 0,
-			height: 5,
-		},
-		shadowOpacity: 0.8,
-		shadowRadius: 20,
-		borderRadius: 5,
-		opacity: 1,
-	},
-	inOrUpBtnText: {
-		color: 'white',
-		fontSize: 20,
-	},
-});

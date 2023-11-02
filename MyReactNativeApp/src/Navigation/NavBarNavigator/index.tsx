@@ -3,7 +3,7 @@ import React from 'react';
 import {
 	FeedScreen,
 	SkillzScreen,
-	ChatScreen,
+	ChatRoomsScreen,
 	UploadScreen,
 	BoardScreen,
 } from '../../screens';
@@ -20,6 +20,22 @@ const Tab = createBottomTabNavigator();
 export const InsideLayout = () => {
 	return (
 		<Tab.Navigator>
+			<Tab.Screen
+				name={lengConfig.leng.chat}
+				component={ChatRoomsScreen}
+				options={{
+					headerShown: false,
+					tabBarIcon: () => (
+						<Entypo
+							name="chat"
+							size={20}
+							color={'black'}
+						/>
+					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
+				}}
+			/>
 			<Tab.Screen
 				name={lengConfig.leng.skillz}
 				component={SkillzScreen}
@@ -78,22 +94,6 @@ export const InsideLayout = () => {
 							name="snowboard"
 							size={20}
 							color="black"
-						/>
-					),
-					tabBarActiveTintColor:
-						'#2ce4c5',
-				}}
-			/>
-			<Tab.Screen
-				name={lengConfig.leng.chat}
-				component={ChatScreen}
-				options={{
-					headerShown: false,
-					tabBarIcon: () => (
-						<Entypo
-							name="chat"
-							size={20}
-							color={'black'}
 						/>
 					),
 					tabBarActiveTintColor:
