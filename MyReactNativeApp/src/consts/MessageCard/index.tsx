@@ -6,13 +6,24 @@ import {
 	View,
 } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { RouterProps } from '../../models';
 
-type Props = {};
+type Props = {
+	room: any;
+};
 
 const MessageCard = (props: Props) => {
+	const navigation =
+		useNavigation<RouterProps>();
 	return (
 		<TouchableOpacity
 			style={styles.container}
+			onPress={() => {
+				navigation.navigate('ChatRoom', {
+					room: props.room,
+				});
+			}}
 		>
 			<View style={styles.imageContainer}>
 				<Image
@@ -27,7 +38,7 @@ const MessageCard = (props: Props) => {
 						fontWeight: 'bold',
 					}}
 				>
-					MessageCard
+					{props.room.chatName}
 				</Text>
 				<Text
 					style={{

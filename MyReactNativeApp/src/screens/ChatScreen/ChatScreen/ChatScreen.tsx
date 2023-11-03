@@ -5,12 +5,17 @@ import {
 } from 'react-native';
 import React from 'react';
 
-type Props = {};
+type Props = {
+	route: any;
+};
 
-export const NewChatScreen = (props: Props) => {
+export const ChatScreen = (props: Props) => {
+	const { room } = props.route.params;
+	console.log(room);
+
 	return (
 		<View>
-			<Text>NewChatScreen</Text>
+			<Text>hello</Text>
 		</View>
 	);
 };
