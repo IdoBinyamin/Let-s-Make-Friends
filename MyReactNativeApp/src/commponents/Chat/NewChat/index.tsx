@@ -5,11 +5,7 @@ import {
 import React, { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../../models';
-import {
-	Timestamp,
-	doc,
-	setDoc,
-} from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import { FriendCard } from '../FriendCard';
 import { ChatContext } from '../../../../context';
@@ -42,8 +38,12 @@ export const AddNewChat = (props: Props) => {
 		if (rooms.length > 0) {
 			exsistRoom = rooms.filter(
 				(room) =>
-					room.chatName ===
-					userB.displayName
+					room.participants.includes(
+						currUser.email
+					) &&
+					room.participants.includes(
+						userB.email
+					)
 			);
 		}
 		if (exsistRoom?.length > 0) {
