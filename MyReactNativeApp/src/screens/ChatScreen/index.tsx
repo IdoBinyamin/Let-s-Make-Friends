@@ -14,7 +14,7 @@ export const ChatRoomsScreen = () => {
 	const navigation =
 		useNavigation<RouterProps>();
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={styles.container}>
 			<SearchLine isChatScreen={true} />
 			<AllChats />
 			<View
@@ -38,6 +38,10 @@ export const ChatRoomsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: 'white',
+	},
 	messagesBtnContainer: {
 		height: 80,
 		width: 80,

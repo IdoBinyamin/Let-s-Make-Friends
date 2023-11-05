@@ -29,7 +29,7 @@ export const AllChats = (props: Props) => {
 	const { setRooms, rooms } =
 		useContext(ChatContext);
 	const currUser = useSelector(
-		(state) => state.user.user
+		(state) => state?.user.user
 	);
 
 	useLayoutEffect(() => {

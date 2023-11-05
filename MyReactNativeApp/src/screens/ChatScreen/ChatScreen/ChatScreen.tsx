@@ -127,6 +127,7 @@ export const ChatScreen = ({ route }: Props) => {
 					name: user.displayName,
 					avatar: user.photoURL,
 				}}
+				alwaysShowSend
 			/>
 		</View>
 	);
