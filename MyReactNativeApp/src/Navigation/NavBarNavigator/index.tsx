@@ -45,6 +45,7 @@ export const InsideLayout = () => {
 						<IconSkilz
 							height={30}
 							width={30}
+							color={'#2ce4c5'}
 						/>
 					),
 					tabBarActiveTintColor:

@@ -8,27 +8,35 @@ import {
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../models';
+import { useSelector } from 'react-redux';
 
 type Props = {
 	room: any;
 };
 
-const MessageCard = (props: Props) => {
+const MessageCard = ({ room }: Props) => {
 	const navigation =
 		useNavigation<RouterProps>();
+	const currUser = useSelector(
+		(state) => state.user.user
+	);
+
 	return (
 		<TouchableOpacity
 			style={styles.container}
 			onPress={() => {
 				navigation.navigate('ChatRoom', {
-					room: props.room,
+					room: room,
 				});
 			}}
 		>
 			<View style={styles.imageContainer}>
 				<Image
-					source={require('../../../assets/user-icon.png')}
+					source={{
+						uri: room.userB.photoURL,
+					}}
 					style={styles.imageHolder}
+					resizeMode="stretch"
 				/>
 			</View>
 			<View style={styles.textContainer}>
@@ -38,7 +46,10 @@ const MessageCard = (props: Props) => {
 						fontWeight: 'bold',
 					}}
 				>
-					{props.room.chatName}
+					{currUser.email ===
+					room.user.email
+						? room.userB.displayName
+						: room.user.displayName}
 				</Text>
 				<Text
 					style={{
@@ -46,13 +57,19 @@ const MessageCard = (props: Props) => {
 						color: 'gray',
 					}}
 				>
-					Lorem ipsum dolor sit amet,
-					consectetur adipisicing elit.
-					Maxime laborum dolorum
+					{room.lastMessage}
 				</Text>
 			</View>
 			<Text style={{ color: 'green' }}>
-				{Date.now()}
+				{`${new Date(Date.now())
+					.getHours()
+					.toString()
+					.padStart(2, '0')}:${new Date(
+					Date.now()
+				)
+					.getMinutes()
+					.toString()
+					.padStart(2, '0')}`}
 			</Text>
 		</TouchableOpacity>
 	);
@@ -69,8 +86,9 @@ const styles = StyleSheet.create({
 		padding: 5,
 	},
 	imageHolder: {
-		height: 40,
-		width: 40,
+		height: 53,
+		width: 53,
+		borderRadius: 80,
 	},
 	imageContainer: {
 		height: 60,

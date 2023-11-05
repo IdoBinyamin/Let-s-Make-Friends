@@ -12,7 +12,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { AddNewChat } from './NewChatNavigation';
+import { AddNewChat } from '../commponents/Chat/NewChat';
 import { ChatScreen } from '../screens/ChatScreen/ChatScreen/ChatScreen';
 
 const Stack = createNativeStackNavigator();
@@ -83,10 +83,6 @@ export const MainNavigator = () => {
 			<Stack.Screen
 				name="ChatRoom"
 				component={ChatScreen}
-				options={{
-					// headerShown: false,
-					gestureEnabled: false,
-				}}
 			/>
 			<Stack.Screen
 				name="addNewChat"

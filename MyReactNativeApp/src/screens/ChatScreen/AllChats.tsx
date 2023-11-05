@@ -4,6 +4,7 @@ import {
 	View,
 } from 'react-native';
 import React, {
+	useContext,
 	useLayoutEffect,
 	useState,
 } from 'react';
@@ -16,13 +17,20 @@ import {
 	query,
 } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../config/FirebaseConfig';
+import { ChatContext } from '../../../context';
+import { useSelector } from 'react-redux';
 
 type Props = {};
 
 export const AllChats = (props: Props) => {
 	const [isLoading, setIsLoading] =
-		useState(false);
-	const [chats, setChats] = useState([]);
+		useState(true);
+
+	const { setRooms, rooms } =
+		useContext(ChatContext);
+	const currUser = useSelector(
+		(state) => state.user.user
+	);
 
 	useLayoutEffect(() => {
 		const chatQuery = query(
@@ -37,7 +45,7 @@ export const AllChats = (props: Props) => {
 					querySnapShot.docs.map(
 						(doc) => doc.data()
 					);
-				setChats(chatRooms);
+				setRooms(chatRooms);
 				setIsLoading(false);
 			}
 		);
@@ -59,28 +67,23 @@ export const AllChats = (props: Props) => {
 				</View>
 			) : (
 				<>
-					{chats.length > 0 ? (
-						<>
-							{chats?.map(
-								(room) => {
-									return (
-										<MessageCard
-											key={
-												room._id
-											}
-											room={
-												room
-											}
-										/>
-									);
-								}
-							)}
-						</>
-					) : (
-						<ActivityIndicator
-							size={'large'}
-						/>
-					)}
+					{rooms?.map((room) => {
+						if (
+							room.participants.includes(
+								currUser.email
+							)
+						) {
+							return (
+								<MessageCard
+									key={
+										`${room.participants[0]}` +
+										`${room.participants[1]}`
+									}
+									room={room}
+								/>
+							);
+						}
+					})}
 				</>
 			)}
 		</ScrollView>

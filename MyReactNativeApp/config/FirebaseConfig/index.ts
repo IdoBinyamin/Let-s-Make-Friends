@@ -8,7 +8,6 @@ import {
 	UserCredential,
 } from 'firebase/auth';
 import {
-	collection,
 	getFirestore,
 	setDoc,
 	doc,
@@ -53,18 +52,7 @@ export const FIREBASE_DB =
 export const FIREBASE_STORAGE =
 	getStorage(FIREBASE_APP);
 
-export const USERS_COL = collection(
-	FIREBASE_DB,
-	'users'
-);
-export const ROOMS_COL = collection(
-	FIREBASE_DB,
-	'rooms'
-);
-export const CHATS_COL = collection(
-	FIREBASE_DB,
-	'chats'
-);
+
 
 export const signin = async ({
 	email,
