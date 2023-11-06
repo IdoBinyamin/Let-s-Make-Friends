@@ -1,15 +1,15 @@
-import { StyleSheet, View } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import React, {
 	useCallback,
 	useLayoutEffect,
 	useState,
 } from 'react';
-import {
-	Avatar,
-	Bubble,
-	GiftedChat,
-	InputToolbar,
-} from 'react-native-gifted-chat';
+import { GiftedChat } from 'react-native-gifted-chat';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import {
@@ -22,6 +22,7 @@ import {
 	updateDoc,
 } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 type Props = {
 	route: any;
@@ -38,13 +39,35 @@ export const ChatScreen = ({ route }: Props) => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerLeft: () => (
-				<View style={{ marginLeft: 20 }}>
-					<Avatar
-						rounded
-						source={{
-							uri: user?.photoURL,
+				<View>
+					<TouchableOpacity
+						onPress={() =>
+							navigation.navigate(
+								'Chat'
+							)
+						}
+						style={{
+							flexDirection: 'row',
+							justifyContent:
+								'center',
+							alignItems: 'center',
 						}}
-					/>
+					>
+						<Ionicons
+							name="ios-chevron-back"
+							size={20}
+						/>
+						<Text
+							style={{
+								fontSize: 15,
+								fontWeight:
+									'bold',
+								color: 'gray',
+							}}
+						>
+							Back
+						</Text>
+					</TouchableOpacity>
 				</View>
 			),
 		});

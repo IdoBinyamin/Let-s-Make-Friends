@@ -10,14 +10,18 @@ export type SignUpProps = {
 };
 
 export type UserInfoProps = {
-	name: string;
+	_id: string;
+	displayName: string;
 	email: string;
 	photoURL: string;
 };
 
 export type RoomProps = {
-	participants: any[];
-	participantsArray: string[];
-	roomId: string;
+	_Id: string;
+	chatName: string;
+	lastMessage: string;
+	participants: string[];
+	user: {};
+	userB: {};
 };
 

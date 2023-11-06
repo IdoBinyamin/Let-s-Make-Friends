@@ -9,6 +9,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import { FriendCard } from '../FriendCard';
 import { ChatContext } from '../../../../context';
+import { UserInfoProps } from '../../../../config/FirebaseConfig/FirebaseTypes';
 
 type Props = {};
 
@@ -16,25 +17,15 @@ export const AddNewChat = (props: Props) => {
 	const navigation =
 		useNavigation<RouterProps>();
 	const { rooms } = useContext(ChatContext);
+	let exsistRoom: any;
 
 	const createNewChat = async (
-		userB: {
-			_id: string;
-			displayName: string;
-			email: string;
-			photoURL: string;
-		},
-		currUser: {
-			_id: string;
-			displayName: string;
-			email: string;
-			photoURL: string;
-		}
+		userB: UserInfoProps,
+		currUser: UserInfoProps
 	) => {
 		let id = `${new Date(
 			Date.now()
 		).toString()}`;
-		let exsistRoom;
 		if (rooms.length > 0) {
 			exsistRoom = rooms.filter(
 				(room) =>
@@ -46,9 +37,7 @@ export const AddNewChat = (props: Props) => {
 					)
 			);
 		}
-		if (exsistRoom?.length > 0) {
-			return navigation.navigate('Chat');
-		}
+
 		const _doc = {
 			_id: id,
 			user: currUser,
@@ -60,12 +49,22 @@ export const AddNewChat = (props: Props) => {
 			],
 			lastMessage: '',
 		};
+		if (exsistRoom?.length > 0) {
+			return navigation.navigate(
+				'ChatRoom',
+				{
+					room: exsistRoom,
+				}
+			);
+		}
 		setDoc(
 			doc(FIREBASE_DB, 'chats', id),
 			_doc
 		)
 			.then(() => {
-				navigation.navigate('Chat');
+				navigation.navigate('ChatRoom', {
+					room: _doc,
+				});
 			})
 			.catch((error: Error) => {
 				alert('Error: ', error.message);

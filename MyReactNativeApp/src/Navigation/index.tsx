@@ -83,14 +83,13 @@ export const MainNavigator = () => {
 			<Stack.Screen
 				name="ChatRoom"
 				component={ChatScreen}
+				options={{
+					gestureEnabled: false,
+				}}
 			/>
 			<Stack.Screen
 				name="addNewChat"
 				component={AddNewChat}
-				options={{
-					// headerShown: false,
-					gestureEnabled: false,
-				}}
 			/>
 
 			<Stack.Screen

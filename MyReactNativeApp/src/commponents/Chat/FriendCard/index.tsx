@@ -6,6 +6,7 @@ import {
 	View,
 } from 'react-native';
 import React, {
+	useContext,
 	useLayoutEffect,
 	useState,
 } from 'react';
@@ -18,6 +19,7 @@ import {
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import { useSelector } from 'react-redux';
 import { UserInfoProps } from '../../../../config/FirebaseConfig/FirebaseTypes';
+import { ChatContext } from '../../../../context';
 
 type Props = {
 	createNewChat: any;
@@ -27,9 +29,14 @@ export const FriendCard = (props: Props) => {
 	const [usersList, setUsersList] = useState(
 		[]
 	);
+	const fillterdUsersList = usersList.filter(
+		(user) => user !== undefined
+	);
+	const { rooms } = useContext(ChatContext);
 	const currUser = useSelector<UserInfoProps>(
 		(state) => state?.user.user
 	);
+
 	useLayoutEffect(() => {
 		const usersQery = query(
 			collection(FIREBASE_DB, 'users'),
@@ -46,7 +53,22 @@ export const FriendCard = (props: Props) => {
 				setUsersList(
 					querySnapShot.docs.map(
 						(user) => {
-							return user.data();
+							if (
+								rooms.filter(
+									(room) =>
+										room.participants.includes(
+											user.data()
+												.email
+										) &&
+										room.participants.includes(
+											currUser.email
+										)
+								).length === 1
+							) {
+								return;
+							} else {
+								return user.data();
+							}
 						}
 					)
 				)
@@ -59,28 +81,36 @@ export const FriendCard = (props: Props) => {
 
 	return (
 		<View style={styles.container}>
-			{usersList.map((user, idx) => (
-				<TouchableOpacity
-					key={idx}
-					style={styles.userCard}
-					onPress={() => {
-						props.createNewChat(
-							user,
-							currUser
-						);
-					}}
-				>
-					<Image
-						source={{
-							uri: user?.photoURL,
+			{fillterdUsersList?.map(
+				(user, idx) => (
+					<TouchableOpacity
+						key={idx}
+						style={styles.userCard}
+						onPress={() => {
+							props.createNewChat(
+								user,
+								currUser
+							);
 						}}
-						style={styles.imageStyle}
-					/>
-					<Text style={styles.userName}>
-						{user?.displayName}
-					</Text>
-				</TouchableOpacity>
-			))}
+					>
+						<Image
+							source={{
+								uri: user?.photoURL,
+							}}
+							style={
+								styles.imageStyle
+							}
+						/>
+						<Text
+							style={
+								styles.userName
+							}
+						>
+							{user?.displayName}
+						</Text>
+					</TouchableOpacity>
+				)
+			)}
 		</View>
 	);
 };
