@@ -1,6 +1,7 @@
 import { FeedScreen } from './HomeScreen/index';
 import { SkillzScreen } from './SkillzScreen';
-import { ChatRoomsScreen } from './ChatScreen';
+import { ChatRoomsScreen } from './ChatScreens/chatRooms';
+import { ChatScreen } from './ChatScreens/ChatScreen';
 import { UploadScreen } from './UploadScreen';
 import { SplashScreen } from './SplashScreen';
 import { ProfileScreen } from './ProfileScreen';
@@ -14,6 +15,7 @@ export {
 	SkillzScreen,
 	UploadScreen,
 	ChatRoomsScreen,
+	ChatScreen,
 	SignUpScreen,
 	LoginScreen,
 	SplashScreen,

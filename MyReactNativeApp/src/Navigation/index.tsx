@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { AddNewChat } from '../commponents/Chat/NewChat';
-import { ChatScreen } from '../screens/ChatScreen/ChatScreen/ChatScreen';
+import { ChatScreen } from '../screens';
 import lengConfig from '../comons/leng';
 
 const Stack = createNativeStackNavigator();
