@@ -10,6 +10,7 @@ import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import { FriendCard } from '../FriendCard';
 import { ChatContext } from '../../../../context';
 import { UserInfoProps } from '../../../../config/FirebaseConfig/FirebaseTypes';
+import lengConfig from '../../../comons/leng';
 
 type Props = {};
 
@@ -51,7 +52,7 @@ export const AddNewChat = (props: Props) => {
 		};
 		if (exsistRoom?.length > 0) {
 			return navigation.navigate(
-				'ChatRoom',
+				lengConfig.screens.chatRoom,
 				{
 					room: exsistRoom,
 				}
@@ -62,9 +63,12 @@ export const AddNewChat = (props: Props) => {
 			_doc
 		)
 			.then(() => {
-				navigation.navigate('ChatRoom', {
-					room: _doc,
-				});
+				navigation.navigate(
+					lengConfig.screens.chatRoom,
+					{
+						room: _doc,
+					}
+				);
 			})
 			.catch((error: Error) => {
 				alert('Error: ', error.message);

@@ -23,6 +23,7 @@ import {
 } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import lengConfig from '../../../comons/leng';
 
 type Props = {
 	route: any;
@@ -36,16 +37,17 @@ export const ChatScreen = ({ route }: Props) => {
 	const user = useSelector(
 		(state) => state?.user.user
 	);
+	const navigateBack = () => {
+		navigation.navigate(
+			lengConfig.screens.chat
+		);
+	};
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerLeft: () => (
 				<View>
 					<TouchableOpacity
-						onPress={() =>
-							navigation.navigate(
-								'Chat'
-							)
-						}
+						onPress={navigateBack}
 						style={{
 							flexDirection: 'row',
 							justifyContent:

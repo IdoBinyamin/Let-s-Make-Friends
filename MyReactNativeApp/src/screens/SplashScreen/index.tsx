@@ -14,6 +14,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { SET_USER } from '../../store/Actions/userActions';
 import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../models';
+import lengConfig from '../../comons/leng';
 
 export const SplashScreen = () => {
 	const Navigation =
@@ -48,13 +49,16 @@ export const SplashScreen = () => {
 						.then(() => {
 							setTimeout(() => {
 								return Navigation.navigate(
-									'InsideLayout'
+									lengConfig
+										.screens
+										.insideLayout
 								);
 							}, 2000);
 						});
 				} else {
 					return Navigation.navigate(
-						'AuthScreen'
+						lengConfig.screens
+							.authScreen
 					);
 				}
 			}

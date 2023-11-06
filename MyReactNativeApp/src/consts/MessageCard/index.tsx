@@ -9,6 +9,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../models';
 import { useSelector } from 'react-redux';
+import lengConfig from '../../comons/leng';
 
 type Props = {
 	room: any;
@@ -25,9 +26,12 @@ const MessageCard = ({ room }: Props) => {
 		<TouchableOpacity
 			style={styles.container}
 			onPress={() => {
-				navigation.navigate('ChatRoom', {
-					room: room,
-				});
+				navigation.navigate(
+					lengConfig.screens.chatRoom,
+					{
+						room: room,
+					}
+				);
 			}}
 		>
 			<View style={styles.imageContainer}>

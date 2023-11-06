@@ -5,7 +5,6 @@ import {
 	SkillzScreen,
 	ChatRoomsScreen,
 	UploadScreen,
-	BoardScreen,
 } from '../../screens';
 import IconSkilz from '../../../assets/Svg/Skillz Icon black.svg';
 import {
@@ -21,23 +20,7 @@ export const InsideLayout = () => {
 	return (
 		<Tab.Navigator>
 			<Tab.Screen
-				name={lengConfig.leng.chat}
-				component={ChatRoomsScreen}
-				options={{
-					headerShown: false,
-					tabBarIcon: () => (
-						<Entypo
-							name="chat"
-							size={20}
-							color={'black'}
-						/>
-					),
-					tabBarActiveTintColor:
-						'#2ce4c5',
-				}}
-			/>
-			<Tab.Screen
-				name={lengConfig.leng.skillz}
+				name={lengConfig.screens.skillz}
 				component={SkillzScreen}
 				options={{
 					headerShown: false,
@@ -53,7 +36,9 @@ export const InsideLayout = () => {
 				}}
 			/>
 			<Tab.Screen
-				name={lengConfig.leng.feedScreen}
+				name={
+					lengConfig.screens.feedScreen
+				}
 				component={FeedScreen}
 				options={{
 					headerShown: false,
@@ -70,7 +55,7 @@ export const InsideLayout = () => {
 			/>
 
 			<Tab.Screen
-				name={lengConfig.leng.upload}
+				name={lengConfig.screens.upload}
 				component={UploadScreen}
 				options={{
 					headerShown: false,
@@ -86,15 +71,15 @@ export const InsideLayout = () => {
 				}}
 			/>
 			<Tab.Screen
-				name={lengConfig.leng.board}
-				component={BoardScreen}
+				name={lengConfig.screens.chat}
+				component={ChatRoomsScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
-						<MaterialCommunityIcons
-							name="snowboard"
+						<Entypo
+							name="chat"
 							size={20}
-							color="black"
+							color={'black'}
 						/>
 					),
 					tabBarActiveTintColor:

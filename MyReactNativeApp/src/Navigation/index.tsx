@@ -14,6 +14,7 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { AddNewChat } from '../commponents/Chat/NewChat';
 import { ChatScreen } from '../screens/ChatScreen/ChatScreen/ChatScreen';
+import lengConfig from '../comons/leng';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,10 @@ export const MainNavigator = () => {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
-				name="SplashScreen"
+				name={
+					lengConfig.screens
+						.splashScreen
+				}
 				component={SplashScreen}
 				options={{
 					headerShown: false,
@@ -34,7 +38,10 @@ export const MainNavigator = () => {
 			/>
 
 			<Stack.Screen
-				name="InsideLayout"
+				name={
+					lengConfig.screens
+						.insideLayout
+				}
 				component={InsideLayout}
 				options={{
 					headerShown: false,
@@ -42,7 +49,10 @@ export const MainNavigator = () => {
 				}}
 			/>
 			<Stack.Screen
-				name="ProfileScreen"
+				name={
+					lengConfig.screens
+						.profileScreen
+				}
 				component={ProfileScreen}
 				options={{
 					gestureEnabled: false,
@@ -81,19 +91,23 @@ export const MainNavigator = () => {
 			/>
 
 			<Stack.Screen
-				name="ChatRoom"
+				name={lengConfig.screens.chatRoom}
 				component={ChatScreen}
 				options={{
 					gestureEnabled: false,
 				}}
 			/>
 			<Stack.Screen
-				name="addNewChat"
+				name={
+					lengConfig.screens.addNewChat
+				}
 				component={AddNewChat}
 			/>
 
 			<Stack.Screen
-				name="AuthScreen"
+				name={
+					lengConfig.screens.authScreen
+				}
 				component={Auth}
 				options={{
 					headerShown: false,

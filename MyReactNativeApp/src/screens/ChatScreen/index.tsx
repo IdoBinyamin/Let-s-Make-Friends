@@ -9,6 +9,7 @@ import AddChat from '../../../assets/Svg/add chat.svg';
 import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../models';
 import { AllChats } from './AllChats';
+import lengConfig from '../../comons/leng';
 
 export const ChatRoomsScreen = () => {
 	const navigation =
@@ -26,7 +27,8 @@ export const ChatRoomsScreen = () => {
 					style={styles.messagesBtn}
 					onPress={() =>
 						navigation.navigate(
-							'addNewChat'
+							lengConfig.screens
+								.addNewChat
 						)
 					}
 				>
