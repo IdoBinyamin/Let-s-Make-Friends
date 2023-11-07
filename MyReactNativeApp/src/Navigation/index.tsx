@@ -7,14 +7,12 @@ import {
 	ProfileScreen,
 	SplashScreen,
 } from '../screens';
-import {
-	Text,
-	TouchableOpacity,
-} from 'react-native';
+
 import { AntDesign } from '@expo/vector-icons';
 import { AddNewChat } from '../commponents/Chat/NewChat';
 import { ChatScreen } from '../screens';
 import lengConfig from '../comons/leng';
+import { TopButton } from '../consts/TopButton';
 
 const Stack = createNativeStackNavigator();
 
@@ -59,32 +57,26 @@ export const MainNavigator = () => {
 					headerTitle: '',
 					headerRight: () => {
 						return (
-							<TouchableOpacity
-								style={{
-									marginRight: 10,
-									flexDirection:
-										'row',
-								}}
+							<TopButton
 								onPress={doLogout}
-							>
-								<Text
-									style={{
-										color: 'red',
-										alignSelf:
-											'center',
-									}}
-								>
-									Logout
-								</Text>
-								<AntDesign
-									name="logout"
-									size={24}
-									color={'red'}
-									style={{
-										marginLeft: 10,
-									}}
-								/>
-							</TouchableOpacity>
+								textStyle={{
+									color: 'red',
+									alignSelf:
+										'center',
+								}}
+								image={
+									<AntDesign
+										name="logout"
+										size={24}
+										color={
+											'red'
+										}
+										style={{
+											marginLeft: 10,
+										}}
+									/>
+								}
+							/>
 						);
 					},
 				}}

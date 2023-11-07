@@ -5,7 +5,7 @@ import {
 	View,
 } from 'react-native';
 import SearchLine from '../../../commponents/SearchLine';
-import AddChat from '../../../assets/Svg/add chat.svg';
+import AddChat from '../../../../assets/Svg/add chat.svg';
 import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../../models';
 import { AllChats } from '../AllChats';

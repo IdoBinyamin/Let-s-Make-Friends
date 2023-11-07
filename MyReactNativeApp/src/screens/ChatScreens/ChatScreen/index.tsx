@@ -24,6 +24,7 @@ import {
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import lengConfig from '../../../comons/leng';
+import { TopButton } from '../../../consts/TopButton';
 
 type Props = {
 	route: any;
@@ -46,30 +47,21 @@ export const ChatScreen = ({ route }: Props) => {
 		navigation.setOptions({
 			headerLeft: () => (
 				<View>
-					<TouchableOpacity
+					<TopButton
 						onPress={navigateBack}
-						style={{
-							flexDirection: 'row',
-							justifyContent:
-								'center',
-							alignItems: 'center',
+						textStyle={{
+							fontSize: 15,
+							fontWeight: 'bold',
+							color: 'gray',
 						}}
-					>
-						<Ionicons
-							name="ios-chevron-back"
-							size={20}
-						/>
-						<Text
-							style={{
-								fontSize: 15,
-								fontWeight:
-									'bold',
-								color: 'gray',
-							}}
-						>
-							Back
-						</Text>
-					</TouchableOpacity>
+						image={
+							<Ionicons
+								name="ios-chevron-back"
+								size={20}
+							/>
+						}
+						text="Back"
+					/>
 				</View>
 			),
 		});
