@@ -12,26 +12,38 @@ import {
 	FontAwesome,
 } from '@expo/vector-icons';
 
-type Props = {};
+type Props = {
+	isLiked: () => void;
+	numOfLikes: number;
+	addComment: () => void;
+	shareToFeed: () => void;
+	createdAt: string;
+};
 
 const PostButtonsBar = (props: Props) => {
 	return (
 		<View style={styles.actionsLineContainer}>
 			<View style={styles.actionsContainer}>
-				<TouchableOpacity>
+				<TouchableOpacity
+					onPress={props.isLiked}
+				>
 					<AntDesign
 						name="hearto"
 						size={35}
 					/>
 				</TouchableOpacity>
-				<Text>100K</Text>
-				<TouchableOpacity>
+				<Text>{props.numOfLikes}</Text>
+				<TouchableOpacity
+					onPress={props.addComment}
+				>
 					<Feather
 						name="message-circle"
 						size={35}
 					/>
 				</TouchableOpacity>
-				<TouchableOpacity>
+				<TouchableOpacity
+					onPress={props.shareToFeed}
+				>
 					<Fontisto
 						name="share-a"
 						size={35}
@@ -41,7 +53,7 @@ const PostButtonsBar = (props: Props) => {
 			<View style={styles.timeContainer}>
 				<FontAwesome name="clock-o" />
 				<Text style={styles.timeText}>
-					15 Minutes ago
+					{props.createdAt}
 				</Text>
 			</View>
 		</View>

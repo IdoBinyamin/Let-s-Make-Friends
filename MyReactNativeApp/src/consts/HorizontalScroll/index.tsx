@@ -17,13 +17,13 @@ type SkillCard = {
 
 type Props = {
 	skillCards?: SkillCard[];
-	postImages?: string[];
+	postImages?: { uri: string }[];
 	isProfile?: boolean;
 };
 
 const HorizontalScroll = ({
 	skillCards = [],
-	postImages = [],
+	postImages,
 	isProfile = false,
 }: Props) => {
 	return (
@@ -94,18 +94,31 @@ const HorizontalScroll = ({
 				</>
 			) : (
 				<>
-					<Icon
-						height={350}
-						width={370}
-					/>
-					<Icon
-						height={350}
-						width={370}
-					/>
-					<Icon
-						height={350}
-						width={370}
-					/>
+					{postImages?.map(
+						(postImg, idx) => (
+							<View
+								key={idx}
+								style={{
+									height: 350,
+									width: 410,
+									borderWidth: 1,
+									borderColor:
+										'black',
+									marginRight: 10,
+								}}
+							>
+								<Image
+									source={{
+										uri: postImg.uri,
+									}}
+									style={
+										styles.images
+									}
+									resizeMode="cover"
+								/>
+							</View>
+						)
+					)}
 				</>
 			)}
 		</ScrollView>
@@ -117,7 +130,6 @@ export default HorizontalScroll;
 const styles = StyleSheet.create({
 	container: {
 		padding: 15,
-		zIndex: -1,
 		backgroundColor: 'transparent',
 	},
 	skillCardContainer: {
@@ -137,5 +149,11 @@ const styles = StyleSheet.create({
 	},
 	skillHeadeline: {
 		fontSize: 26,
+	},
+	images: {
+		height: '100%',
+		width: '100%',
+
+		position: 'relative',
 	},
 });

@@ -5,6 +5,7 @@ import { ChatScreen } from './ChatScreens/ChatScreen';
 import { UploadScreen } from './UploadScreen';
 import { SplashScreen } from './SplashScreen';
 import { ProfileScreen } from './ProfileScreen';
+import { CommentsScreen } from './CommentsScreen';
 import {
 	SignUpScreen,
 	LoginScreen,
@@ -20,4 +21,5 @@ export {
 	LoginScreen,
 	SplashScreen,
 	ProfileScreen,
+	CommentsScreen,
 };

@@ -6,13 +6,21 @@ import {
 } from 'react-native';
 import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { Avatar } from '../../consts';
+import { Avatar } from '../../../consts';
 
 type Props = {
 	photoURL: string;
+	userName: string;
+	comment: string;
+	// isCommentLikedHandler: () => void;
 };
 
-const Comment = ({ photoURL }: Props) => {
+const Comment = ({
+	photoURL,
+	userName,
+	comment,
+}: // isCommentLikedHandler,
+Props) => {
 	return (
 		<View style={styles.container}>
 			<Avatar
@@ -21,21 +29,11 @@ const Comment = ({ photoURL }: Props) => {
 				style={styles.profilePhoto}
 			/>
 			<Text style={styles.userName}>
-				Ploni Almoni{' '}
+				{userName}
 			</Text>
-			<Text>Comment that we see</Text>
-
-			<TouchableOpacity
-				style={styles.notification}
-				onPress={() => {
-					console.log('like comment!');
-				}}
-			>
-				<AntDesign
-					name="hearto"
-					size={20}
-				/>
-			</TouchableOpacity>
+			<Text style={styles.commentText}>
+				{comment}
+			</Text>
 		</View>
 	);
 };
@@ -44,35 +42,35 @@ export default Comment;
 
 const styles = StyleSheet.create({
 	container: {
-		height: 100,
+		height: 50,
+		width: '85%',
 		backgroundColor: 'white',
 		flexDirection: 'row',
 		alignContent: 'center',
 		alignItems: 'center',
-		justifyContent: 'flex-start',
+		justifyContent: 'space-between',
 		paddingLeft: 10,
+		marginVertical: 5,
+		borderColor: 'gray',
+		borderWidth: 1,
+		borderRadius: 20,
 	},
 	profilePhoto: {
-		marginRight: 10,
+		width: '10%',
 	},
-	inputSearch: {
-		height: 32,
-		width: 256,
-		borderColor: '#C7C7C7',
-		borderWidth: 1,
-		borderRadius: 40,
-		padding: 10,
-	},
-	searchBtn: {
-		marginLeft: -40,
-	},
+
 	userName: {
 		fontSize: 15,
 		fontWeight: 'bold',
+		width: '20%',
+	},
+	commentText: {
+		marginLeft: 15,
+		width: '45%',
 	},
 	notification: {
 		height: 25,
-		width: 25,
+		width: '7%',
 		marginLeft: 25,
 	},
 });

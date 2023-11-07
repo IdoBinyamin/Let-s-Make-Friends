@@ -22,6 +22,7 @@ const lengConfig = {
 		chatRoom: 'ChatRoom',
 		addNewChat: 'addNewChat',
 		authScreen: 'AuthScreen',
+		comments: 'Comments',
 	},
 };
 export default lengConfig;

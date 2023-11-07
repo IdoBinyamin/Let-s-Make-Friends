@@ -38,13 +38,15 @@ const MoreOrLess = ({
 					: displayedText}
 			</Text>
 			<TouchableOpacity
+				style={{
+					justifyContent: 'flex-end',
+				}}
 				onPress={toggleExpanded}
 			>
 				<Text style={styles.showMore}>
-					Show
 					{isExpanded
 						? ' Less'
-						: ' More'}
+						: ' More...'}
 				</Text>
 			</TouchableOpacity>
 		</View>
@@ -54,10 +56,13 @@ const MoreOrLess = ({
 const styles = StyleSheet.create({
 	container: {
 		padding: 10,
+		flexDirection: 'row',
+		width: '95%',
 	},
 	showMore: {
 		color: 'blue',
 		marginTop: 5,
+		alignSelf: 'baseline',
 	},
 });
 

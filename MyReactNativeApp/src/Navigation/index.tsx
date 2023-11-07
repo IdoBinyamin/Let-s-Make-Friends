@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
 import { Auth } from '../commponents/authentication/index';
 import {
+	CommentsScreen,
 	ProfileScreen,
 	SplashScreen,
 } from '../screens';
@@ -12,7 +13,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { AddNewChat } from '../commponents/Chat/NewChat';
 import { ChatScreen } from '../screens';
 import lengConfig from '../comons/leng';
-import { TopButton } from '../consts/TopButton';
+import { TopButton } from '../consts';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,7 +55,7 @@ export const MainNavigator = () => {
 				component={ProfileScreen}
 				options={{
 					gestureEnabled: false,
-					headerTitle: '',
+					headerTitle: 'My Profile',
 					headerRight: () => {
 						return (
 							<TopButton
@@ -82,6 +83,13 @@ export const MainNavigator = () => {
 				}}
 			/>
 
+			<Stack.Screen
+				name={lengConfig.screens.comments}
+				component={CommentsScreen}
+				options={{
+					gestureEnabled: false,
+				}}
+			/>
 			<Stack.Screen
 				name={lengConfig.screens.chatRoom}
 				component={ChatScreen}

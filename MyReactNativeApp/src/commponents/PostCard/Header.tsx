@@ -3,21 +3,23 @@ import {
 	View,
 	Text,
 } from 'react-native';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import IconSkillz from '../../../assets/Svg/Skillz Icon black.svg';
 import { FollowButton } from '../../Generic';
 
 type HeaderProps = {
 	userName: string;
 	userSkill: string;
+	isFollower: () => void;
+	isFollow: boolean;
 };
 
 const Header: FC<HeaderProps> = ({
 	userSkill,
 	userName,
+	isFollower,
+	isFollow,
 }) => {
-	const [isFollow, setIsFollow] =
-		useState(false);
 	return (
 		<View style={styles.container}>
 			<View style={styles.iconContainer}>
@@ -45,12 +47,7 @@ const Header: FC<HeaderProps> = ({
 				{isFollow ? (
 					<FollowButton
 						title="+ Follow"
-						onPress={() => {
-							console.log('Follow');
-							setIsFollow(
-								!isFollow
-							);
-						}}
+						onPress={isFollower}
 						styleBtn={
 							styles.followBtn
 						}
@@ -61,14 +58,7 @@ const Header: FC<HeaderProps> = ({
 				) : (
 					<FollowButton
 						title="Unfollow"
-						onPress={() => {
-							console.log(
-								'Unfollow'
-							);
-							setIsFollow(
-								!isFollow
-							);
-						}}
+						onPress={isFollower}
 						styleBtn={
 							styles.unfollowBtn
 						}
