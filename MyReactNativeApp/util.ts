@@ -14,8 +14,3 @@ export async function askForPermission() {
 	return status;
 }
 
-export const uploadImage = async (
-	uri: string,
-	path: string,
-	fName: string
-) => {};

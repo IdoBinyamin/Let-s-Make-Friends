@@ -1,8 +1,6 @@
 import {
 	Button,
 	KeyboardAvoidingView,
-	Platform,
-	ScrollView,
 	StyleSheet,
 	TextInput,
 	View,
@@ -16,29 +14,36 @@ import {
 	MoreOrLess,
 } from '../../consts';
 import Comment from './Comment';
-import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import lengConfig from '../../comons/leng';
+import { RouterProps } from '../../models';
 
-type Props = {};
+type PostProps = {
+	post: {
+		_id: string;
+		desc: string;
+		user: any;
+		comments: any[];
+		images: React.Dispatch<
+			React.SetStateAction<string>
+		>;
+		likes: string[];
+	};
+};
 
-const PostCard = (props: Props) => {
-	const navigation = useNavigation();
-	const currUser = useSelector(
-		(state) => state.user.user
-	);
+const PostCard = ({ post }: PostProps) => {
+	const navigation =
+		useNavigation<RouterProps>();
 
 	const [newComment, setNewComment] =
 		useState('');
 
 	const [isFollow, setIsFollow] =
 		useState(false);
-	// const [isPostLiked, setIsPostLiked] = useState(false); // futuer to be
 
 	const isFollowerHandler = () => {
 		setIsFollow(!isFollow);
 	};
-	// const isPostLikedHandler = () => {};
 
 	const moveToComments = () => {
 		navigation.navigate(
@@ -48,210 +53,94 @@ const PostCard = (props: Props) => {
 			}
 		);
 	};
-	// console.log(currUser.photoURL);
 
-	const posts = [
-		{
-			desc: 'Interior design is the art and science of enhancing the interior of a building to achieve a healthier and more aesthetically pleasing environment for the people Interior design is the art and science of enhancing the interior of a building to achieve healthier and more aesthetically pleasing environment for the people',
-			user: {
-				userName: 'shimon Levi',
-				userSkill: 'garden',
-				userPhoto: '',
-			},
-			createdAt: '25 min ago',
-			likes: 5,
-			images: [
-				{
-					uri: currUser.photoURL,
-				},
-				{
-					uri: currUser.photoURL,
-				},
-				{
-					uri: currUser.photoURL,
-				},
-			],
-			comments: [
-				{
-					user: {
-						name: 'ploni',
-						photoURL:
-							currUser.photoURL,
-					},
-					comment:
-						'Comment that we see',
-					createdAt: '5 min ago',
-				},
-				{
-					user: {
-						name: 'ploni',
-						photoURL: '',
-					},
-					comment: 'that we see',
-					createdAt: '13 min ago',
-				},
-				{
-					user: {
-						name: 'ploni',
-						photoURL: '',
-					},
-					comment: 'that we see',
-					createdAt: '13 min ago',
-				},
-			],
-		},
-		{
-			desc: 'Interior design is the art and science of enhancing the interior of a building to achieve a healthier and more aesthetically pleasing environment for the people Interior design is the art and science of enhancing the interior of a building to achieve healthier and more aesthetically pleasing environment for the people',
-			user: {
-				userName: 'shimon Levi',
-				userSkill: 'garden',
-				userPhoto: '',
-			},
-			createdAt: '25 min ago',
-			likes: 5,
-			images: [
-				{
-					uri: currUser.photoURL,
-				},
-			],
-			comments: [
-				{
-					user: {
-						name: 'ploni',
-						photoURL:
-							currUser.photoURL,
-					},
-					comment:
-						'Comment that we see',
-					createdAt: '5 min ago',
-				},
-				{
-					user: {
-						name: 'ploni',
-						photoURL: '',
-					},
-					comment: 'that we see',
-					createdAt: '13 min ago',
-				},
-				{
-					user: {
-						name: 'ploni',
-						photoURL: '',
-					},
-					comment: 'that we see',
-					createdAt: '13 min ago',
-				},
-			],
-		},
-	];
 	return (
-		<KeyboardAvoidingView
-			behavior={
-				Platform.OS === 'ios'
-					? 'padding'
-					: 'height'
-			}
-		>
-			<ScrollView style={styles.container}>
-				{posts.map((post, idx) => (
-					<Fragment key={idx}>
-						<Header
-							isFollow={isFollow}
-							isFollower={
-								isFollowerHandler
-							}
-							userName={
-								post.user.userName
-							}
-							userSkill={
-								post.user
-									.userSkill
-							}
-						/>
+		<KeyboardAvoidingView>
+			<View style={styles.container}>
+				<Fragment>
+					<Header
+						isFollow={isFollow}
+						isFollower={
+							isFollowerHandler
+						}
+						userName={
+							post.user.displayName
+						}
+						userSkill={''}
+					/>
 
-						<HorizontalScroll
-							postImages={
-								post.images
-							}
-						/>
-						<PostButtonsBar
-							isLiked={() => {
-								console.log(
-									'Liked!'
-								);
-							}} //TODO: make that functions
-							numOfLikes={
-								post.likes
-							}
-							addComment={
-								moveToComments
-							}
-							shareToFeed={() => {
-								console.log(
-									'Shared?'
-								);
-							}} //TODO: make that functions
-							createdAt={
-								post.createdAt
-							}
-						/>
-						<MoreOrLess
-							fullText={post.desc} //TODO:
-							maxLength={150}
-						/>
+					<HorizontalScroll
+						postImages={post.images}
+					/>
+					<PostButtonsBar
+						isLiked={() => {
+							console.log('Liked!');
+						}} //TODO: make that functions
+						numOfLikes={
+							post.likes.length
+						}
+						addComment={
+							moveToComments
+						}
+						shareToFeed={() => {
+							console.log(
+								'Shared?'
+							);
+						}} //TODO: make that functions
+						createdAt={post._id}
+					/>
+					<MoreOrLess
+						fullText={post.desc} //TODO:
+						maxLength={150}
+					/>
 
+					<View
+						style={
+							styles.commentsContainer
+						}
+					>
+						{post.comments.map(
+							(com, idx) => (
+								<Comment
+									key={idx}
+									photoURL={
+										com.user
+											.photoURL
+									}
+									comment={
+										com.comment
+									}
+									userName={
+										com.user
+											.name
+									}
+								/>
+							)
+						)}
 						<View
 							style={
-								styles.commentsContainer
+								styles.newComment
 							}
 						>
-							{post.comments.map(
-								(com, idx) => (
-									<Comment
-										key={idx}
-										photoURL={
-											com
-												.user
-												.photoURL
-										}
-										comment={
-											com.comment
-										}
-										userName={
-											com
-												.user
-												.name
-										}
-									/>
-								)
-							)}
-							<View
+							<TextInput
 								style={
-									styles.newComment
+									styles.newCommentText
 								}
-							>
-								<TextInput
-									style={{
-										width: '70%',
-									}}
-									placeholder="Add new comment"
-									value={
-										newComment
-									}
-									onChangeText={(
+								placeholder="Add new comment"
+								value={newComment}
+								onChangeText={(
+									text
+								) => {
+									setNewComment(
 										text
-									) => {
-										setNewComment(
-											text
-										);
-									}}
-								/>
-								<Button title="Comment" />
-							</View>
+									);
+								}}
+							/>
+							<Button title="Comment" />
 						</View>
-					</Fragment>
-				))}
-			</ScrollView>
+					</View>
+				</Fragment>
+			</View>
 		</KeyboardAvoidingView>
 	);
 };
@@ -262,14 +151,12 @@ const styles = StyleSheet.create({
 	container: {
 		marginTop: 5,
 		backgroundColor: 'white',
-		height: '100%',
-		position: 'relative',
+		paddingBottom: 25,
 	},
 
 	description: {
 		padding: 10,
 		height: 100,
-
 		width: '100%',
 	},
 	commentsContainer: {
@@ -284,5 +171,8 @@ const styles = StyleSheet.create({
 		width: '80%',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
+	},
+	newCommentText: {
+		width: '70%',
 	},
 });

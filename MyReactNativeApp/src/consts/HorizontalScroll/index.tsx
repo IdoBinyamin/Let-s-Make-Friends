@@ -7,7 +7,6 @@ import {
 	View,
 } from 'react-native';
 import React from 'react';
-import Icon from '../../../assets/Svg/Skillz Icon black.svg';
 import AddSkill from '../../../assets/Svg/Plus Icon.svg';
 
 type SkillCard = {
@@ -17,7 +16,9 @@ type SkillCard = {
 
 type Props = {
 	skillCards?: SkillCard[];
-	postImages?: { uri: string }[];
+	postImages?: React.Dispatch<
+		React.SetStateAction<string>
+	>;
 	isProfile?: boolean;
 };
 
@@ -98,14 +99,9 @@ const HorizontalScroll = ({
 						(postImg, idx) => (
 							<View
 								key={idx}
-								style={{
-									height: 350,
-									width: 410,
-									borderWidth: 1,
-									borderColor:
-										'black',
-									marginRight: 10,
-								}}
+								style={
+									styles.imagesContainer
+								}
 							>
 								<Image
 									source={{
@@ -150,10 +146,16 @@ const styles = StyleSheet.create({
 	skillHeadeline: {
 		fontSize: 26,
 	},
+	imagesContainer: {
+		height: 350,
+		width: 410,
+		borderWidth: 1,
+		borderColor: 'black',
+		marginRight: 10,
+	},
 	images: {
 		height: '100%',
 		width: '100%',
-
 		position: 'relative',
 	},
 });

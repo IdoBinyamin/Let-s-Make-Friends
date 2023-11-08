@@ -1,9 +1,4 @@
-import {
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, {
 	useCallback,
 	useLayoutEffect,
@@ -25,6 +20,7 @@ import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import lengConfig from '../../../comons/leng';
 import { TopButton } from '../../../consts/TopButton';
+import { RouterProps } from '../../../models';
 
 type Props = {
 	route: any;
@@ -34,7 +30,8 @@ export const ChatScreen = ({ route }: Props) => {
 	const { room } = route.params;
 
 	const [messages, setMessages] = useState([]);
-	const navigation = useNavigation();
+	const navigation =
+		useNavigation<RouterProps>();
 	const user = useSelector(
 		(state) => state?.user.user
 	);

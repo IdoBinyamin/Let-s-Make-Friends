@@ -9,7 +9,7 @@ import { FollowButton } from '../../Generic';
 
 type HeaderProps = {
 	userName: string;
-	userSkill: string;
+	userSkill?: string;
 	isFollower: () => void;
 	isFollow: boolean;
 };
@@ -33,9 +33,11 @@ const Header: FC<HeaderProps> = ({
 					styles.descriptionContainer
 				}
 			>
-				<Text style={styles.skilDesc}>
-					{userSkill}
-				</Text>
+				{userSkill && (
+					<Text style={styles.skilDesc}>
+						{userSkill}
+					</Text>
+				)}
 				<Text style={styles.name}>
 					{userName}
 				</Text>

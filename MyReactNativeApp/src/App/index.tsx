@@ -6,6 +6,7 @@ import { LogBox } from 'react-native';
 import { Provider } from 'react-redux';
 import { ChatProvider } from '../../context/ChatCtx';
 import Store from '../store/store';
+import { PostsProvider } from '../../context/PostsCtx';
 
 LogBox.ignoreLogs([
 	'Setting a timer',
@@ -15,11 +16,13 @@ LogBox.ignoreLogs([
 const App = () => {
 	return (
 		<Provider store={Store}>
-			<ChatProvider>
-				<NavigationContainer>
-					<MainNavigator />
-				</NavigationContainer>
-			</ChatProvider>
+			<PostsProvider>
+				<ChatProvider>
+					<NavigationContainer>
+						<MainNavigator />
+					</NavigationContainer>
+				</ChatProvider>
+			</PostsProvider>
 		</Provider>
 	);
 };
