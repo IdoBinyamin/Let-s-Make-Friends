@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export const Home = () => {
+export const FeedScreen = () => {
 	return (
 		<View>
 			<Text>Home sweet home</Text>

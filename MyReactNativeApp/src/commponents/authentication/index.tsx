@@ -1,272 +1,205 @@
 import React, {
-	useState,
 	useEffect,
+	useState,
 } from 'react';
 import {
-	Button,
-	Image,
-	KeyboardAvoidingView,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+	LoginScreen,
+	SignUpScreen,
+} from '../../screens';
 import {
-	addUserInfo,
-	signin,
-	signup,
-} from '../../../config/FirebaseConfig';
+	Text,
+	TouchableOpacity,
+	KeyboardAvoidingView,
+	ActivityIndicator,
+	Keyboard,
+	View,
+	Platform,
+} from 'react-native';
+
 import {
 	askForPermission,
 	pickImage,
 } from '../../../util';
-import { Entypo } from '@expo/vector-icons';
+import {
+	signin,
+	signup,
+} from '../../../config/FirebaseConfig';
+import { styles } from './Style';
 
-export const Authetication = ({}: any) => {
+export const Auth = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [mode, setMode] = useState('SignUp');
-	const [selectedImage, setSelectedImage] =
+	const [mode, setMode] = useState(true);
+
+	const [photoURL, setPhotoURL] =
 		useState<string>('');
-	const [userName, setUserName] = useState('');
+	const [isLoading, setIsLoading] =
+		useState(false);
+	const [name, setName] = useState('');
 	const [
 		permissionStatus,
 		setPermissionStatus,
 	] = useState<string>('');
 
 	useEffect(() => {
-		(async () => {
+		const premitionStatus = async () => {
 			try {
 				const status =
 					await askForPermission();
 				setPermissionStatus(status);
-			} catch (error) {
-				console.log(error);
+			} catch (error: Error) {
+				console.log(error.message);
 			}
-		})();
+		};
+		premitionStatus();
 	}, []);
-	const handleAuthentication = async () => {
-		if (mode === 'SignUp') {
-			try {
-				await signup({ email, password });
-				addUserInfo({
-					name: userName,
-					email: email.toLowerCase(),
-					photoURL: selectedImage,
-					permissionStatus,
-				});
-			} catch (error: Error) {
-				console.log(error.message);
-				if (
-					error.message ===
-					'Firebase: Error (auth/email-already-in-use).'
-				) {
-					alert(
-						'Exsist User please switch to Login'
-					);
-				}
-			}
-		}
-		if (mode === 'Signin') {
-			try {
-				await signin({ email, password });
-			} catch (error: Error) {
-				console.log(error.message);
-				if (
-					error.message ===
-					'Firebase: Error (auth/user-not-found).'
-				) {
-					alert(
-						'Register first please'
-					);
-				}
-			}
-		}
-	};
 
-	const profilePictureHandler = async () => {
-		try {
-			const result = await pickImage();
-			if (!result.canceled) {
-				setSelectedImage(
-					result.assets[0].uri
+	const profilePictureHandler =
+		async (): Promise<
+			JSX.Element | undefined
+		> => {
+			try {
+				const result = await pickImage();
+				if (!result.canceled) {
+					setPhotoURL(
+						result.assets[0].uri
+					);
+				}
+			} catch (error: Error) {
+				console.log(error.message);
+			}
+
+			if (!permissionStatus) {
+				return <Text>Loading</Text>;
+			}
+			if (permissionStatus !== 'granted') {
+				return (
+					<Text>
+						You must need to allow the
+						app using camera and
+						microphon
+					</Text>
 				);
 			}
+		};
+
+	const registerHandler = async () => {
+		Keyboard.dismiss();
+		setIsLoading(true);
+		try {
+			await signup({
+				email,
+				password,
+				name,
+				photoURL,
+			});
 		} catch (error: Error) {
-			console.log(error);
-		}
-
-		if (!permissionStatus) {
-			return <Text>Loading</Text>;
-		}
-		if (permissionStatus !== 'granted') {
-			return (
-				<Text>
-					You must need to allow the app
-					using camera and microphon
-				</Text>
-			);
+			console.log(error.message);
+			if (
+				error.message ===
+				'Firebase: Error (auth/email-already-in-use).'
+			) {
+				alert(
+					'Exsist User please switch to Login'
+				);
+			}
+			setIsLoading(false);
 		}
 	};
 
-	const modeHandler = async () => {
-		mode === 'SignUp'
-			? setMode('Signin')
-			: setMode('SignUp');
+	const updateMode = () => {
+		setMode(!mode);
 	};
 
+	const signinHandler = async () => {
+		setIsLoading(true);
+		Keyboard.dismiss();
+		try {
+			await signin({ email, password });
+		} catch (error: Error) {
+			console.log(error.message);
+			if (
+				error.message ===
+				'Firebase: Error (auth/user-not-found).'
+			) {
+				alert('Register first please');
+			}
+		}
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 4000);
+	};
 	return (
 		<KeyboardAvoidingView
 			behavior="padding"
 			style={styles.container}
 		>
-			<Text
-				style={{
-					color: 'blue',
-					fontSize: 24,
-					marginBottom: 20,
-				}}
+			<View
+				style={[
+					Platform.OS === 'android'
+						? styles.androidContainer
+						: styles.iosContainer,
+				]}
 			>
-				Welcome to My App
-			</Text>
-
-			{mode === 'SignUp' && (
-				<>
-					<Text
-						style={{
-							fontSize: 14,
-							color: 'blue',
-							marginTop: 20,
-						}}
-					>
-						Please provide your name
-						and an optional profile
-						photo
-					</Text>
-					<TouchableOpacity
-						onPress={
+				{mode ? (
+					<LoginScreen
+						updateMode={updateMode}
+						setEmail={setEmail}
+						setPassword={setPassword}
+						email={email}
+						password={password}
+					/>
+				) : (
+					<SignUpScreen
+						updateMode={updateMode}
+						setEmail={setEmail}
+						setPassword={setPassword}
+						setName={setName}
+						profilePictureHandler={
 							profilePictureHandler
 						}
-						style={{
-							marginVertical: 30,
-							borderRadius: 120,
-							width: 120,
-							height: 120,
-							backgroundColor:
-								'gray',
-							justifyContent:
-								'center',
-							alignItems: 'center',
-						}}
-					>
-						{!selectedImage ? (
-							<Entypo
-								size={45}
-								color={'white'}
-								name="camera"
-							/>
-						) : (
-							<Image
-								source={{
-									uri: selectedImage,
-								}}
-								style={{
-									height: '100%',
-									width: '100%',
-									borderRadius: 120,
-								}}
-							/>
-						)}
-					</TouchableOpacity>
-					<TextInput
-						placeholder="Type your name"
-						value={userName}
-						onChangeText={setUserName}
-						keyboardType="default"
-						style={{
-							borderBottomWidth: 2,
-							borderBottomColor:
-								'blue',
-							width: 200,
-						}}
+						name={name}
+						email={email}
+						password={password}
+						photoURL={photoURL}
 					/>
-				</>
-			)}
-			<View style={{ marginTop: 20 }}>
-				<TextInput
-					placeholder="email"
-					value={email}
-					onChangeText={setEmail}
-					keyboardType="email-address"
-					style={{
-						borderBottomWidth: 2,
-						borderBottomColor: 'blue',
-						width: 200,
-					}}
-				/>
-				<TextInput
-					placeholder="password"
-					value={password}
-					onChangeText={setPassword}
-					keyboardType="visible-password"
-					secureTextEntry={true}
-					style={{
-						borderBottomWidth: 2,
-						borderBottomColor: 'blue',
-						width: 200,
-						marginTop: 20,
-					}}
-				/>
-				<View>
-					<Button
-						color={'green'}
-						disabled={
-							mode === 'SignUp'
-								? !password ||
-								  !email ||
-								  !selectedImage
-								: !password ||
-								  !email
-						}
-						title={
-							mode === 'SignUp'
-								? 'Sign-Up'
-								: 'Log-in'
-						}
-						onPress={
-							handleAuthentication
-						}
-					/>
-				</View>
+				)}
+			</View>
+			{!isLoading ? (
 				<TouchableOpacity
-					style={{ marginTop: 15 }}
-					onPress={modeHandler}
+					onPress={
+						mode
+							? signinHandler
+							: registerHandler
+					}
+					style={[
+						Platform.OS === 'android'
+							? styles.androidInOrUpBtn
+							: styles.iosInOrUpBtn,
+					]}
 				>
-					<Text>
-						{mode === 'SignUp'
-							? 'Already have an acount? Sign in'
-							: 'Dont have an acount? Sign Up'}
+					<Text
+						style={
+							styles.inOrUpBtnText
+						}
+					>
+						{mode
+							? 'Sign In'
+							: 'Apply'}
 					</Text>
 				</TouchableOpacity>
-			</View>
+			) : (
+				<ActivityIndicator
+					size={'large'}
+					color={'black'}
+					style={[
+						Platform.OS === 'android'
+							? styles.androidLoading
+							: styles.iosLoading,
+					]}
+				/>
+			)}
 		</KeyboardAvoidingView>
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: 'white',
-	},
-	input: {
-		marginVertical: 4,
-		height: 50,
-		borderWidth: 1,
-		borderRadius: 4,
-		padding: 10,
-		backgroundColor: '#fff',
-	},
-});

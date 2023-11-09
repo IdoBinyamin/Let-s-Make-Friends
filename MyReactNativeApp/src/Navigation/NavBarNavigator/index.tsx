@@ -1,11 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {
-	Home,
-	Profile,
-	Chat,
+	FeedScreen,
+	SkillzScreen,
+	ChatRoomsScreen,
+	UploadScreen,
 } from '../../screens';
-import { Entypo } from '@expo/vector-icons';
+import IconSkilz from '../../../assets/Svg/Skillz Icon black.svg';
+import {
+	Entypo,
+	MaterialCommunityIcons,
+	Octicons,
+} from '@expo/vector-icons';
+import lengConfig from '../../comons/leng';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,37 +20,59 @@ export const InsideLayout = () => {
 	return (
 		<Tab.Navigator>
 			<Tab.Screen
-				name="Home"
-				component={Home}
+				name={lengConfig.screens.skillz}
+				component={SkillzScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
-						<Entypo
-							name="home"
-							size={20}
-							color={'black'}
+						<IconSkilz
+							height={30}
+							width={30}
+							color={'#2ce4c5'}
 						/>
 					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
 				}}
 			/>
 			<Tab.Screen
-				name="Profile"
-				component={Profile}
+				name={
+					lengConfig.screens.feedScreen
+				}
+				component={FeedScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
-						<Entypo
-							name="user"
+						<MaterialCommunityIcons
+							name="account-group"
 							size={20}
 							color={'black'}
 						/>
 					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
 				}}
 			/>
 
 			<Tab.Screen
-				name="Chat"
-				component={Chat}
+				name={lengConfig.screens.upload}
+				component={UploadScreen}
+				options={{
+					headerShown: false,
+					tabBarIcon: () => (
+						<Octicons
+							name="diff-added"
+							size={20}
+							color="black"
+						/>
+					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
+				}}
+			/>
+			<Tab.Screen
+				name={lengConfig.screens.chat}
+				component={ChatRoomsScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: () => (
@@ -53,6 +82,8 @@ export const InsideLayout = () => {
 							color={'black'}
 						/>
 					),
+					tabBarActiveTintColor:
+						'#2ce4c5',
 				}}
 			/>
 		</Tab.Navigator>

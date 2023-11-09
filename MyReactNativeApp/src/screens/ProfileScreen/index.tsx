@@ -1,12 +1,28 @@
-import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	View,
+} from 'react-native';
+import React from 'react';
+import SearchLine from '../../commponents/SearchLine';
+import ProfileBody from '../../commponents/ProfileBody';
 
-export const Profile = () => {
+type Props = {};
+
+export const ProfileScreen = (props: Props) => {
 	return (
-		<View>
-			<Text>Welcome</Text>
+		<View style={styles.container}>
+			<SearchLine
+				photoURL=""
+				isProfilePage={true}
+			/>
+			<ProfileBody />
 		</View>
 	);
 };
 
-export default Profile;
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+});

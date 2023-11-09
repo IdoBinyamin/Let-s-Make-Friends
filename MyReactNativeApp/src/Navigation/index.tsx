@@ -1,82 +1,119 @@
 import React from 'react';
 import { InsideLayout } from './NavBarNavigator/index';
-import { Authetication } from '../commponents/authentication/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { UserModel } from '../models';
-import { Button } from 'react-native';
 import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
-import { Entypo } from '@expo/vector-icons';
-import { Contacts } from '../screens/index';
-import Chat from '../commponents/Chat';
-import { ChatHeader } from '../screens/index';
+import { Auth } from '../commponents/authentication/index';
+import {
+	CommentsScreen,
+	ProfileScreen,
+	SplashScreen,
+} from '../screens';
+
+import { AntDesign } from '@expo/vector-icons';
+import { AddNewChat } from '../commponents/Chat/NewChat';
+import { ChatScreen } from '../screens';
+import lengConfig from '../comons/leng';
+import { TopButton } from '../consts';
+
 const Stack = createNativeStackNavigator();
 
-export const MainNavigator = ({
-	user,
-}: UserModel) => {
+export const MainNavigator = () => {
 	const doLogout = () => {
 		FIREBASE_AUTH.signOut();
 	};
+
 	return (
 		<Stack.Navigator>
-			{user ? (
-				<>
-					<Stack.Screen
-						name="InsideLayout"
-						component={InsideLayout}
-						options={{
-							headerTitle: '',
-							headerRight: () => {
-								return (
-									<>
-										<Entypo
-											name="retweet"
-											size={
-												20
-											}
-											color="blue"
-										/>
-										<Button
-											title="logout"
-											onPress={
-												doLogout
-											}
-										/>
-									</>
-								);
-							},
-						}}
-					/>
-					<Stack.Screen
-						name="contacts"
-						component={Contacts}
-						options={{
-							headerTitle: '',
-						}}
-					/>
-					<Stack.Screen
-						name="chat"
-						component={Chat}
-						options={{
-							headerTitle: (
-								props
-							) => (
-								<ChatHeader
-									{...props}
-								/>
-							),
-						}}
-					/>
-				</>
-			) : (
-				<Stack.Screen
-					name="Authetication"
-					component={Authetication}
-					options={{
-						headerShown: false,
-					}}
-				/>
-			)}
+			<Stack.Screen
+				name={
+					lengConfig.screens
+						.splashScreen
+				}
+				component={SplashScreen}
+				options={{
+					headerShown: false,
+					gestureEnabled: false,
+				}}
+			/>
+
+			<Stack.Screen
+				name={
+					lengConfig.screens
+						.insideLayout
+				}
+				component={InsideLayout}
+				options={{
+					headerShown: false,
+					gestureEnabled: false,
+				}}
+			/>
+			<Stack.Screen
+				name={
+					lengConfig.screens
+						.profileScreen
+				}
+				component={ProfileScreen}
+				options={{
+					gestureEnabled: false,
+					headerTitle: 'My Profile',
+					headerRight: () => {
+						return (
+							<TopButton
+								onPress={doLogout}
+								textStyle={{
+									color: 'red',
+									alignSelf:
+										'center',
+								}}
+								image={
+									<AntDesign
+										name="logout"
+										size={24}
+										color={
+											'red'
+										}
+										style={{
+											marginLeft: 10,
+										}}
+									/>
+								}
+							/>
+						);
+					},
+				}}
+			/>
+
+			<Stack.Screen
+				name={lengConfig.screens.comments}
+				component={CommentsScreen}
+				options={{
+					gestureEnabled: false,
+				}}
+			/>
+			<Stack.Screen
+				name={lengConfig.screens.chatRoom}
+				component={ChatScreen}
+				options={{
+					gestureEnabled: false,
+				}}
+			/>
+			<Stack.Screen
+				name={
+					lengConfig.screens.addNewChat
+				}
+				component={AddNewChat}
+			/>
+
+			<Stack.Screen
+				name={
+					lengConfig.screens.authScreen
+				}
+				component={Auth}
+				options={{
+					headerShown: false,
+					gestureEnabled: false,
+				}}
+			/>
 		</Stack.Navigator>
 	);
 };
