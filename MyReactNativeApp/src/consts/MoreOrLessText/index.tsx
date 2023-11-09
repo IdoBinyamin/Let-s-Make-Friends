@@ -23,7 +23,7 @@ const MoreOrLess = ({
 	};
 
 	const shouldShowMore =
-		fullText.length > maxLength;
+		fullText?.length > maxLength;
 
 	// Get the part of the string to display
 	const displayedText = shouldShowMore

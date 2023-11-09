@@ -28,11 +28,7 @@ const Header: FC<HeaderProps> = ({
 			<View style={styles.iconContainer}>
 				<Image
 					source={{ uri: userUri }}
-					style={{
-						height: 90,
-						width: 90,
-						borderRadius: 110,
-					}}
+					style={styles.ownerImage}
 				/>
 			</View>
 			<View
@@ -100,6 +96,11 @@ const styles = StyleSheet.create({
 		width: 100,
 		borderWidth: 1,
 		borderRadius: 90,
+	},
+	ownerImage: {
+		height: 90,
+		width: 90,
+		borderRadius: 110,
 	},
 	descriptionContainer: {
 		justifyContent: 'center',

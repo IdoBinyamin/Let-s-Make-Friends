@@ -65,23 +65,23 @@ const PostCard = ({ post }: PostProps) => {
 							isFollowerHandler
 						}
 						userName={
-							post.displayName
+							post?.displayName
 						}
 						userSkill={''}
 						userUri={
-							post.user.photoURL
+							post?.user.photoURL
 						}
 					/>
 
 					<HorizontalScroll
-						postImages={post.images}
+						postImages={post?.images}
 					/>
 					<PostButtonsBar
 						isLiked={() => {
 							console.log('Liked!');
 						}} //TODO: make that functions
 						numOfLikes={
-							post.likes.length
+							post?.likes.length
 						}
 						addComment={
 							moveToComments
@@ -91,10 +91,10 @@ const PostCard = ({ post }: PostProps) => {
 								'Shared?'
 							);
 						}} //TODO: make that functions
-						createdAt={post._id}
+						createdAt={post?._id}
 					/>
 					<MoreOrLess
-						fullText={post.desc} //TODO:
+						fullText={post?.desc} //TODO:
 						maxLength={150}
 					/>
 
@@ -103,7 +103,7 @@ const PostCard = ({ post }: PostProps) => {
 							styles.commentsContainer
 						}
 					>
-						{post.comments.map(
+						{post?.comments.map(
 							(com, idx) => (
 								<Comment
 									key={idx}
