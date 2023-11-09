@@ -100,17 +100,3 @@ export async function signup({
 
 
 
-export const addRoom = async (
-	ROOM_REF: any,
-	roomProps: RoomProps
-) => {
-	try {
-		// Use the updateDoc function to update the document.
-		await setDoc(ROOM_REF, roomProps);
-	} catch (error: any) {
-		console.error(
-			'Error checking/creating room:',
-			error.message
-		);
-	}
-};
