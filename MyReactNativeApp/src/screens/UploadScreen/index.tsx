@@ -38,6 +38,7 @@ export function UploadScreen() {
 
 		const newPost = {
 			_id: id,
+			displayName: currUser.displayName,
 			user: currUser,
 			desc: desc,
 			likes: [],

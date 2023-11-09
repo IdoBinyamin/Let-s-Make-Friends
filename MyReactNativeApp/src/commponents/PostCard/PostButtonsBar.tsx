@@ -11,6 +11,7 @@ import {
 	Fontisto,
 	FontAwesome,
 } from '@expo/vector-icons';
+import { formatDate } from '../../../util';
 
 type Props = {
 	isLiked: () => void;
@@ -53,7 +54,7 @@ const PostButtonsBar = (props: Props) => {
 			<View style={styles.timeContainer}>
 				<FontAwesome name="clock-o" />
 				<Text style={styles.timeText}>
-					{props.createdAt}
+					{formatDate(props.createdAt)}
 				</Text>
 			</View>
 		</View>

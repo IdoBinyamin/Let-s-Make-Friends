@@ -22,6 +22,7 @@ type PostProps = {
 	post: {
 		_id: string;
 		desc: string;
+		displayName: string;
 		user: any;
 		comments: any[];
 		images: React.Dispatch<
@@ -64,9 +65,12 @@ const PostCard = ({ post }: PostProps) => {
 							isFollowerHandler
 						}
 						userName={
-							post.user.displayName
+							post.displayName
 						}
 						userSkill={''}
+						userUri={
+							post.user.photoURL
+						}
 					/>
 
 					<HorizontalScroll

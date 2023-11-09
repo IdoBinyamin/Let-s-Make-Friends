@@ -4,24 +4,26 @@ import React, {
 } from 'react';
 
 interface PostsCtxProps {
-	posts: [{}];
-	setPosts: (post: {}) => void;
+	postsList: [];
+	setPostsList: (post: {}) => void;
 }
 
 export const PostsContext =
 	createContext<PostsCtxProps>({
-		posts: [{}],
-		setPosts: () => {},
+		postsList: [],
+		setPostsList: () => [],
 	});
 
 export const PostsProvider = ({
 	children,
 }: any) => {
-	const [posts, setPosts] = useState([]);
+	const [postsList, setPostsList] = useState(
+		[]
+	);
 
 	const values = {
-		posts,
-		setPosts,
+		postsList,
+		setPostsList,
 	};
 
 	return (

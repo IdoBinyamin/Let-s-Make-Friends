@@ -2,6 +2,7 @@ import {
 	StyleSheet,
 	View,
 	Text,
+	Image,
 } from 'react-native';
 import React, { FC } from 'react';
 import IconSkillz from '../../../assets/Svg/Skillz Icon black.svg';
@@ -12,6 +13,7 @@ type HeaderProps = {
 	userSkill?: string;
 	isFollower: () => void;
 	isFollow: boolean;
+	userUri: string;
 };
 
 const Header: FC<HeaderProps> = ({
@@ -19,13 +21,18 @@ const Header: FC<HeaderProps> = ({
 	userName,
 	isFollower,
 	isFollow,
+	userUri,
 }) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.iconContainer}>
-				<IconSkillz
-					height={110}
-					width={110}
+				<Image
+					source={{ uri: userUri }}
+					style={{
+						height: 90,
+						width: 90,
+						borderRadius: 110,
+					}}
 				/>
 			</View>
 			<View
