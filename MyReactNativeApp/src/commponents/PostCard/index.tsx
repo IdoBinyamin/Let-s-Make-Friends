@@ -23,6 +23,7 @@ type PostProps = {
 		_id: string;
 		desc: string;
 		displayName: string;
+		title: string;
 		user: any;
 		comments: any[];
 		images: React.Dispatch<
@@ -67,7 +68,7 @@ const PostCard = ({ post }: PostProps) => {
 						userName={
 							post?.displayName
 						}
-						userSkill={''}
+						postTitle={post?.title}
 						userUri={
 							post?.user.photoURL
 						}

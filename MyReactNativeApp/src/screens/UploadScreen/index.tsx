@@ -28,6 +28,7 @@ export function UploadScreen() {
 		useNavigation<RouterProps>();
 
 	const [desc, setDesc] = useState('');
+	const [title, setTitle] = useState('');
 
 	const [images, setImages] = useState([]);
 
@@ -40,6 +41,7 @@ export function UploadScreen() {
 			_id: id,
 			displayName: currUser.displayName,
 			user: currUser,
+			title: title,
 			desc: desc,
 			likes: [],
 			images: images,
@@ -54,6 +56,7 @@ export function UploadScreen() {
 			.then(() => {
 				setIsLoading(false);
 				setDesc('');
+				setTitle('');
 				setImages([]);
 				navigation.navigate(
 					lengConfig.screens.feedScreen
@@ -101,6 +104,8 @@ export function UploadScreen() {
 				<PostForm
 					images={images}
 					desc={desc}
+					title={title}
+					setTitle={setTitle}
 					setDesc={setDesc}
 					postImagesHandler={
 						postImagesHandler

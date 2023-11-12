@@ -16,6 +16,10 @@ type Props = {
 	setDesc: React.Dispatch<
 		React.SetStateAction<string>
 	>;
+	title: string;
+	setTitle: React.Dispatch<
+		React.SetStateAction<string>
+	>;
 	postImagesHandler: () => void;
 	createNewPost: () => void;
 };
@@ -24,12 +28,21 @@ export const PostForm = ({
 	images,
 	desc,
 	setDesc,
+	title,
+	setTitle,
 	postImagesHandler,
 	createNewPost,
 }: Props) => {
 	return (
 		<View style={styles.container}>
 			<Text>Upload</Text>
+			<TextInput
+				placeholder="Add title here"
+				value={title}
+				onChangeText={(text) =>
+					setTitle(text)
+				}
+			/>
 			<TextInput
 				placeholder="Add description here"
 				value={desc}

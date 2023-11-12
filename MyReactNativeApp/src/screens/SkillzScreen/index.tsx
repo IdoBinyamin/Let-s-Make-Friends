@@ -1,6 +1,7 @@
 import React, {
 	useContext,
 	useLayoutEffect,
+	useState,
 } from 'react';
 import {
 	ActivityIndicator,
@@ -19,11 +20,15 @@ import {
 } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../config/FirebaseConfig';
 import { PostsContext } from '../../../context';
+import { StyleSheet } from 'react-native';
 
 export const SkillzScreen = () => {
 	const currUser = useSelector(
 		(state) => state?.user.user
 	);
+
+	const [isLoading, setIsLoading] =
+		useState(false);
 
 	const { postsList, setPostsList } =
 		useContext(PostsContext);
@@ -59,12 +64,7 @@ export const SkillzScreen = () => {
 	}, [postsList]);
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				height: '100%',
-			}}
-		>
+		<View style={styles.container}>
 			<SearchLine />
 			{postsList.length !== 0 ? (
 				<ScrollView>
@@ -78,11 +78,8 @@ export const SkillzScreen = () => {
 					})}
 				</ScrollView>
 			) : (
-				<View>
+				<View style={styles.loadingPosts}>
 					<Text>No posts to show</Text>
-					<ActivityIndicator
-						size={'large'}
-					/>
 				</View>
 			)}
 		</View>
@@ -91,3 +88,14 @@ export const SkillzScreen = () => {
 
 export default SkillzScreen;
 
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		height: '100%',
+	},
+	loadingPosts: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+});

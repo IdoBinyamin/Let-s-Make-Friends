@@ -5,19 +5,18 @@ import {
 	Image,
 } from 'react-native';
 import React, { FC } from 'react';
-import IconSkillz from '../../../assets/Svg/Skillz Icon black.svg';
 import { FollowButton } from '../../Generic';
 
 type HeaderProps = {
 	userName: string;
-	userSkill?: string;
+	postTitle?: string;
 	isFollower: () => void;
 	isFollow: boolean;
 	userUri: string;
 };
 
 const Header: FC<HeaderProps> = ({
-	userSkill,
+	postTitle,
 	userName,
 	isFollower,
 	isFollow,
@@ -36,20 +35,24 @@ const Header: FC<HeaderProps> = ({
 					styles.descriptionContainer
 				}
 			>
-				{userSkill && (
-					<Text style={styles.skilDesc}>
-						{userSkill}
-					</Text>
-				)}
 				<Text style={styles.name}>
 					{userName}
 				</Text>
+				{postTitle && (
+					<Text
+						style={
+							styles.postTitleText
+						}
+					>
+						{postTitle}
+					</Text>
+				)}
 			</View>
 
 			<View
 				style={styles.followBtnContainer}
 			>
-				{isFollow ? (
+				{!isFollow ? (
 					<FollowButton
 						title="+ Follow"
 						onPress={isFollower}
@@ -107,11 +110,12 @@ const styles = StyleSheet.create({
 		alignContent: 'center',
 		marginLeft: 120,
 	},
-	skilDesc: {
-		fontSize: 30,
+	postTitleText: {
+		fontSize: 18,
 	},
 	name: {
-		fontSize: 18,
+		fontSize: 30,
+		fontWeight: 'bold',
 	},
 	followBtnContainer: {
 		width: 105,
