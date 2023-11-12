@@ -50,7 +50,7 @@ export const AllChats = (props: Props) => {
 			}
 		);
 		return unsubscribe;
-	}, [rooms]);
+	}, []);
 
 	return (
 		<ScrollView style={styles.container}>
