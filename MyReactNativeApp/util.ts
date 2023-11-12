@@ -1,5 +1,6 @@
 // import 'react-native-get-random-values';
 import * as ImagePicker from 'expo-image-picker';
+import { FIREBASE_AUTH } from './config/FirebaseConfig';
 
 export async function pickImage() {
 	let result =
@@ -13,6 +14,9 @@ export async function askForPermission() {
 
 	return status;
 }
+export const doLogout = () => {
+	FIREBASE_AUTH.signOut();
+};
 
 export const formatDate = (timestamp) => {
 	const now = new Date();

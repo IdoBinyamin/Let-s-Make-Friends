@@ -6,10 +6,7 @@ import { UploadScreen } from './UploadScreen';
 import { SplashScreen } from './SplashScreen';
 import { ProfileScreen } from './ProfileScreen';
 import { CommentsScreen } from './CommentsScreen';
-import {
-	SignUpScreen,
-	LoginScreen,
-} from './AuthScreen';
+import { Auth } from './authScreen';
 
 export {
 	FeedScreen,
@@ -17,8 +14,7 @@ export {
 	UploadScreen,
 	ChatRoomsScreen,
 	ChatScreen,
-	SignUpScreen,
-	LoginScreen,
+	Auth,
 	SplashScreen,
 	ProfileScreen,
 	CommentsScreen,

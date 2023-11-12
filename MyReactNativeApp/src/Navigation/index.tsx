@@ -1,12 +1,11 @@
 import React from 'react';
 import { InsideLayout } from './NavBarNavigator/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { FIREBASE_AUTH } from '../../config/FirebaseConfig';
-import { Auth } from '../commponents/authentication/index';
 import {
 	CommentsScreen,
 	ProfileScreen,
 	SplashScreen,
+	Auth,
 } from '../screens';
 
 import { AntDesign } from '@expo/vector-icons';
@@ -14,12 +13,31 @@ import { AddNewChat } from '../commponents/Chat/NewChat';
 import { ChatScreen } from '../screens';
 import lengConfig from '../comons/leng';
 import { TopButton } from '../consts';
+import { doLogout } from '../../util';
 
 const Stack = createNativeStackNavigator();
 
 export const MainNavigator = () => {
-	const doLogout = () => {
-		FIREBASE_AUTH.signOut();
+	const headerRightHandler = () => {
+		return (
+			<TopButton
+				onPress={doLogout}
+				textStyle={{
+					color: 'red',
+					alignSelf: 'center',
+				}}
+				image={
+					<AntDesign
+						name="logout"
+						size={24}
+						color={'red'}
+						style={{
+							marginLeft: 10,
+						}}
+					/>
+				}
+			/>
+		);
 	};
 
 	return (
@@ -56,30 +74,8 @@ export const MainNavigator = () => {
 				options={{
 					gestureEnabled: false,
 					headerTitle: 'My Profile',
-					headerRight: () => {
-						return (
-							<TopButton
-								onPress={doLogout}
-								textStyle={{
-									color: 'red',
-									alignSelf:
-										'center',
-								}}
-								image={
-									<AntDesign
-										name="logout"
-										size={24}
-										color={
-											'red'
-										}
-										style={{
-											marginLeft: 10,
-										}}
-									/>
-								}
-							/>
-						);
-					},
+					headerRight:
+						headerRightHandler,
 				}}
 			/>
 

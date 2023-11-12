@@ -1,8 +1,6 @@
 import React, {
 	useContext,
-	useEffect,
 	useLayoutEffect,
-	useState,
 } from 'react';
 import {
 	ActivityIndicator,
@@ -48,12 +46,6 @@ export const SkillzScreen = () => {
 					setPostsList(
 						querySnapShot.docs.map(
 							(post) => {
-								// 	if (
-								// 		post.data()
-								// 			.displayName !==
-								// 		currUser.displayName
-								// 	) {
-								// 	}
 								return post.data();
 							}
 						)
@@ -67,7 +59,7 @@ export const SkillzScreen = () => {
 		}
 	}, [navigation]);
 
-	console.log(postsList);
+
 	return (
 		<View
 			style={{
