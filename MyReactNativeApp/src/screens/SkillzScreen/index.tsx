@@ -5,6 +5,7 @@ import React, {
 import {
 	ActivityIndicator,
 	ScrollView,
+	Text,
 	View,
 } from 'react-native';
 import SearchLine from '../../commponents/SearchLine';
@@ -18,7 +19,6 @@ import {
 } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../config/FirebaseConfig';
 import { PostsContext } from '../../../context';
-import { useNavigation } from '@react-navigation/native';
 
 export const SkillzScreen = () => {
 	const currUser = useSelector(
@@ -27,7 +27,6 @@ export const SkillzScreen = () => {
 
 	const { postsList, setPostsList } =
 		useContext(PostsContext);
-	const navigation = useNavigation();
 
 	useLayoutEffect(() => {
 		try {
@@ -57,8 +56,7 @@ export const SkillzScreen = () => {
 		} catch (error: any) {
 			console.log('Error: ', error.message);
 		}
-	}, [navigation]);
-
+	}, [postsList]);
 
 	return (
 		<View
@@ -68,7 +66,7 @@ export const SkillzScreen = () => {
 			}}
 		>
 			<SearchLine />
-			{postsList.length > 0 ? (
+			{postsList.length !== 0 ? (
 				<ScrollView>
 					{postsList.map((pos, idx) => {
 						return (
@@ -81,6 +79,7 @@ export const SkillzScreen = () => {
 				</ScrollView>
 			) : (
 				<View>
+					<Text>No posts to show</Text>
 					<ActivityIndicator
 						size={'large'}
 					/>

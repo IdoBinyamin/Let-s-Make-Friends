@@ -16,20 +16,23 @@ import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
 	AuthProps,
-	RoomProps,
 	SignUpProps,
 } from './FirebaseTypes';
 
 //TODO: move all Types to models files
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyD49SzibpIW2y_21ySSYdfg_6bpE-qxU9k',
-	authDomain: 'rnexpo-ts.firebaseapp.com',
-	projectId: 'rnexpo-ts',
-	storageBucket: 'rnexpo-ts.appspot.com',
-	messagingSenderId: '741091590325',
-	appId: '1:741091590325:web:d83c70b20c63fc13ec3efc',
-	measurementId: 'G-K392XGKS61',
+	apiKey: 'AIzaSyCLTUZSJwv2wkrwijxIbDEf4wawAywZrQw',
+	authDomain:
+		'drinkingwater-9e987.firebaseapp.com',
+	databaseURL:
+		'https://drinkingwater-9e987-default-rtdb.europe-west1.firebasedatabase.app',
+	projectId: 'drinkingwater-9e987',
+	storageBucket:
+		'drinkingwater-9e987.appspot.com',
+	messagingSenderId: '766357486414',
+	appId: '1:766357486414:web:42b88691747192e3ee7c1f',
+	measurementId: 'G-S18GQTBSRS',
 };
 
 // Initialize Firebase
