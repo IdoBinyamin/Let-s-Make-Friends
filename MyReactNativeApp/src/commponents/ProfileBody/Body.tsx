@@ -14,17 +14,7 @@ type Props = {};
 const Body = (props: Props) => {
 	const about =
 		'Interior design is the art and science of enhancing the interior of a building to achieve a healthier and more aesthetically pleasing environment for the people Interior design is the art and science of enhancing the interior of a building to achieve healthier and more aesthetically pleasing environment for the people';
-	const skillCards = [
-		{
-			uri: '',
-			skill: 'Full stack',
-		},
-		{
-			uri: '',
-			skill: 'Full stack',
-		},
-	];
-	const postImages = ['1', '2', '3'];
+
 	return (
 		<View style={styles.container}>
 			<View
@@ -46,21 +36,14 @@ const Body = (props: Props) => {
 				</TouchableOpacity>
 			</View>
 			<Text>{about}</Text>
-			<Text style={styles.headline}>
-				My Skillz(5)
-			</Text>
 			<HorizontalScroll
-				skillCards={skillCards}
 				isProfile={true}
-				postImages={postImages}
+				// postImages={}
 			/>
 			<View>
-				<Text style={styles.headline}>
-					My Board Requests (0)
-				</Text>
 				<TouchableOpacity
 					style={
-						styles.newJobReqContainer
+						styles.newPostsContainer
 					}
 					onPress={() => {
 						console.log(
@@ -70,11 +53,9 @@ const Body = (props: Props) => {
 				>
 					<Plus />
 					<Text
-						style={
-							styles.newJobReqText
-						}
+						style={styles.newPostText}
 					>
-						Post a new job request
+						New Post
 					</Text>
 				</TouchableOpacity>
 			</View>
@@ -100,12 +81,13 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		paddingBottom: 5,
 	},
-	newJobReqContainer: {
+	newPostsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: 15,
 	},
-	newJobReqText: {
+	newPostText: {
 		color: '#05aff8',
 		fontSize: 20,
 		paddingLeft: 10,

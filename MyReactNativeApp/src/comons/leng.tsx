@@ -11,7 +11,7 @@ const lengConfig = {
 		visiblePass: 'visible-password',
 	},
 	screens: {
-		skillz: 'skillz',
+		Home: 'Home',
 		feedScreen: 'FeedScreen',
 		upload: 'Upload',
 		chat: 'Chat',

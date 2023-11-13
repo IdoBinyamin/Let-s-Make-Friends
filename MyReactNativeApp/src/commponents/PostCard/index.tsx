@@ -2,6 +2,7 @@ import {
 	Button,
 	KeyboardAvoidingView,
 	StyleSheet,
+	Text,
 	TextInput,
 	View,
 } from 'react-native';
@@ -68,15 +69,25 @@ const PostCard = ({ post }: PostProps) => {
 						userName={
 							post?.displayName
 						}
-						postTitle={post?.title}
 						userUri={
 							post?.user.photoURL
 						}
 					/>
+					<Text
+						style={
+							styles.postTitleText
+						}
+					>
+						{post.title}
+					</Text>
+					{post?.images.length > 0 && (
+						<HorizontalScroll
+							postImages={
+								post?.images
+							}
+						/>
+					)}
 
-					<HorizontalScroll
-						postImages={post?.images}
-					/>
 					<PostButtonsBar
 						isLiked={() => {
 							console.log('Liked!');
@@ -94,10 +105,17 @@ const PostCard = ({ post }: PostProps) => {
 						}} //TODO: make that functions
 						createdAt={post?._id}
 					/>
-					<MoreOrLess
-						fullText={post?.desc} //TODO:
-						maxLength={150}
-					/>
+
+					{post?.desc !== '' &&
+						post?.desc.length >
+							20 && (
+							<MoreOrLess
+								fullText={
+									post?.desc
+								} //TODO:
+								maxLength={100}
+							/>
+						)}
 
 					<View
 						style={
@@ -168,6 +186,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		justifyContent: 'center',
 		alignItems: 'center',
+		marginTop: 15,
 	},
 	newComment: {
 		borderWidth: 1,
@@ -179,5 +198,11 @@ const styles = StyleSheet.create({
 	},
 	newCommentText: {
 		width: '70%',
+	},
+	postTitleText: {
+		fontSize: 15,
+		alignSelf: 'flex-start',
+		paddingLeft: 18,
+		position: 'relative',
 	},
 });

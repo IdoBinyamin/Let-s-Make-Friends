@@ -1,12 +1,16 @@
 import {
-	Button,
-	StyleSheet,
 	Text,
 	TextInput,
+	TouchableOpacity,
 	View,
 } from 'react-native';
 import React from 'react';
 import { HorizontalScroll } from '../../../consts';
+import {
+	MaterialCommunityIcons,
+	Feather,
+} from '@expo/vector-icons';
+import { styles } from './style';
 
 type Props = {
 	images: React.Dispatch<
@@ -35,46 +39,67 @@ export const PostForm = ({
 }: Props) => {
 	return (
 		<View style={styles.container}>
-			<Text>Upload</Text>
-			<TextInput
-				placeholder="Add title here"
-				value={title}
-				onChangeText={(text) =>
-					setTitle(text)
+			<Text style={styles.headLineText}>
+				Upload
+			</Text>
+			<View
+				style={
+					styles.fieldsOptionContainer
 				}
-			/>
-			<TextInput
-				placeholder="Add description here"
-				value={desc}
-				onChangeText={(text) =>
-					setDesc(text)
-				}
-			/>
+			>
+				<View
+					style={
+						styles.fieldsTextContainer
+					}
+				>
+					<TextInput
+						placeholder="Add title here"
+						value={title}
+						onChangeText={(text) =>
+							setTitle(text)
+						}
+						style={
+							styles.inputWrapper
+						}
+					/>
+					<TextInput
+						placeholder="Add description here"
+						value={desc}
+						onChangeText={(text) =>
+							setDesc(text)
+						}
+						style={
+							styles.inputWrapper
+						}
+					/>
+				</View>
 
-			<Button
-				title={
-					images.length === 0
-						? 'Add images'
-						: 'Add another image'
-				}
-				onPress={postImagesHandler}
-			/>
-			{images.length !== 0 && (
-				<HorizontalScroll
-					postImages={images}
-				/>
-			)}
-			<Button
-				title="Testing"
-				onPress={createNewPost}
-			/>
+				<TouchableOpacity
+					onPress={postImagesHandler}
+				>
+					<MaterialCommunityIcons
+						name="camera-plus"
+						size={50}
+						color="black"
+					/>
+				</TouchableOpacity>
+				<TouchableOpacity
+					onPress={createNewPost}
+				>
+					<Feather
+						name="upload"
+						size={50}
+						color="green"
+					/>
+				</TouchableOpacity>
+			</View>
+			<View style={styles.photoContainer}>
+				{images.length !== 0 && (
+					<HorizontalScroll
+						postImages={images}
+					/>
+				)}
+			</View>
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-});

@@ -4,7 +4,6 @@ import React, {
 	useState,
 } from 'react';
 import {
-	ActivityIndicator,
 	ScrollView,
 	Text,
 	View,
@@ -22,7 +21,7 @@ import { FIREBASE_DB } from '../../../config/FirebaseConfig';
 import { PostsContext } from '../../../context';
 import { StyleSheet } from 'react-native';
 
-export const SkillzScreen = () => {
+export const FeedScreen = () => {
 	const currUser = useSelector(
 		(state) => state?.user.user
 	);
@@ -34,6 +33,7 @@ export const SkillzScreen = () => {
 		useContext(PostsContext);
 
 	useLayoutEffect(() => {
+		setIsLoading(true);
 		try {
 			const postsQery = query(
 				collection(FIREBASE_DB, 'posts'),
@@ -55,6 +55,7 @@ export const SkillzScreen = () => {
 						)
 					)
 			);
+			setIsLoading(false);
 			return () => {
 				unsubscribe();
 			};
@@ -86,7 +87,7 @@ export const SkillzScreen = () => {
 	);
 };
 
-export default SkillzScreen;
+export default FeedScreen;
 
 const styles = StyleSheet.create({
 	container: {

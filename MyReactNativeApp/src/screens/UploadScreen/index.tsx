@@ -14,9 +14,13 @@ import lengConfig from '../../comons/leng';
 import { pickImage } from '../../../util';
 import { PostForm } from '../../commponents/PostCard/PostForm';
 
-// export interface IAppProps {}
+type UploadScreenProps = {
+	isProfile?: boolean;
+};
 
-export function UploadScreen() {
+export function UploadScreen({
+	isProfile,
+}: UploadScreenProps) {
 	const currUser = useSelector(
 		(state) => state?.user.user
 	);
@@ -36,6 +40,9 @@ export function UploadScreen() {
 		const id = `${new Date(
 			Date.now()
 		).toString()}`;
+		if (title === '' && images.length === 0) {
+			return alert('Post is not valid!');
+		}
 
 		const newPost = {
 			_id: id,
@@ -58,9 +65,17 @@ export function UploadScreen() {
 				setDesc('');
 				setTitle('');
 				setImages([]);
-				navigation.navigate(
-					lengConfig.screens.feedScreen
-				);
+				if (!isProfile) {
+					navigation.navigate(
+						lengConfig.screens
+							.feedScreen
+					);
+				} else {
+					navigation.navigate(
+						lengConfig.screens
+							.profileScreen
+					);
+				}
 			})
 			.catch((error: any) => {
 				setIsLoading(false);
@@ -101,17 +116,23 @@ export function UploadScreen() {
 					</View>
 				</>
 			) : (
-				<PostForm
-					images={images}
-					desc={desc}
-					title={title}
-					setTitle={setTitle}
-					setDesc={setDesc}
-					postImagesHandler={
-						postImagesHandler
-					}
-					createNewPost={createNewPost}
-				/>
+				<View
+					style={styles.formContainer}
+				>
+					<PostForm
+						images={images}
+						desc={desc}
+						title={title}
+						setTitle={setTitle}
+						setDesc={setDesc}
+						postImagesHandler={
+							postImagesHandler
+						}
+						createNewPost={
+							createNewPost
+						}
+					/>
+				</View>
 			)}
 		</KeyboardAvoidingView>
 	);
@@ -127,5 +148,10 @@ const styles = StyleSheet.create({
 		width: '100%',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	formContainer: {
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: 'gray',
 	},
 });

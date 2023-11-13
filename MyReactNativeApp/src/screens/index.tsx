@@ -1,5 +1,5 @@
-import { FeedScreen } from './HomeScreen/index';
-import { SkillzScreen } from './SkillzScreen';
+import { FeedScreen } from './FeedScreen';
+import { HomeScreen } from './HomeScreen';
 import { ChatRoomsScreen } from './ChatScreens/chatRooms';
 import { ChatScreen } from './ChatScreens/ChatScreen';
 import { UploadScreen } from './UploadScreen';
@@ -10,7 +10,7 @@ import { Auth } from './authScreen';
 
 export {
 	FeedScreen,
-	SkillzScreen,
+	HomeScreen,
 	UploadScreen,
 	ChatRoomsScreen,
 	ChatScreen,

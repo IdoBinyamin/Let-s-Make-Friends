@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		height: 40,
 		justifyContent: 'space-between',
+		marginTop: 15,
 	},
 	actionsContainer: {
 		width: '50%',
