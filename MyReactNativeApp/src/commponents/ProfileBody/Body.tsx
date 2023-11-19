@@ -1,12 +1,11 @@
 import {
-	ScrollView,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from 'react-native';
 import React from 'react';
-import { HorizontalScroll } from '../../consts';
+import { PhotosAlbum } from '../../consts';
 import Plus from '../../../assets/Svg/Plus Icon.svg';
 
 type Props = {};
@@ -36,7 +35,7 @@ const Body = (props: Props) => {
 				</TouchableOpacity>
 			</View>
 			<Text>{about}</Text>
-			<HorizontalScroll
+			<PhotosAlbum
 				isProfile={true}
 				// postImages={}
 			/>

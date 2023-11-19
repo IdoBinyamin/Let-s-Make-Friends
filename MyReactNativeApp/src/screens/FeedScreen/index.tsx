@@ -1,93 +1,167 @@
 import React, {
 	useContext,
-	useLayoutEffect,
+	useEffect,
 	useState,
 } from 'react';
 import {
-	ScrollView,
-	Text,
+	FlatList,
 	View,
+	StyleSheet,
+	ActivityIndicator,
 } from 'react-native';
 import SearchLine from '../../commponents/SearchLine';
 import PostCard from '../../commponents/PostCard';
 import { useSelector } from 'react-redux';
+
+import { PostsContext } from '../../../context';
 import {
+	addDoc,
 	collection,
-	onSnapshot,
-	query,
-	where,
+	deleteDoc,
+	doc,
+	getDocs,
+	serverTimestamp,
 } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../config/FirebaseConfig';
-import { PostsContext } from '../../../context';
-import { StyleSheet } from 'react-native';
 
 export const FeedScreen = () => {
 	const currUser = useSelector(
 		(state) => state?.user.user
 	);
-
-	const [isLoading, setIsLoading] =
-		useState(false);
-
-	const { postsList, setPostsList } =
+	const { friendsList, setFriendsList } =
 		useContext(PostsContext);
 
-	useLayoutEffect(() => {
-		setIsLoading(true);
-		try {
-			const postsQery = query(
-				collection(FIREBASE_DB, 'posts'),
-				where(
-					'displayName',
-					'!=',
-					currUser.displayName
-				)
-			);
+	const [isLoading, setIsLoading] =
+		useState(true);
 
-			const unsubscribe = onSnapshot(
-				postsQery,
-				(querySnapShot) =>
-					setPostsList(
-						querySnapShot.docs.map(
-							(post) => {
-								return post.data();
-							}
-						)
-					)
-			);
+	const { postsList } =
+		useContext(PostsContext);
+
+	useEffect(() => {
+		if (postsList.length > 0 && isLoading) {
 			setIsLoading(false);
-			return () => {
-				unsubscribe();
-			};
-		} catch (error: any) {
-			console.log('Error: ', error.message);
 		}
-	}, [postsList]);
+	}, [postsList, isLoading]);
+
+	const addFriend = async (email: string) => {
+		try {
+			await addDoc(
+				collection(
+					FIREBASE_DB,
+					'users',
+					currUser._id,
+					'friendsList'
+				),
+				{
+					user: email,
+					createdAt: serverTimestamp(),
+				}
+			);
+			// Update friendsList state after adding a friend
+			setFriendsList([
+				...friendsList,
+				email,
+			]);
+		} catch (error: Error) {
+			console.log(
+				'add friend: ',
+				error.message
+			);
+		}
+	};
+
+	const removeFriend = async (
+		email: string
+	) => {
+		const friendsListRef = collection(
+			FIREBASE_DB,
+			'users',
+			currUser._id,
+			'friendsList'
+		);
+		try {
+			// Get all documents in the 'friendsList' subcollection
+			const friendsListSnapshot =
+				await getDocs(friendsListRef);
+
+			// Find the document that matches the friend to remove
+			friendsListSnapshot.forEach(
+				async (friendDoc) => {
+					const friendData =
+						friendDoc.data();
+
+					if (
+						friendData.user === email
+					) {
+						// Delete the specific document from the subcollection
+						await deleteDoc(
+							doc(
+								friendsListRef,
+								friendDoc.id
+							)
+						);
+						console.log('removed');
+						// Update friendsList state after removing a friend
+						setFriendsList(
+							friendsList.filter(
+								(friend) =>
+									friend !==
+									email
+							)
+						);
+					}
+				}
+			);
+		} catch (error: Error) {
+			console.log(
+				'remove friend: ',
+				error.message
+			);
+		}
+	};
+
+	const renderPostCard = ({
+		item,
+	}: {
+		item: any;
+	}) => (
+		<PostCard
+			post={item}
+			addFriend={addFriend}
+			removeFriend={removeFriend}
+		/>
+	);
 
 	return (
 		<View style={styles.container}>
 			<SearchLine />
-			{postsList.length !== 0 ? (
-				<ScrollView>
-					{postsList.map((pos, idx) => {
-						return (
-							<PostCard
-								post={pos}
-								key={idx}
-							/>
-						);
-					})}
-				</ScrollView>
+			{isLoading ? (
+				<>
+					<ActivityIndicator
+						size={'large'}
+					/>
+				</>
 			) : (
-				<View style={styles.loadingPosts}>
-					<Text>No posts to show</Text>
-				</View>
+				<>
+					<FlatList
+						data={postsList.filter(
+							(post) =>
+								post.displayName !==
+								currUser.displayName
+						)}
+						renderItem={
+							renderPostCard
+						}
+						keyExtractor={(
+							item,
+							index
+						) => index.toString()}
+					/>
+				</>
 			)}
 		</View>
 	);
 };
-
-export default FeedScreen;
 
 const styles = StyleSheet.create({
 	container: {

@@ -14,7 +14,7 @@ type Props = {
 	isProfile?: boolean;
 };
 
-const HorizontalScroll = ({
+const PhotosAlbum = ({
 	postImages,
 	isProfile = false,
 }: Props) => {
@@ -23,7 +23,7 @@ const HorizontalScroll = ({
 			Dimensions.get('window').width;
 		const numColumns = Math.min(
 			postImages.length,
-			3
+			2
 		); // Maximum of 3 columns
 		const imageSize =
 			screenWidth / numColumns - 10; // Calculate the size based on the number of columns
@@ -54,7 +54,7 @@ const HorizontalScroll = ({
 	if (isProfile) {
 		<FlatList
 			data={postImages}
-			numColumns={3}
+			numColumns={2}
 			renderItem={renderPosts}
 			keyExtractor={(item) => item.uri}
 			contentContainerStyle={
@@ -65,7 +65,7 @@ const HorizontalScroll = ({
 	return (
 		<FlatList
 			data={postImages}
-			numColumns={3}
+			numColumns={2}
 			renderItem={renderItem}
 			keyExtractor={(item) => item.uri}
 			contentContainerStyle={
@@ -75,14 +75,14 @@ const HorizontalScroll = ({
 	);
 };
 
-export default HorizontalScroll;
+export default PhotosAlbum;
 
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: 'transparent',
 	},
 	image: {
-		marginRight: 5,
 		marginBottom: 5,
+		marginLeft: '2%',
 	},
 });

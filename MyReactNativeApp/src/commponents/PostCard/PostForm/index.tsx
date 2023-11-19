@@ -5,7 +5,7 @@ import {
 	View,
 } from 'react-native';
 import React from 'react';
-import { HorizontalScroll } from '../../../consts';
+import { PhotosAlbum } from '../../../consts';
 import {
 	MaterialCommunityIcons,
 	Feather,
@@ -95,7 +95,7 @@ export const PostForm = ({
 			</View>
 			<View style={styles.photoContainer}>
 				{images.length !== 0 && (
-					<HorizontalScroll
+					<PhotosAlbum
 						postImages={images}
 					/>
 				)}

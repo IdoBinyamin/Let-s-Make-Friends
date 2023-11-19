@@ -1,14 +1,14 @@
-import {
-	ScrollView,
-	StyleSheet,
-	View,
-} from 'react-native';
 import React, {
 	useContext,
 	useLayoutEffect,
 	useState,
 } from 'react';
-import { ActivityIndicator } from 'react-native';
+import {
+	ActivityIndicator,
+	FlatList,
+	StyleSheet,
+	View,
+} from 'react-native';
 import { MessageCard } from '../../consts';
 import {
 	collection,
@@ -20,16 +20,20 @@ import { FIREBASE_DB } from '../../../config/FirebaseConfig';
 import { ChatContext } from '../../../context';
 import { useSelector } from 'react-redux';
 
-type Props = {};
+type ChatRoom = {
+	participants: string[];
+	// Add other properties based on your data structure
+};
 
-export const AllChats = (props: Props) => {
+export const AllChats: React.FC = () => {
 	const [isLoading, setIsLoading] =
 		useState(true);
-
 	const { setRooms, rooms } =
 		useContext(ChatContext);
 	const currUser = useSelector(
-		(state) => state?.user.user
+		(state: {
+			user: { user: { email: string } };
+		}) => state?.user.user
 	);
 
 	useLayoutEffect(() => {
@@ -43,17 +47,39 @@ export const AllChats = (props: Props) => {
 			(querySnapShot) => {
 				const chatRooms =
 					querySnapShot.docs.map(
-						(doc) => doc.data()
+						(doc) =>
+							doc.data() as ChatRoom
 					);
 				setRooms(chatRooms);
 				setIsLoading(false);
 			}
 		);
+
 		return unsubscribe;
 	}, []);
 
+	const renderRoom = ({
+		item,
+	}: {
+		item: ChatRoom;
+	}) => {
+		if (
+			item.participants.includes(
+				currUser.email
+			)
+		) {
+			return (
+				<MessageCard
+					key={`${item.participants[0]}${item.participants[1]}`}
+					room={item}
+				/>
+			);
+		}
+		return null;
+	};
+
 	return (
-		<ScrollView style={styles.container}>
+		<View style={styles.container}>
 			{isLoading ? (
 				<View
 					style={
@@ -66,27 +92,15 @@ export const AllChats = (props: Props) => {
 					/>
 				</View>
 			) : (
-				<>
-					{rooms?.map((room) => {
-						if (
-							room.participants.includes(
-								currUser.email
-							)
-						) {
-							return (
-								<MessageCard
-									key={
-										`${room.participants[0]}` +
-										`${room.participants[1]}`
-									}
-									room={room}
-								/>
-							);
-						}
-					})}
-				</>
+				<FlatList
+					data={rooms}
+					keyExtractor={(item) =>
+						`${item.participants[0]}${item.participants[1]}`
+					}
+					renderItem={renderRoom}
+				/>
 			)}
-		</ScrollView>
+		</View>
 	);
 };
 

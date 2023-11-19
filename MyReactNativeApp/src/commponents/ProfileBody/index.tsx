@@ -1,27 +1,19 @@
-import {
-	ScrollView,
-	StyleSheet,
-	View,
-} from 'react-native';
 import React from 'react';
+import {
+	FlatList,
+	StyleSheet,
+} from 'react-native';
 import Header from './Header';
 import Body from './Body';
 
 type Props = {};
 
-const ProfileBody = (props: Props) => {
+const ProfileBody = ({}: Props) => {
 	return (
-		<ScrollView>
-			<Header />
-			<Body />
-			<View
-				style={{
-					height: 500,
-					marginTop: 5,
-					backgroundColor: 'white',
-				}}
-			></View>
-		</ScrollView>
+		<FlatList
+			ListHeaderComponent={<Header />}
+			ListFooterComponent={<Body />}
+		/>
 	);
 };
 

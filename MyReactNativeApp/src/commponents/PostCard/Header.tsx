@@ -8,6 +8,7 @@ type HeaderProps = {
 	isFollower: () => void;
 	isFollow: boolean;
 	userUri: string;
+	isHome: boolean;
 };
 
 const Header: FC<HeaderProps> = ({
@@ -15,6 +16,7 @@ const Header: FC<HeaderProps> = ({
 	isFollower,
 	isFollow,
 	userUri,
+	isHome,
 }) => {
 	return (
 		<View style={styles.container}>
@@ -33,33 +35,43 @@ const Header: FC<HeaderProps> = ({
 					{userName}
 				</Text>
 			</View>
-			<View
-				style={styles.followBtnContainer}
-			>
-				{!isFollow ? (
-					<FollowButton
-						title="+ Follow"
-						onPress={isFollower}
-						styleBtn={
-							styles.followBtn
-						}
-						styleText={
-							styles.followText
-						}
-					/>
-				) : (
-					<FollowButton
-						title="Unfollow"
-						onPress={isFollower}
-						styleBtn={
-							styles.unfollowBtn
-						}
-						styleText={
-							styles.unfollowText
-						}
-					/>
-				)}
-			</View>
+			{!isHome ? (
+				<View
+					style={
+						styles.followBtnContainer
+					}
+				>
+					{!isFollow ? (
+						<FollowButton
+							title="+ Follow"
+							onPress={isFollower}
+							styleBtn={
+								styles.followBtn
+							}
+							styleText={
+								styles.followText
+							}
+						/>
+					) : (
+						<FollowButton
+							title="Unfollow"
+							onPress={isFollower}
+							styleBtn={
+								styles.unfollowBtn
+							}
+							styleText={
+								styles.unfollowText
+							}
+						/>
+					)}
+				</View>
+			) : (
+				<View
+					style={
+						styles.followBtnContainer
+					}
+				></View>
+			)}
 		</View>
 	);
 };

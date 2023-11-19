@@ -6,13 +6,18 @@ import React, {
 interface PostsCtxProps {
 	postsList: [];
 	setPostsList: (post: {}) => void;
+	friendsList: [];
+	setFriendsList: (post: {}) => void;
 }
 
-export const PostsContext =
-	createContext<PostsCtxProps>({
+export const PostsContext = createContext<PostsCtxProps>(
+	{
 		postsList: [],
 		setPostsList: () => [],
-	});
+		friendsList: [],
+		setFriendsList: () => [],
+	}
+);
 
 export const PostsProvider = ({
 	children,
@@ -20,10 +25,14 @@ export const PostsProvider = ({
 	const [postsList, setPostsList] = useState(
 		[]
 	);
+	const [friendsList, setFriendsList] =
+		useState([]);
 
 	const values = {
 		postsList,
 		setPostsList,
+		friendsList,
+		setFriendsList,
 	};
 
 	return (

@@ -6,18 +6,23 @@ import {
 	TextInput,
 	View,
 } from 'react-native';
-import React, { Fragment, useState } from 'react';
+import React, {
+	Fragment,
+	useLayoutEffect,
+	useState,
+} from 'react';
 import Header from './Header';
 
 import PostButtonsBar from './PostButtonsBar';
 import {
-	HorizontalScroll,
+	PhotosAlbum,
 	MoreOrLess,
 } from '../../consts';
 import Comment from './Comment';
 import { useNavigation } from '@react-navigation/native';
 import lengConfig from '../../comons/leng';
 import { RouterProps } from '../../models';
+import { useSelector } from 'react-redux';
 
 type PostProps = {
 	post: {
@@ -32,11 +37,22 @@ type PostProps = {
 		>;
 		likes: string[];
 	};
+	isHome?: boolean;
+	addFriend?: any;
+	removeFriend?: any;
 };
 
-const PostCard = ({ post }: PostProps) => {
+const PostCard = ({
+	post,
+	isHome = false,
+	addFriend,
+	removeFriend,
+}: PostProps) => {
 	const navigation =
 		useNavigation<RouterProps>();
+	const currUser = useSelector(
+		(state) => state.user.user
+	);
 
 	const [newComment, setNewComment] =
 		useState('');
@@ -45,9 +61,16 @@ const PostCard = ({ post }: PostProps) => {
 		useState(false);
 
 	const isFollowerHandler = () => {
-		setIsFollow(!isFollow);
-	};
+		console.log(post.user.email);
+		if (isFollow) {
+			removeFriend(post.user.email);
 
+			setIsFollow(false);
+		} else {
+			addFriend(post.user.email);
+			setIsFollow(true);
+		}
+	};
 	const moveToComments = () => {
 		navigation.navigate(
 			lengConfig.screens.comments,
@@ -62,6 +85,7 @@ const PostCard = ({ post }: PostProps) => {
 			<View style={styles.container}>
 				<Fragment>
 					<Header
+						isHome={isHome}
 						isFollow={isFollow}
 						isFollower={
 							isFollowerHandler
@@ -81,7 +105,7 @@ const PostCard = ({ post }: PostProps) => {
 						{post.title}
 					</Text>
 					{post?.images.length > 0 && (
-						<HorizontalScroll
+						<PhotosAlbum
 							postImages={
 								post?.images
 							}

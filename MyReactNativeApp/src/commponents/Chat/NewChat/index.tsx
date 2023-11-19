@@ -1,10 +1,9 @@
+import React, { useContext } from 'react';
 import {
-	ScrollView,
+	FlatList,
 	StyleSheet,
 } from 'react-native';
-import React, { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { RouterProps } from '../../../models';
 import { doc, setDoc } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import { FriendCard } from '../FriendCard';
@@ -14,11 +13,10 @@ import lengConfig from '../../../comons/leng';
 
 type Props = {};
 
-export const AddNewChat = (props: Props) => {
-	const navigation =
-		useNavigation<RouterProps>();
+export const AddNewChat: React.FC<Props> = () => {
+	const navigation = useNavigation();
 	const { rooms } = useContext(ChatContext);
-	let exsistRoom: any;
+	let existRoom: any;
 
 	const createNewChat = async (
 		userB: UserInfoProps,
@@ -28,7 +26,7 @@ export const AddNewChat = (props: Props) => {
 			Date.now()
 		).toString()}`;
 		if (rooms.length > 0) {
-			exsistRoom = rooms.filter(
+			existRoom = rooms.filter(
 				(room) =>
 					room.participants.includes(
 						currUser.email
@@ -50,14 +48,16 @@ export const AddNewChat = (props: Props) => {
 			],
 			lastMessage: '',
 		};
-		if (exsistRoom?.length > 0) {
+
+		if (existRoom?.length > 0) {
 			return navigation.navigate(
 				lengConfig.screens.chatRoom,
 				{
-					room: exsistRoom,
+					room: existRoom,
 				}
 			);
 		}
+
 		setDoc(
 			doc(FIREBASE_DB, 'chats', id),
 			_doc
@@ -74,12 +74,18 @@ export const AddNewChat = (props: Props) => {
 				alert('Error: ', error.message);
 			});
 	};
+
 	return (
-		<ScrollView style={styles.container}>
-			<FriendCard
-				createNewChat={createNewChat}
-			/>
-		</ScrollView>
+		<FlatList
+			style={styles.container}
+			data={[1]} // Dummy data, you might replace it with your actual data
+			keyExtractor={() => 'FriendCard'}
+			renderItem={() => (
+				<FriendCard
+					createNewChat={createNewChat}
+				/>
+			)}
+		/>
 	);
 };
 
