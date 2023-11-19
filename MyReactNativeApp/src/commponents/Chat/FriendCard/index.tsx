@@ -19,7 +19,10 @@ import {
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 import { useSelector } from 'react-redux';
 import { UserInfoProps } from '../../../../config/FirebaseConfig/FirebaseTypes';
-import { ChatContext } from '../../../../context';
+import {
+	ChatContext,
+	PostsContext,
+} from '../../../../context';
 
 type Props = {
 	createNewChat: any;
@@ -29,6 +32,9 @@ export const FriendCard = (props: Props) => {
 	const [usersList, setUsersList] = useState(
 		[]
 	);
+	const { friendsList } =
+		useContext(PostsContext);
+
 	const fillterdUsersList = usersList.filter(
 		(user) => user !== undefined
 	);
@@ -38,7 +44,7 @@ export const FriendCard = (props: Props) => {
 	);
 
 	useLayoutEffect(() => {
-		const usersQery = query(
+		const usersQuery = query(
 			collection(FIREBASE_DB, 'users'),
 			where(
 				'displayName',
@@ -48,36 +54,39 @@ export const FriendCard = (props: Props) => {
 		);
 
 		const unsubscribe = onSnapshot(
-			usersQery,
-			(querySnapShot) =>
-				setUsersList(
-					querySnapShot.docs.map(
-						(user) => {
-							if (
-								rooms.filter(
-									(room) =>
+			usersQuery,
+			(querySnapshot) => {
+				const filteredUsers: any =
+					querySnapshot.docs
+						.map((user) =>
+							user.data()
+						)
+						.filter((user: any) => {
+							// Check if the user is in the friendsList and not in any chat room with the current user
+							return (
+								friendsList.includes(
+									user?.email
+								) &&
+								!rooms.some(
+									(room: any) =>
 										room.participants.includes(
-											user.data()
-												.email
+											user?.email
 										) &&
 										room.participants.includes(
-											currUser.email
+											currUser?.email
 										)
-								).length === 1
-							) {
-								return;
-							} else {
-								return user.data();
-							}
-						}
-					)
-				)
+								)
+							);
+						});
+
+				setUsersList(filteredUsers);
+			}
 		);
 
 		return () => {
 			unsubscribe();
 		};
-	}, []);
+	}, [currUser, friendsList, rooms]);
 
 	return (
 		<View style={styles.container}>

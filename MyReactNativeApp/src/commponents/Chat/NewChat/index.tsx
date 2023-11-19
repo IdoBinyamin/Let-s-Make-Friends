@@ -27,7 +27,7 @@ export const AddNewChat: React.FC<Props> = () => {
 		).toString()}`;
 		if (rooms.length > 0) {
 			existRoom = rooms.filter(
-				(room) =>
+				(room: any) =>
 					room.participants.includes(
 						currUser.email
 					) &&
@@ -78,7 +78,7 @@ export const AddNewChat: React.FC<Props> = () => {
 	return (
 		<FlatList
 			style={styles.container}
-			data={[1]} // Dummy data, you might replace it with your actual data
+			data={[1]}
 			keyExtractor={() => 'FriendCard'}
 			renderItem={() => (
 				<FriendCard

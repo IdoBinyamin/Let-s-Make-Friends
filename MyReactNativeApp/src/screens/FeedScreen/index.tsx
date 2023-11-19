@@ -44,30 +44,33 @@ export const FeedScreen = () => {
 	}, [postsList, isLoading]);
 
 	const addFriend = async (email: string) => {
-		try {
-			await addDoc(
-				collection(
-					FIREBASE_DB,
-					'users',
-					currUser._id,
-					'friendsList'
-				),
-				{
-					user: email,
-					createdAt: serverTimestamp(),
-				}
-			);
-			// Update friendsList state after adding a friend
-			setFriendsList([
-				...friendsList,
-				email,
-			]);
-		} catch (error: Error) {
-			console.log(
-				'add friend: ',
-				error.message
-			);
-		}
+	
+			try {
+				await addDoc(
+					collection(
+						FIREBASE_DB,
+						'users',
+						currUser._id,
+						'friendsList'
+					),
+					{
+						user: email,
+						createdAt:
+							serverTimestamp(),
+					}
+				);
+				// Update friendsList state after adding a friend
+				setFriendsList([
+					...friendsList,
+					email,
+				]);
+			} catch (error: Error) {
+				console.log(
+					'add friend: ',
+					error.message
+				);
+			}
+		
 	};
 
 	const removeFriend = async (

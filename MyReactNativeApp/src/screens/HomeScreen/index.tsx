@@ -1,6 +1,7 @@
 import React, {
 	useContext,
 	useLayoutEffect,
+	useState,
 } from 'react';
 import {
 	View,
@@ -25,8 +26,35 @@ export const HomeScreen = () => {
 	const currUser = useSelector(
 		(state) => state?.user.user
 	);
-	const { friendsList } =
-		useContext(PostsContext);
+	const [friendsList, setFriendsList] =
+		useState([]);
+
+	useLayoutEffect(() => {
+		// Fetch friendsList before showing the page
+		const friendsQuery = query(
+			collection(
+				FIREBASE_DB,
+				'users',
+				currUser._id,
+				'friendsList'
+			)
+		);
+
+		const friendsUnsubscribe = onSnapshot(
+			friendsQuery,
+			(snapshot) => {
+				setFriendsList(
+					snapshot.docs.map(
+						(doc) => doc.data().user
+					)
+				);
+			}
+		);
+
+		return () => {
+			friendsUnsubscribe();
+		};
+	}, [currUser._id]);
 
 	useLayoutEffect(() => {
 		try {
@@ -34,7 +62,7 @@ export const HomeScreen = () => {
 				collection(FIREBASE_DB, 'posts')
 			);
 
-			const unsubscribe = onSnapshot(
+			const postsUnsubscribe = onSnapshot(
 				postsQuery,
 				(querySnapShot) =>
 					setPostsList(
@@ -47,12 +75,12 @@ export const HomeScreen = () => {
 			);
 
 			return () => {
-				unsubscribe();
+				postsUnsubscribe();
 			};
 		} catch (error: any) {
 			console.log('Error: ', error.message);
 		}
-	}, [postsList]);
+	}, [setPostsList]);
 
 	// Filter posts to show only those from friends
 	const friendPosts = postsList.filter(
