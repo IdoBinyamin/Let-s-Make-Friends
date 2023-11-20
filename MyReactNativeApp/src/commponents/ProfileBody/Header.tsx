@@ -4,15 +4,22 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Avatar } from '../../consts';
 import { useSelector } from 'react-redux';
+import { PostsContext } from '../../../context';
 
 type Props = {};
 
 const Header = (props: Props) => {
 	const user = useSelector(
 		(state) => state?.user.user
+	);
+	const { postsList, friendsList } =
+		useContext(PostsContext);
+	const myPosts = postsList.filter(
+		(post: { displayName: string }) =>
+			post?.displayName === user.displayName
 	);
 	return (
 		<View style={styles.container}>
@@ -30,22 +37,19 @@ const Header = (props: Props) => {
 					}
 				>
 					<View>
-						<Text>7 Skillz</Text>
 						<Text>
-							32 Skill Reviews
+							{myPosts.length} Posts
 						</Text>
 						<Text>
-							12 Board Requests
+							{0} Profile likes
 						</Text>
 					</View>
 					<View>
+						<Text>{0} Followers</Text>
 						<Text>
-							1952 Followers
+							{friendsList.length}{' '}
+							Following
 						</Text>
-						<Text>
-							1121 Following
-						</Text>
-						<Text>12 Jobs done</Text>
 					</View>
 				</View>
 				<TouchableOpacity

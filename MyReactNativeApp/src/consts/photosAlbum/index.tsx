@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		marginBottom: 5,
-		marginLeft: '2%',
+		marginLeft: '1.5%',
 	},
 });

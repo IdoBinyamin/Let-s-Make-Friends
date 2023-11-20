@@ -1,18 +1,43 @@
 import {
+	FlatList,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { PhotosAlbum } from '../../consts';
 import Plus from '../../../assets/Svg/Plus Icon.svg';
+import { useNavigation } from '@react-navigation/native';
+import lengConfig from '../../comons/leng';
+import PostCard from '../PostCard';
 
-type Props = {};
+type Props = { myPosts: any };
 
-const Body = (props: Props) => {
+const Body = ({ myPosts }: Props) => {
+	const navigation = useNavigation();
 	const about =
 		'Interior design is the art and science of enhancing the interior of a building to achieve a healthier and more aesthetically pleasing environment for the people Interior design is the art and science of enhancing the interior of a building to achieve healthier and more aesthetically pleasing environment for the people';
+
+	const renderPostCard = ({
+		item,
+	}: {
+		item: any;
+	}) => (
+		<View
+			style={{
+				borderWidth: 1,
+				flex: 1,
+				position: 'relative',
+			}}
+		>
+			<PostCard
+				post={item}
+				isHome={true}
+				isMyProfile={true}
+			/>
+		</View>
+	);
 
 	return (
 		<View style={styles.container}>
@@ -34,7 +59,9 @@ const Body = (props: Props) => {
 					<Text>Edit</Text>
 				</TouchableOpacity>
 			</View>
-			<Text>{about}</Text>
+			<Text style={styles.aboutUser}>
+				{about}
+			</Text>
 			<PhotosAlbum
 				isProfile={true}
 				// postImages={}
@@ -45,8 +72,9 @@ const Body = (props: Props) => {
 						styles.newPostsContainer
 					}
 					onPress={() => {
-						console.log(
-							'Post new job request'
+						navigation.navigate(
+							lengConfig.screens
+								.upload
 						);
 					}}
 				>
@@ -58,6 +86,13 @@ const Body = (props: Props) => {
 					</Text>
 				</TouchableOpacity>
 			</View>
+			<FlatList
+				data={myPosts}
+				renderItem={renderPostCard}
+				keyExtractor={(item, index) =>
+					index.toString()
+				}
+			/>
 		</View>
 	);
 };
@@ -70,21 +105,24 @@ const styles = StyleSheet.create({
 		marginTop: 2.5,
 		backgroundColor: 'white',
 		borderBottomEndRadius: 8,
-		padding: 20,
 	},
 	headAboutMyContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		paddingHorizontal: 15,
 	},
 	headline: {
 		fontSize: 24,
 		paddingBottom: 5,
 	},
+	aboutUser: {
+		paddingHorizontal: 15,
+	},
 	newPostsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 15,
+		marginVertical: 15,
 	},
 	newPostText: {
 		color: '#05aff8',

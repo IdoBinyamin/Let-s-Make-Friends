@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {
 	Fragment,
-	useLayoutEffect,
+	useContext,
 	useState,
 } from 'react';
 import Header from './Header';
@@ -22,7 +22,7 @@ import Comment from './Comment';
 import { useNavigation } from '@react-navigation/native';
 import lengConfig from '../../comons/leng';
 import { RouterProps } from '../../models';
-import { useSelector } from 'react-redux';
+import { PostsContext } from '../../../context';
 
 type PostProps = {
 	post: {
@@ -38,6 +38,7 @@ type PostProps = {
 		likes: string[];
 	};
 	isHome?: boolean;
+	isMyProfile?: boolean;
 	addFriend?: any;
 	removeFriend?: any;
 };
@@ -47,28 +48,28 @@ const PostCard = ({
 	isHome = false,
 	addFriend,
 	removeFriend,
+	isMyProfile = false,
 }: PostProps) => {
 	const navigation =
 		useNavigation<RouterProps>();
-	const currUser = useSelector(
-		(state) => state.user.user
-	);
+
+	const { friendsList } =
+		useContext(PostsContext);
 
 	const [newComment, setNewComment] =
 		useState('');
 
-	const [isFollow, setIsFollow] =
-		useState(false);
+	const isFollow =
+		friendsList.filter(
+			(friend) => post.user.email === friend
+		).length > 0;
 
 	const isFollowerHandler = () => {
 		console.log(post.user.email);
 		if (isFollow) {
 			removeFriend(post.user.email);
-
-			setIsFollow(false);
 		} else {
 			addFriend(post.user.email);
-			setIsFollow(true);
 		}
 	};
 	const moveToComments = () => {
@@ -84,19 +85,22 @@ const PostCard = ({
 		<KeyboardAvoidingView>
 			<View style={styles.container}>
 				<Fragment>
-					<Header
-						isHome={isHome}
-						isFollow={isFollow}
-						isFollower={
-							isFollowerHandler
-						}
-						userName={
-							post?.displayName
-						}
-						userUri={
-							post?.user.photoURL
-						}
-					/>
+					{!isMyProfile && (
+						<Header
+							isHome={isHome}
+							isFollow={isFollow}
+							isFollower={
+								isFollowerHandler
+							}
+							userName={
+								post?.displayName
+							}
+							userUri={
+								post?.user
+									.photoURL
+							}
+						/>
+					)}
 					<Text
 						style={
 							styles.postTitleText
@@ -111,24 +115,27 @@ const PostCard = ({
 							}
 						/>
 					)}
-
-					<PostButtonsBar
-						isLiked={() => {
-							console.log('Liked!');
-						}} //TODO: make that functions
-						numOfLikes={
-							post?.likes.length
-						}
-						addComment={
-							moveToComments
-						}
-						shareToFeed={() => {
-							console.log(
-								'Shared?'
-							);
-						}} //TODO: make that functions
-						createdAt={post?._id}
-					/>
+					{!isMyProfile && (
+						<PostButtonsBar
+							isLiked={() => {
+								console.log(
+									'Liked!'
+								);
+							}} //TODO: make that functions
+							numOfLikes={
+								post?.likes.length
+							}
+							addComment={
+								moveToComments
+							}
+							shareToFeed={() => {
+								console.log(
+									'Shared?'
+								);
+							}} //TODO: make that functions
+							createdAt={post?._id}
+						/>
+					)}
 
 					{post?.desc !== '' &&
 						post?.desc.length >
@@ -141,51 +148,57 @@ const PostCard = ({
 							/>
 						)}
 
-					<View
-						style={
-							styles.commentsContainer
-						}
-					>
-						{post?.comments.map(
-							(com, idx) => (
-								<Comment
-									key={idx}
-									photoURL={
-										com.user
-											.photoURL
-									}
-									comment={
-										com.comment
-									}
-									userName={
-										com.user
-											.name
-									}
-								/>
-							)
-						)}
+					{!isMyProfile && (
 						<View
 							style={
-								styles.newComment
+								styles.commentsContainer
 							}
 						>
-							<TextInput
+							{post?.comments.map(
+								(com, idx) => (
+									<Comment
+										key={idx}
+										photoURL={
+											com
+												.user
+												.photoURL
+										}
+										comment={
+											com.comment
+										}
+										userName={
+											com
+												.user
+												.name
+										}
+									/>
+								)
+							)}
+							<View
 								style={
-									styles.newCommentText
+									styles.newComment
 								}
-								placeholder="Add new comment"
-								value={newComment}
-								onChangeText={(
-									text
-								) => {
-									setNewComment(
+							>
+								<TextInput
+									style={
+										styles.newCommentText
+									}
+									placeholder="Add new comment"
+									value={
+										newComment
+									}
+									onChangeText={(
 										text
-									);
-								}}
-							/>
-							<Button title="Comment" />
+									) => {
+										setNewComment(
+											text
+										);
+									}}
+								/>
+								<Button title="Comment" />
+							</View>
 						</View>
-					</View>
+					)}
 				</Fragment>
 			</View>
 		</KeyboardAvoidingView>
@@ -227,6 +240,7 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		alignSelf: 'flex-start',
 		paddingLeft: 18,
+		paddingBottom: 5,
 		position: 'relative',
 	},
 });

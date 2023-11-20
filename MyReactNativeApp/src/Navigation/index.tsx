@@ -72,7 +72,6 @@ export const MainNavigator = () => {
 				}
 				component={ProfileScreen}
 				options={{
-					gestureEnabled: false,
 					headerTitle: 'My Profile',
 					headerRight:
 						headerRightHandler,

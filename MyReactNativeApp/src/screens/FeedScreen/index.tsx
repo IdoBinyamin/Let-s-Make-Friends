@@ -57,6 +57,7 @@ export const FeedScreen = () => {
 						user: email,
 						createdAt:
 							serverTimestamp(),
+						isFollow: true,
 					}
 				);
 				// Update friendsList state after adding a friend

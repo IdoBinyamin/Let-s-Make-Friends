@@ -1,7 +1,6 @@
 import React, {
 	useContext,
 	useLayoutEffect,
-	useState,
 } from 'react';
 import {
 	View,
@@ -23,11 +22,13 @@ import { useSelector } from 'react-redux';
 export const HomeScreen = () => {
 	const { postsList, setPostsList } =
 		useContext(PostsContext);
+
 	const currUser = useSelector(
 		(state) => state?.user.user
 	);
-	const [friendsList, setFriendsList] =
-		useState([]);
+
+	const { friendsList, setFriendsList } =
+		useContext(PostsContext);
 
 	useLayoutEffect(() => {
 		// Fetch friendsList before showing the page
@@ -83,19 +84,11 @@ export const HomeScreen = () => {
 	}, [setPostsList]);
 
 	// Filter posts to show only those from friends
-	const friendPosts = postsList.filter(
+	const homePosts = postsList.filter(
 		(post: any) =>
 			friendsList.includes(post.user.email)
 	);
-	const myPosts = postsList.filter(
-		(post: { displayName: string }) =>
-			post?.displayName ===
-			currUser.displayName
-	);
-	const homePosts = [
-		...myPosts,
-		...friendPosts,
-	];
+
 	const renderPostCard = ({
 		item,
 	}: {

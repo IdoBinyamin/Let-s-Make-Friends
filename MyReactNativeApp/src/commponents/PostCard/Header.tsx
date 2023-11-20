@@ -1,4 +1,10 @@
-import { View, Text, Image } from 'react-native';
+import {
+	View,
+	Text,
+	Image,
+	Touchable,
+	TouchableOpacity,
+} from 'react-native';
 import React, { FC } from 'react';
 import { FollowButton } from '../../Generic';
 import { styles } from './headerStyle';
@@ -20,12 +26,14 @@ const Header: FC<HeaderProps> = ({
 }) => {
 	return (
 		<View style={styles.container}>
-			<View style={styles.iconContainer}>
+			<TouchableOpacity
+				style={styles.iconContainer}
+			>
 				<Image
 					source={{ uri: userUri }}
 					style={styles.ownerImage}
 				/>
-			</View>
+			</TouchableOpacity>
 			<View
 				style={
 					styles.descriptionContainer
