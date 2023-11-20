@@ -83,6 +83,21 @@ export function UploadScreen({
 			});
 	};
 
+	const restartPost = () => {
+		setDesc('');
+		setTitle('');
+		setImages([]);
+		if (!isProfile) {
+			navigation.navigate(
+				lengConfig.screens.feedScreen
+			);
+		} else {
+			navigation.navigate(
+				lengConfig.screens.profileScreen
+			);
+		}
+	};
+
 	const postImagesHandler = async () => {
 		try {
 			const result = await pickImage();
@@ -131,6 +146,7 @@ export function UploadScreen({
 						createNewPost={
 							createNewPost
 						}
+						restartPost={restartPost}
 					/>
 				</View>
 			)}
@@ -150,8 +166,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	formContainer: {
-		borderRadius: 10,
-		borderWidth: 1,
-		borderColor: 'gray',
+		justifyContent: 'center',
+		position: 'absolute',
+		alignSelf: 'center',
 	},
 });

@@ -7,6 +7,7 @@ import {
 import React from 'react';
 import { PhotosAlbum } from '../../../consts';
 import {
+	Ionicons,
 	MaterialCommunityIcons,
 	Feather,
 } from '@expo/vector-icons';
@@ -26,6 +27,7 @@ type Props = {
 	>;
 	postImagesHandler: () => void;
 	createNewPost: () => void;
+	restartPost: () => void;
 };
 
 export const PostForm = ({
@@ -36,69 +38,64 @@ export const PostForm = ({
 	setTitle,
 	postImagesHandler,
 	createNewPost,
+	restartPost,
 }: Props) => {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.headLineText}>
-				Upload
+				Add new post
 			</Text>
-			<View
-				style={
-					styles.fieldsOptionContainer
+			<TextInput
+				placeholder="Add title here"
+				value={title}
+				onChangeText={(text) =>
+					setTitle(text)
 				}
+				style={styles.inputWrapper}
+			/>
+			<TouchableOpacity
+				onPress={postImagesHandler}
 			>
-				<View
-					style={
-						styles.fieldsTextContainer
-					}
-				>
-					<TextInput
-						placeholder="Add title here"
-						value={title}
-						onChangeText={(text) =>
-							setTitle(text)
-						}
-						style={
-							styles.inputWrapper
-						}
-					/>
-					<TextInput
-						placeholder="Add description here"
-						value={desc}
-						onChangeText={(text) =>
-							setDesc(text)
-						}
-						style={
-							styles.inputWrapper
-						}
-					/>
-				</View>
-
-				<TouchableOpacity
-					onPress={postImagesHandler}
-				>
-					<MaterialCommunityIcons
-						name="camera-plus"
-						size={50}
-						color="black"
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity
-					onPress={createNewPost}
-				>
-					<Feather
-						name="upload"
-						size={50}
-						color="green"
-					/>
-				</TouchableOpacity>
-			</View>
+				<MaterialCommunityIcons
+					name="camera-plus"
+					size={50}
+					color="black"
+				/>
+			</TouchableOpacity>
 			<View style={styles.photoContainer}>
 				{images.length !== 0 && (
 					<PhotosAlbum
 						postImages={images}
 					/>
 				)}
+			</View>
+			<TextInput
+				placeholder="Add description here"
+				value={desc}
+				onChangeText={(text) =>
+					setDesc(text)
+				}
+				style={styles.inputWrapper}
+			/>
+			<View style={styles.addOrCancelPost}>
+				<TouchableOpacity
+					onPress={createNewPost}
+				>
+					<Feather
+						name="upload"
+						size={50}
+						color="#05AFF8"
+					/>
+				</TouchableOpacity>
+				<TouchableOpacity
+					onPress={restartPost}
+				>
+					<Ionicons
+						name="ios-trash-bin-outline"
+						size={50}
+						color="gray"
+					/>
+				</TouchableOpacity>
 			</View>
 		</View>
 	);
