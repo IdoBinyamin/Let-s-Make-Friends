@@ -20,7 +20,8 @@ type Props = {
 export const AllChats = ({
 	isLoading,
 }: Props) => {
-	const { rooms } = useContext(ChatContext);
+	const { rooms, searchedRooms, isSliding } =
+		useContext(ChatContext);
 	const currUser = useSelector(
 		(state: {
 			user: { user: { email: string } };
@@ -62,11 +63,16 @@ export const AllChats = ({
 				</View>
 			) : (
 				<FlatList
-					data={rooms}
+					data={
+						searchedRooms.length === 0
+							? rooms
+							: searchedRooms
+					}
 					keyExtractor={(item) =>
 						`${item.participants[0]}${item.participants[1]}`
 					}
 					renderItem={renderRoom}
+					scrollEnabled={!isSliding}
 				/>
 			)}
 		</View>

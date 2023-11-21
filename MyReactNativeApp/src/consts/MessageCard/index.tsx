@@ -1,5 +1,4 @@
 import {
-	Button,
 	Image,
 	StyleSheet,
 	Text,
@@ -12,6 +11,7 @@ import { RouterProps } from '../../models';
 import { useSelector } from 'react-redux';
 import lengConfig from '../../comons/leng';
 import SlideComponent from '../SliderAction';
+import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
 	room: any;
@@ -32,8 +32,8 @@ const MessageCard = ({ room }: Props) => {
 		// This function is called when the sliding is complete
 		// You can perform any actions you need here
 		setShowDeleteButton(!showDeleteButton);
-		console.log(showDeleteButton);
 	};
+
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -48,9 +48,19 @@ const MessageCard = ({ room }: Props) => {
 		>
 			<View style={styles.imageContainer}>
 				<Image
-					source={{
-						uri: room.userB.photoURL,
-					}}
+					source={
+						currUser.email ===
+						room.user.email
+							? {
+									uri: room
+										.userB
+										.photoURL,
+							  }
+							: {
+									uri: room.user
+										.photoURL,
+							  }
+					}
 					style={styles.imageHolder}
 					resizeMode="stretch"
 				/>
@@ -94,8 +104,14 @@ const MessageCard = ({ room }: Props) => {
 			</Text>
 
 			{showDeleteButton && (
-				<TouchableOpacity>
-					<Text>Delete</Text>
+				<TouchableOpacity
+					style={styles.deleteBtn}
+				>
+					<Ionicons
+						name="md-trash-outline"
+						size={30}
+						color="red"
+					/>
 				</TouchableOpacity>
 			)}
 		</TouchableOpacity>
@@ -132,5 +148,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'flex-start',
 		marginLeft: 15,
+	},
+	deleteBtn: {
+		marginLeft: 3,
 	},
 });

@@ -26,7 +26,7 @@ import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 export const ChatRoomsScreen = () => {
 	const navigation =
 		useNavigation<RouterProps>();
-	const { rooms, setRooms } =
+	const { rooms, setRooms, setSearchedRooms } =
 		useContext(ChatContext);
 	const [isLoading, setIsLoading] =
 		useState(true);
@@ -54,12 +54,17 @@ export const ChatRoomsScreen = () => {
 	}, []);
 
 	const searchChatRoom = (item) => {
-		console.log(item, rooms[1]);
-		setRooms(
-			rooms.filter((room) =>
-				room.chatName.includes(item)
-			)
-		);
+		if (item === '') {
+			setSearchedRooms([]);
+		} else {
+			setSearchedRooms(
+				rooms.filter((room) =>
+					room.user.displayName.includes(
+						item
+					)
+				)
+			);
+		}
 	};
 
 	return (

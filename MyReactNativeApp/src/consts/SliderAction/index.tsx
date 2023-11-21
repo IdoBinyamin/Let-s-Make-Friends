@@ -1,23 +1,37 @@
-import React, { useRef } from 'react';
+import React, {
+	useContext,
+	useRef,
+	useState,
+} from 'react';
 import {
 	View,
 	PanResponder,
 	Animated,
 } from 'react-native';
+import { ChatContext } from '../../../context';
 
 const SlideComponent = ({
 	children,
 	onSlideComplete,
 }: any) => {
+	const { setIsSliding } =
+		useContext(ChatContext);
+
 	const pan = useRef(
 		new Animated.ValueXY()
 	).current;
+
 	const [dx, dy] = [
 		useRef(new Animated.Value(0)),
 		useRef(new Animated.Value(0)),
 	];
+
 	const panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
+		onPanResponderGrant: () => {
+			// Disable FlatList scrolling when the user starts interacting with SlideComponent
+			setIsSliding(true);
+		},
 		onPanResponderMove: (
 			event,
 			gestureState
@@ -39,8 +53,7 @@ const SlideComponent = ({
 			_,
 			gestureState
 		) => {
-			const swipeThreshold = 70; // Adjust as needed
-			console.log(dx.current);
+			let swipeThreshold = 50; // Adjust as needed
 
 			if (
 				gestureState.dx <
@@ -51,6 +64,8 @@ const SlideComponent = ({
 				onSlideComplete();
 				dx.current.setValue(0);
 			}
+			// Enable FlatList scrolling when the user releases the SlideComponent
+			setIsSliding(false);
 		},
 	});
 
@@ -90,7 +105,6 @@ const SlideComponent = ({
 					width: 70,
 					height: 30,
 					position: 'relative',
-					backgroundColor: '#E8E9EB',
 				}}
 			/>
 		</Animated.View>
