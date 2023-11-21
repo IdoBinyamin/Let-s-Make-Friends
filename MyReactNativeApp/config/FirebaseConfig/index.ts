@@ -18,19 +18,27 @@ import {
 	AuthProps,
 	SignUpProps,
 } from './FirebaseTypes';
+import {
+	API_KEY,
+	AUTH_DOMAIN,
+	DATABASE_URL,
+	PROJECT_ID,
+	STORAGE_BUCKET,
+	MESSAGEING_SENDER_ID,
+	APP_ID,
+	MEASUREMENT_ID,
+} from '@env';
+
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyCLTUZSJwv2wkrwijxIbDEf4wawAywZrQw',
-	authDomain:
-		'drinkingwater-9e987.firebaseapp.com',
-	databaseURL:
-		'https://drinkingwater-9e987-default-rtdb.europe-west1.firebasedatabase.app',
-	projectId: 'drinkingwater-9e987',
-	storageBucket:
-		'drinkingwater-9e987.appspot.com',
-	messagingSenderId: '766357486414',
-	appId: '1:766357486414:web:42b88691747192e3ee7c1f',
-	measurementId: 'G-S18GQTBSRS',
+	apiKey: API_KEY,
+	authDomain: AUTH_DOMAIN,
+	databaseURL: DATABASE_URL,
+	projectId: PROJECT_ID,
+	storageBucket: STORAGE_BUCKET,
+	messagingSenderId: MESSAGEING_SENDER_ID,
+	appId: APP_ID,
+	measurementId: MEASUREMENT_ID,
 };
 // const firebaseConfig = {
 // 	apiKey: 'AIzaSyD49SzibpIW2y_21ySSYdfg_6bpE-qxU9k',
