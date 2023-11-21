@@ -68,7 +68,6 @@ export const signin = async ({
 	email,
 	password,
 }: AuthProps): Promise<
-	//לקרוא דוקומנטציה
 	Partial<UserCredential & AuthProps>
 > => {
 	return signInWithEmailAndPassword(
