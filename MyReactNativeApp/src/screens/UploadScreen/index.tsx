@@ -14,13 +14,9 @@ import lengConfig from '../../comons/leng';
 import { pickImage } from '../../../util';
 import { PostForm } from '../../commponents/PostCard/PostForm';
 
-type UploadScreenProps = {
-	isProfile?: boolean;
-};
+type UploadScreenProps = {};
 
-export function UploadScreen({
-	isProfile,
-}: UploadScreenProps) {
+export function UploadScreen({}: UploadScreenProps) {
 	const currUser = useSelector(
 		(state) => state?.user.user
 	);
@@ -65,17 +61,9 @@ export function UploadScreen({
 				setDesc('');
 				setTitle('');
 				setImages([]);
-				if (!isProfile) {
-					navigation.navigate(
-						lengConfig.screens
-							.feedScreen
-					);
-				} else {
-					navigation.navigate(
-						lengConfig.screens
-							.profileScreen
-					);
-				}
+				navigation.navigate(
+					lengConfig.screens.feedScreen
+				);
 			})
 			.catch((error: any) => {
 				setIsLoading(false);
@@ -87,15 +75,10 @@ export function UploadScreen({
 		setDesc('');
 		setTitle('');
 		setImages([]);
-		if (!isProfile) {
-			navigation.navigate(
-				lengConfig.screens.feedScreen
-			);
-		} else {
-			navigation.navigate(
-				lengConfig.screens.profileScreen
-			);
-		}
+
+		navigation.navigate(
+			lengConfig.screens.feedScreen
+		);
 	};
 
 	const postImagesHandler = async () => {

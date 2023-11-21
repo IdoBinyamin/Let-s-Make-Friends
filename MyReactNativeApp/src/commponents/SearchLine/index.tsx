@@ -4,7 +4,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Avatar } from '../../consts';
 import lengConfig from '../../comons/leng';
@@ -16,11 +16,13 @@ import { RouterProps } from '../../models';
 type Props = {
 	isProfilePage?: boolean;
 	isChatScreen?: boolean;
+	isSerching?: any;
 };
 
 const SearchLine = ({
 	isProfilePage = false,
 	isChatScreen = false,
+	isSerching,
 }: Props) => {
 	const user = useSelector<UserInfoProps>(
 		(state) => state?.user.user
@@ -30,6 +32,8 @@ const SearchLine = ({
 	const moveToProfile = () => {
 		navigation.navigate('ProfileScreen');
 	};
+	const [textForSearch, setTextForSearch] =
+		useState('');
 
 	return (
 		<>
@@ -61,14 +65,16 @@ const SearchLine = ({
 						lengConfig.leng.search
 					}
 					style={styles.inputSearch}
+					value={textForSearch}
+					onChangeText={
+						setTextForSearch
+					}
 				/>
 				<TouchableOpacity
 					style={styles.searchBtn}
-					onPress={() => {
-						console.log(
-							'serching...'
-						);
-					}}
+					onPress={() =>
+						isSerching(textForSearch)
+					}
 				>
 					<Ionicons
 						name="search"

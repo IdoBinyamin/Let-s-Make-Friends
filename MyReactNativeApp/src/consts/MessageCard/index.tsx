@@ -1,27 +1,39 @@
 import {
+	Button,
 	Image,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../models';
 import { useSelector } from 'react-redux';
 import lengConfig from '../../comons/leng';
+import SlideComponent from '../SliderAction';
 
 type Props = {
 	room: any;
 };
 
 const MessageCard = ({ room }: Props) => {
+	const [
+		showDeleteButton,
+		setShowDeleteButton,
+	] = useState(false);
 	const navigation =
 		useNavigation<RouterProps>();
 	const currUser = useSelector(
 		(state) => state.user.user
 	);
 
+	const handleSlideComplete = () => {
+		// This function is called when the sliding is complete
+		// You can perform any actions you need here
+		setShowDeleteButton(!showDeleteButton);
+		console.log(showDeleteButton);
+	};
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -64,6 +76,11 @@ const MessageCard = ({ room }: Props) => {
 					{room.lastMessage}
 				</Text>
 			</View>
+			<SlideComponent
+				onSlideComplete={
+					handleSlideComplete
+				}
+			/>
 			<Text style={{ color: 'green' }}>
 				{`${new Date(Date.now())
 					.getHours()
@@ -75,6 +92,12 @@ const MessageCard = ({ room }: Props) => {
 					.toString()
 					.padStart(2, '0')}`}
 			</Text>
+
+			{showDeleteButton && (
+				<TouchableOpacity>
+					<Text>Delete</Text>
+				</TouchableOpacity>
+			)}
 		</TouchableOpacity>
 	);
 };

@@ -63,8 +63,8 @@ const Body = ({ myPosts }: Props) => {
 				{about}
 			</Text>
 			<PhotosAlbum
-				isProfile={true}
-				// postImages={}
+
+			// postImages={}
 			/>
 			<View>
 				<TouchableOpacity

@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+	useContext,
+	useLayoutEffect,
+	useState,
+} from 'react';
 import {
 	StyleSheet,
 	TouchableOpacity,
@@ -10,14 +14,61 @@ import { useNavigation } from '@react-navigation/native';
 import { RouterProps } from '../../../models';
 import { AllChats } from '../AllChats';
 import lengConfig from '../../../comons/leng';
+import {
+	collection,
+	onSnapshot,
+	orderBy,
+	query,
+} from 'firebase/firestore';
+import { ChatContext } from '../../../../context';
+import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
 
 export const ChatRoomsScreen = () => {
 	const navigation =
 		useNavigation<RouterProps>();
+	const { rooms, setRooms } =
+		useContext(ChatContext);
+	const [isLoading, setIsLoading] =
+		useState(true);
+
+	useLayoutEffect(() => {
+		const chatQuery = query(
+			collection(FIREBASE_DB, 'chats'),
+			orderBy('_id', 'desc')
+		);
+
+		const unsubscribe = onSnapshot(
+			chatQuery,
+			(querySnapShot) => {
+				const chatRooms =
+					querySnapShot.docs.map(
+						(doc) =>
+							doc.data() as ChatRoom
+					);
+				setRooms(chatRooms);
+				setIsLoading(false);
+			}
+		);
+
+		return unsubscribe;
+	}, []);
+
+	const searchChatRoom = (item) => {
+		console.log(item, rooms[1]);
+		setRooms(
+			rooms.filter((room) =>
+				room.chatName.includes(item)
+			)
+		);
+	};
+
 	return (
 		<View style={styles.container}>
-			<SearchLine isChatScreen={true} />
-			<AllChats />
+			<SearchLine
+				isChatScreen={true}
+				isSerching={searchChatRoom}
+			/>
+			<AllChats isLoading={isLoading} />
 			<View
 				style={
 					styles.messagesBtnContainer

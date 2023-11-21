@@ -9,7 +9,7 @@ import {
 } from '../screens';
 
 import { AntDesign } from '@expo/vector-icons';
-import { AddNewChat } from '../commponents/Chat/NewChat';
+import { AddNewChat } from '../screens/ChatScreens/AddNewChat';
 import { ChatScreen } from '../screens';
 import lengConfig from '../comons/leng';
 import { TopButton } from '../consts';

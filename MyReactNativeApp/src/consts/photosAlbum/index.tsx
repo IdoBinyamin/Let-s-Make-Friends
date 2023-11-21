@@ -5,19 +5,48 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 type Props = {
 	postImages?: React.Dispatch<
 		React.SetStateAction<[{ uri: string }]>
 	>;
-	isProfile?: boolean;
 };
 
-const PhotosAlbum = ({
-	postImages,
-	isProfile = false,
-}: Props) => {
+const PhotosAlbum = ({ postImages }: Props) => {
+	const [clickCount, setClickCount] =
+		useState(0);
+	const lastPress = useRef(0);
+
+	const handlePress = () => {
+		const currentTime = new Date().getTime();
+		const doublePressDelay = 300; // Adjust this value based on your desired double-click delay
+
+		if (
+			currentTime - lastPress.current <
+			doublePressDelay
+		) {
+			// Double click action
+			//TODO: add here logic to like post
+			console.log(
+				'You like that!',
+				clickCount
+			);
+
+			setClickCount(0);
+		} else {
+			// Single click action
+			console.log('Single click!');
+			setClickCount(
+				(prevClickCount) =>
+					prevClickCount + 1
+			);
+		}
+
+		// Update the last press time
+		lastPress.current = currentTime;
+	};
+
 	const calculateImageSize = () => {
 		const screenWidth =
 			Dimensions.get('window').width;
@@ -33,7 +62,7 @@ const PhotosAlbum = ({
 		};
 	};
 	const renderItem = ({ item }: any) => (
-		<TouchableOpacity>
+		<TouchableOpacity onPress={handlePress}>
 			<Image
 				source={{ uri: item.uri }}
 				style={{
@@ -43,25 +72,7 @@ const PhotosAlbum = ({
 			/>
 		</TouchableOpacity>
 	);
-	const renderPosts = ({ item }: any) => (
-		<TouchableOpacity>
-			<Image
-				source={{ uri: item[0].uri }}
-			/>
-		</TouchableOpacity>
-	);
 
-	if (isProfile) {
-		<FlatList
-			data={postImages}
-			numColumns={2}
-			renderItem={renderPosts}
-			keyExtractor={(item) => item.uri}
-			contentContainerStyle={
-				styles.container
-			}
-		/>;
-	}
 	return (
 		<FlatList
 			data={postImages}

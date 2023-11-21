@@ -8,8 +8,7 @@ import React from 'react';
 import { PhotosAlbum } from '../../../consts';
 import {
 	Ionicons,
-	MaterialCommunityIcons,
-	Feather,
+	SimpleLineIcons,
 } from '@expo/vector-icons';
 import { styles } from './style';
 
@@ -56,8 +55,8 @@ export const PostForm = ({
 			<TouchableOpacity
 				onPress={postImagesHandler}
 			>
-				<MaterialCommunityIcons
-					name="camera-plus"
+				<Ionicons
+					name="camera-outline"
 					size={50}
 					color="black"
 				/>
@@ -81,8 +80,8 @@ export const PostForm = ({
 				<TouchableOpacity
 					onPress={createNewPost}
 				>
-					<Feather
-						name="upload"
+					<SimpleLineIcons
+						name="cloud-upload"
 						size={50}
 						color="#05AFF8"
 					/>
@@ -91,7 +90,7 @@ export const PostForm = ({
 					onPress={restartPost}
 				>
 					<Ionicons
-						name="ios-trash-bin-outline"
+						name="md-trash-outline"
 						size={50}
 						color="gray"
 					/>
