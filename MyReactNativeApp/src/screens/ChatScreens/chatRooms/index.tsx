@@ -22,14 +22,22 @@ import {
 } from 'firebase/firestore';
 import { ChatContext } from '../../../../context';
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
+import { useSelector } from 'react-redux';
 
 export const ChatRoomsScreen = () => {
 	const navigation =
 		useNavigation<RouterProps>();
-	const { rooms, setRooms, setSearchedRooms } =
-		useContext(ChatContext);
+	const {
+		rooms,
+		setRooms,
+		setSearchedRooms,
+		searchedRooms,
+	} = useContext(ChatContext);
 	const [isLoading, setIsLoading] =
 		useState(true);
+	const currUser = useSelector(
+		(state) => state?.user.user
+	);
 
 	useLayoutEffect(() => {
 		const chatQuery = query(
@@ -54,16 +62,21 @@ export const ChatRoomsScreen = () => {
 	}, []);
 
 	const searchChatRoom = (item) => {
-		if (item === '') {
-			setSearchedRooms([]);
-		} else {
+		if (item !== '') {
 			setSearchedRooms(
 				rooms.filter((room) =>
-					room.user.displayName.includes(
-						item
-					)
+					currUser.displayName ===
+					room.user.displayName
+						? room.userB.displayName.includes(
+								item
+						  )
+						: room.user.displayName.includes(
+								item
+						  )
 				)
 			);
+		} else {
+			setSearchedRooms([]);
 		}
 	};
 

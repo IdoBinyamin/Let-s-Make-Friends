@@ -9,11 +9,13 @@ import {
 type Props = {
 	fullText: string;
 	maxLength: number;
+	isDesc?: boolean;
 };
 
 const MoreOrLess = ({
 	fullText,
 	maxLength,
+	isDesc = false,
 }: Props) => {
 	const [isExpanded, setExpanded] =
 		useState(false);
@@ -37,18 +39,21 @@ const MoreOrLess = ({
 					? fullText
 					: displayedText}
 			</Text>
-			<TouchableOpacity
-				style={{
-					justifyContent: 'flex-end',
-				}}
-				onPress={toggleExpanded}
-			>
-				<Text style={styles.showMore}>
-					{isExpanded
-						? ' Less'
-						: ' More...'}
-				</Text>
-			</TouchableOpacity>
+			{isDesc && (
+				<TouchableOpacity
+					style={{
+						justifyContent:
+							'flex-end',
+					}}
+					onPress={toggleExpanded}
+				>
+					<Text style={styles.showMore}>
+						{isExpanded
+							? ' Less'
+							: ' More...'}
+					</Text>
+				</TouchableOpacity>
+			)}
 		</View>
 	);
 };

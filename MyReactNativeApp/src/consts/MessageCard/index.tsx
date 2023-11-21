@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import lengConfig from '../../comons/leng';
 import SlideComponent from '../SliderAction';
 import { Ionicons } from '@expo/vector-icons';
+import MoreOrLess from '../MoreOrLessText';
 
 type Props = {
 	room: any;
@@ -29,8 +30,6 @@ const MessageCard = ({ room }: Props) => {
 	);
 
 	const handleSlideComplete = () => {
-		// This function is called when the sliding is complete
-		// You can perform any actions you need here
 		setShowDeleteButton(!showDeleteButton);
 	};
 
@@ -77,14 +76,11 @@ const MessageCard = ({ room }: Props) => {
 						? room.userB.displayName
 						: room.user.displayName}
 				</Text>
-				<Text
-					style={{
-						fontWeight: '200',
-						color: 'gray',
-					}}
-				>
-					{room.lastMessage}
-				</Text>
+
+				<MoreOrLess
+					fullText={room.lastMessage}
+					maxLength={30}
+				/>
 			</View>
 			<SlideComponent
 				onSlideComplete={
@@ -150,6 +146,8 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 	},
 	deleteBtn: {
-		marginLeft: 3,
+		marginLeft: 15,
+		alignSelf: 'center',
+		justifyContent: 'center',
 	},
 });

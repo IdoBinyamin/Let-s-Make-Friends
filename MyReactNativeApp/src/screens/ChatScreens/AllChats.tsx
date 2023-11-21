@@ -64,9 +64,9 @@ export const AllChats = ({
 			) : (
 				<FlatList
 					data={
-						searchedRooms.length === 0
-							? rooms
-							: searchedRooms
+						searchedRooms.length !== 0
+							? searchedRooms
+							: rooms
 					}
 					keyExtractor={(item) =>
 						`${item.participants[0]}${item.participants[1]}`
