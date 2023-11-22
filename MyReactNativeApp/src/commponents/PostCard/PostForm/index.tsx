@@ -65,6 +65,9 @@ export const PostForm = ({
 						size={50}
 						color="black"
 					/>
+					<Text style={styles.btnText}>
+						Add
+					</Text>
 				</TouchableOpacity>
 			</View>
 			<View style={styles.photoContainer}>
@@ -82,7 +85,9 @@ export const PostForm = ({
 							styles.beforeFirstPhoto
 						}
 					>
-						<Text>
+						<Text
+							style={styles.btnText}
+						>
 							Photo/s will show here
 						</Text>
 						<Ionicons
@@ -110,6 +115,9 @@ export const PostForm = ({
 						size={50}
 						color="#05AFF8"
 					/>
+					<Text style={styles.btnText}>
+						Upload
+					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={restartPost}
@@ -119,6 +127,9 @@ export const PostForm = ({
 						size={50}
 						color="red"
 					/>
+					<Text style={styles.btnText}>
+						Cancel
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</View>

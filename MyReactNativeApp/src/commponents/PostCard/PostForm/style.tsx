@@ -10,6 +10,11 @@ export const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: '#2CE4C5',
 	},
+	btnText: {
+		textAlign: 'center',
+		alignSelf: 'center',
+		color: 'gray',
+	},
 	beforeFirstPhoto: {
 		justifyContent: 'center',
 		alignSelf: 'center',

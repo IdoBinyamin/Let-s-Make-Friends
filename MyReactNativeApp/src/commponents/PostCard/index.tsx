@@ -4,11 +4,13 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
+	TouchableOpacity,
 	View,
 } from 'react-native';
 import React, {
 	Fragment,
 	useContext,
+	useRef,
 	useState,
 } from 'react';
 import Header from './Header';
@@ -59,6 +61,39 @@ const PostCard = ({
 	const [newComment, setNewComment] =
 		useState('');
 
+	const [clickCount, setClickCount] =
+		useState(0);
+	const lastPress = useRef(0);
+
+	const handleDoublePress = () => {
+		const currentTime = new Date().getTime();
+		const doublePressDelay = 300; // Adjust this value based on your desired double-click delay
+
+		if (
+			currentTime - lastPress.current <
+			doublePressDelay
+		) {
+			// Double click action
+			//TODO: add here logic to like post
+			console.log(
+				'You like that!',
+				clickCount
+			);
+
+			setClickCount(0);
+		} else {
+			// Single click action
+			console.log('Single click!');
+			setClickCount(
+				(prevClickCount) =>
+					prevClickCount + 1
+			);
+		}
+
+		// Update the last press time
+		lastPress.current = currentTime;
+	};
+
 	const isFollow =
 		friendsList.filter(
 			(friend) => post.user.email === friend
@@ -108,13 +143,20 @@ const PostCard = ({
 					>
 						{post.title}
 					</Text>
-					{post?.images.length > 0 && (
-						<PhotosAlbum
-							postImages={
-								post?.images
-							}
-						/>
-					)}
+					<TouchableOpacity
+						onPress={
+							handleDoublePress
+						}
+					>
+						{post?.images.length >
+							0 && (
+							<PhotosAlbum
+								postImages={
+									post?.images
+								}
+							/>
+						)}
+					</TouchableOpacity>
 					{!isMyProfile && (
 						<PostButtonsBar
 							isLiked={() => {
