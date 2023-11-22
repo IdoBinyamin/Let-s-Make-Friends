@@ -16,13 +16,13 @@ import {
 	query,
 	where,
 } from 'firebase/firestore';
-import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
+import { FIREBASE_DB } from '../../../config/FirebaseConfig';
 import { useSelector } from 'react-redux';
-import { UserInfoProps } from '../../../../config/FirebaseConfig/FirebaseTypes';
+import { UserInfoProps } from '../../../config/FirebaseConfig/FirebaseTypes';
 import {
 	ChatContext,
 	PostsContext,
-} from '../../../../context';
+} from '../../../context';
 
 type Props = {
 	createNewChat: any;

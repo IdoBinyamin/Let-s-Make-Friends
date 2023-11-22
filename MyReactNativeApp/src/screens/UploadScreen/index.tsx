@@ -96,6 +96,14 @@ export function UploadScreen({}: UploadScreenProps) {
 		}
 	};
 
+	const postImagesDelete = (uri) => {
+		setImages(
+			images.filter(
+				(image) => image.uri !== uri
+			)
+		);
+	};
+
 	return (
 		<KeyboardAvoidingView
 			style={styles.container}
@@ -130,6 +138,9 @@ export function UploadScreen({}: UploadScreenProps) {
 							createNewPost
 						}
 						restartPost={restartPost}
+						postImagesDelete={
+							postImagesDelete
+						}
 					/>
 				</View>
 			)}

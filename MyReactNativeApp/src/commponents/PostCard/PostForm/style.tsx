@@ -10,7 +10,18 @@ export const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: '#2CE4C5',
 	},
-
+	beforeFirstPhoto: {
+		justifyContent: 'center',
+		alignSelf: 'center',
+		alignItems: 'center',
+		height: '80%',
+		width: 320,
+		marginTop: 35,
+		borderColor: 'black',
+		borderWidth: 1,
+		borderStyle: 'dashed',
+		borderRadius: 1,
+	},
 	inputWrapper: {
 		width: '75%',
 		padding: 10,

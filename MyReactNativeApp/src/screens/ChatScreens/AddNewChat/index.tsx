@@ -6,7 +6,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { doc, setDoc } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../../../config/FirebaseConfig';
-import { FriendCard } from '../../../commponents/Chat/FriendCard';
+import { FriendCard } from '../../../commponents/FriendCardChat';
 import { ChatContext } from '../../../../context';
 import { UserInfoProps } from '../../../../config/FirebaseConfig/FirebaseTypes';
 import lengConfig from '../../../comons/leng';

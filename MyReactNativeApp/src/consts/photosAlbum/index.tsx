@@ -4,21 +4,29 @@ import {
 	Image,
 	StyleSheet,
 	TouchableOpacity,
+	View,
 } from 'react-native';
 import React, { useRef, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
 	postImages?: React.Dispatch<
 		React.SetStateAction<[{ uri: string }]>
 	>;
+	isNewPost?: boolean;
+	postImagesDelete?: (uri: string) => void;
 };
 
-const PhotosAlbum = ({ postImages }: Props) => {
+const PhotosAlbum = ({
+	postImages,
+	isNewPost = false,
+	postImagesDelete,
+}: Props) => {
 	const [clickCount, setClickCount] =
 		useState(0);
 	const lastPress = useRef(0);
 
-	const handlePress = () => {
+	const handleDoublePress = () => {
 		const currentTime = new Date().getTime();
 		const doublePressDelay = 300; // Adjust this value based on your desired double-click delay
 
@@ -61,17 +69,49 @@ const PhotosAlbum = ({ postImages }: Props) => {
 			height: imageSize,
 		};
 	};
-	const renderItem = ({ item }: any) => (
-		<TouchableOpacity onPress={handlePress}>
-			<Image
-				source={{ uri: item.uri }}
+
+	const renderItem = ({ item }: any) =>
+		isNewPost ? (
+			<View
 				style={{
-					...styles.image,
-					...calculateImageSize(),
+					justifyContent: 'center',
 				}}
-			/>
-		</TouchableOpacity>
-	);
+			>
+				<TouchableOpacity
+					style={styles.deleteImageBtn}
+					onPress={() => {
+						postImagesDelete(
+							item.uri
+						);
+					}}
+				>
+					<Ionicons
+						name="md-trash-outline"
+						size={30}
+						color="red"
+					/>
+				</TouchableOpacity>
+				<Image
+					source={{ uri: item.uri }}
+					style={{
+						...styles.image,
+						...calculateImageSize(),
+					}}
+				/>
+			</View>
+		) : (
+			<TouchableOpacity
+				onPress={handleDoublePress}
+			>
+				<Image
+					source={{ uri: item.uri }}
+					style={{
+						...styles.image,
+						...calculateImageSize(),
+					}}
+				/>
+			</TouchableOpacity>
+		);
 
 	return (
 		<FlatList
@@ -90,10 +130,19 @@ export default PhotosAlbum;
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: 'transparent',
+		alignItems: 'center',
 	},
 	image: {
+		flex: 1,
+		resizeMode: 'cover', // Adjust as needed
 		marginBottom: 5,
 		marginLeft: '1.5%',
+		zIndex: 1,
+	},
+	deleteImageBtn: {
+		position: 'absolute',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		zIndex: 2,
 	},
 });

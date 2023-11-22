@@ -9,6 +9,8 @@ import { PhotosAlbum } from '../../../consts';
 import {
 	Ionicons,
 	SimpleLineIcons,
+	MaterialCommunityIcons,
+	Feather,
 } from '@expo/vector-icons';
 import { styles } from './style';
 
@@ -25,6 +27,7 @@ type Props = {
 		React.SetStateAction<string>
 	>;
 	postImagesHandler: () => void;
+	postImagesDelete: () => void;
 	createNewPost: () => void;
 	restartPost: () => void;
 };
@@ -36,6 +39,7 @@ export const PostForm = ({
 	title,
 	setTitle,
 	postImagesHandler,
+	postImagesDelete,
 	createNewPost,
 	restartPost,
 }: Props) => {
@@ -52,20 +56,41 @@ export const PostForm = ({
 				}
 				style={styles.inputWrapper}
 			/>
-			<TouchableOpacity
-				onPress={postImagesHandler}
-			>
-				<Ionicons
-					name="camera-outline"
-					size={50}
-					color="black"
-				/>
-			</TouchableOpacity>
-			<View style={styles.photoContainer}>
-				{images.length !== 0 && (
-					<PhotosAlbum
-						postImages={images}
+			<View style={styles.addOrCancelPost}>
+				<TouchableOpacity
+					onPress={postImagesHandler}
+				>
+					<MaterialCommunityIcons
+						name="camera-plus-outline"
+						size={50}
+						color="black"
 					/>
+				</TouchableOpacity>
+			</View>
+			<View style={styles.photoContainer}>
+				{images.length !== 0 ? (
+					<PhotosAlbum
+						isNewPost={true}
+						postImages={images}
+						postImagesDelete={
+							postImagesDelete
+						}
+					/>
+				) : (
+					<View
+						style={
+							styles.beforeFirstPhoto
+						}
+					>
+						<Text>
+							Photo/s will show here
+						</Text>
+						<Ionicons
+							name="camera-outline"
+							size={50}
+							color="black"
+						/>
+					</View>
 				)}
 			</View>
 			<TextInput
@@ -92,7 +117,7 @@ export const PostForm = ({
 					<Ionicons
 						name="md-trash-outline"
 						size={50}
-						color="gray"
+						color="red"
 					/>
 				</TouchableOpacity>
 			</View>
