@@ -16,6 +16,7 @@ import { formatDate } from '../../../util';
 type Props = {
 	isLiked: () => void;
 	numOfLikes: number;
+	numOfComments: number;
 	addComment: () => void;
 	shareToFeed: () => void;
 	createdAt: string;
@@ -33,7 +34,11 @@ const PostButtonsBar = (props: Props) => {
 						size={35}
 					/>
 				</TouchableOpacity>
-				<Text>{props.numOfLikes}</Text>
+				<Text>
+					{props.numOfLikes === 0
+						? ''
+						: props.numOfLikes}
+				</Text>
 				<TouchableOpacity
 					onPress={props.addComment}
 				>
@@ -42,6 +47,11 @@ const PostButtonsBar = (props: Props) => {
 						size={35}
 					/>
 				</TouchableOpacity>
+				<Text>
+					{props.numOfComments === 0
+						? ''
+						: props.numOfComments}
+				</Text>
 				<TouchableOpacity
 					onPress={props.shareToFeed}
 				>

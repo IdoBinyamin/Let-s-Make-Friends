@@ -8,16 +8,19 @@ interface PostsCtxProps {
 	setPostsList: (post: {}) => void;
 	friendsList: [];
 	setFriendsList: (post: {}) => void;
+	newComment: {};
+	setNewComment: (comment: {}) => void;
 }
 
-export const PostsContext = createContext<PostsCtxProps>(
-	{
+export const PostsContext =
+	createContext<PostsCtxProps>({
 		postsList: [],
 		setPostsList: () => [],
 		friendsList: [],
 		setFriendsList: () => [],
-	}
-);
+		newComment: {},
+		setNewComment: () => {},
+	});
 
 export const PostsProvider = ({
 	children,
@@ -27,12 +30,16 @@ export const PostsProvider = ({
 	);
 	const [friendsList, setFriendsList] =
 		useState([]);
+	const [newComment, setNewComment] =
+		useState('');
 
 	const values = {
 		postsList,
 		setPostsList,
 		friendsList,
 		setFriendsList,
+		newComment,
+		setNewComment,
 	};
 
 	return (

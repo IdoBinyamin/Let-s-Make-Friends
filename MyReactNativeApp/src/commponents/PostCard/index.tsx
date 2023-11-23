@@ -1,8 +1,6 @@
 import {
-	Button,
 	KeyboardAvoidingView,
 	Text,
-	TextInput,
 	TouchableOpacity,
 	View,
 } from 'react-native';
@@ -18,6 +16,7 @@ import PostButtonsBar from './PostButtonsBar';
 import {
 	PhotosAlbum,
 	MoreOrLess,
+	NewComment,
 } from '../../consts';
 import Comment from './Comment';
 import { useNavigation } from '@react-navigation/native';
@@ -67,9 +66,10 @@ const PostCard = ({
 		(state) => state?.user.user
 	);
 
-	const [newComment, setNewComment] =
-		useState('');
-
+	const commentsToShow = post?.comments.slice(
+		post?.comments.length - 3,
+		post?.comments.length
+	);
 	const [clickCount, setClickCount] =
 		useState(0);
 	const lastPress = useRef(0);
@@ -77,6 +77,12 @@ const PostCard = ({
 	const handleDoublePress = async () => {
 		const currentTime = new Date().getTime();
 		const doublePressDelay = 300;
+		const likesList = [
+			...post.likes,
+			{
+				userLiked: currUser.email,
+			},
+		];
 		const isUserLiked = post.likes.filter(
 			(like) =>
 				like.userLiked === currUser.email
@@ -117,12 +123,7 @@ const PostCard = ({
 							post._id
 						),
 						{
-							likes: [
-								{
-									userLiked:
-										currUser.email,
-								},
-							],
+							likes: likesList,
 						}
 					);
 				} catch (error: Error) {
@@ -169,13 +170,9 @@ const PostCard = ({
 		navigation.navigate(
 			lengConfig.screens.comments,
 			{
-				comments: post.comments,
+				post: post,
 			}
 		);
-	};
-
-	const newCommentHandler = async () => {
-		console.log('comment');
 	};
 
 	return (
@@ -219,27 +216,27 @@ const PostCard = ({
 							/>
 						)}
 					</TouchableOpacity>
-					{!isMyProfile && (
-						<PostButtonsBar
-							isLiked={() => {
-								console.log(
-									'Liked!'
-								);
-							}} //TODO: make that functions
-							numOfLikes={
-								post?.likes.length
-							}
-							addComment={
-								moveToComments
-							}
-							shareToFeed={() => {
-								console.log(
-									'Shared?'
-								);
-							}} //TODO: make that functions
-							createdAt={post?._id}
-						/>
-					)}
+
+					<PostButtonsBar
+						isLiked={() => {
+							console.log('Liked!');
+						}} //TODO: make that functions
+						numOfLikes={
+							post?.likes.length
+						}
+						numOfComments={
+							post?.comments.length
+						}
+						addComment={
+							moveToComments
+						}
+						shareToFeed={() => {
+							console.log(
+								'Shared?'
+							);
+						}} //TODO: make that functions
+						createdAt={post?._id}
+					/>
 
 					{post?.desc !== '' &&
 						post?.desc.length >
@@ -258,7 +255,7 @@ const PostCard = ({
 								styles.commentsContainer
 							}
 						>
-							{post?.comments.map(
+							{commentsToShow.map(
 								(com, idx) => (
 									<Comment
 										key={idx}
@@ -278,34 +275,9 @@ const PostCard = ({
 									/>
 								)
 							)}
-							<View
-								style={
-									styles.newComment
-								}
-							>
-								<TextInput
-									style={
-										styles.newCommentText
-									}
-									placeholder="Add new comment"
-									value={
-										newComment
-									}
-									onChangeText={(
-										text
-									) => {
-										setNewComment(
-											text
-										);
-									}}
-								/>
-								<Button
-									title="Comment"
-									onPress={
-										newCommentHandler
-									}
-								/>
-							</View>
+							<NewComment
+								post={post}
+							/>
 						</View>
 					)}
 				</Fragment>
@@ -315,4 +287,3 @@ const PostCard = ({
 };
 
 export default PostCard;
-
