@@ -1,7 +1,6 @@
 import {
 	Button,
 	KeyboardAvoidingView,
-	StyleSheet,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -25,6 +24,13 @@ import { useNavigation } from '@react-navigation/native';
 import lengConfig from '../../comons/leng';
 import { RouterProps } from '../../models';
 import { PostsContext } from '../../../context';
+import { styles } from './PostCardStyle';
+import {
+	doc,
+	updateDoc,
+} from 'firebase/firestore';
+import { FIREBASE_DB } from '../../../config/FirebaseConfig';
+import { useSelector } from 'react-redux';
 
 type PostProps = {
 	post: {
@@ -57,6 +63,9 @@ const PostCard = ({
 
 	const { friendsList } =
 		useContext(PostsContext);
+	const currUser = useSelector(
+		(state) => state?.user.user
+	);
 
 	const [newComment, setNewComment] =
 		useState('');
@@ -65,16 +74,65 @@ const PostCard = ({
 		useState(0);
 	const lastPress = useRef(0);
 
-	const handleDoublePress = () => {
+	const handleDoublePress = async () => {
 		const currentTime = new Date().getTime();
-		const doublePressDelay = 300; // Adjust this value based on your desired double-click delay
-
+		const doublePressDelay = 300;
+		const isUserLiked = post.likes.filter(
+			(like) =>
+				like.userLiked === currUser.email
+		);
 		if (
 			currentTime - lastPress.current <
 			doublePressDelay
 		) {
 			// Double click action
-			//TODO: add here logic to like post
+			if (isUserLiked.length > 0) {
+				try {
+					await updateDoc(
+						doc(
+							FIREBASE_DB,
+							'posts',
+							post._id
+						),
+						{
+							likes: post.likes.filter(
+								(like) =>
+									like.userLiked !==
+									currUser.email
+							),
+						}
+					);
+				} catch (error: Error) {
+					console.log(
+						'User unlike: ',
+						error.message
+					);
+				}
+			} else {
+				try {
+					await updateDoc(
+						doc(
+							FIREBASE_DB,
+							'posts',
+							post._id
+						),
+						{
+							likes: [
+								{
+									userLiked:
+										currUser.email,
+								},
+							],
+						}
+					);
+				} catch (error: Error) {
+					console.log(
+						'User like: ',
+						error.message
+					);
+				}
+			}
+
 			console.log(
 				'You like that!',
 				clickCount
@@ -100,13 +158,13 @@ const PostCard = ({
 		).length > 0;
 
 	const isFollowerHandler = () => {
-		console.log(post.user.email);
 		if (isFollow) {
 			removeFriend(post.user.email);
 		} else {
 			addFriend(post.user.email);
 		}
 	};
+
 	const moveToComments = () => {
 		navigation.navigate(
 			lengConfig.screens.comments,
@@ -114,6 +172,10 @@ const PostCard = ({
 				comments: post.comments,
 			}
 		);
+	};
+
+	const newCommentHandler = async () => {
+		console.log('comment');
 	};
 
 	return (
@@ -237,7 +299,12 @@ const PostCard = ({
 										);
 									}}
 								/>
-								<Button title="Comment" />
+								<Button
+									title="Comment"
+									onPress={
+										newCommentHandler
+									}
+								/>
 							</View>
 						</View>
 					)}
@@ -249,40 +316,3 @@ const PostCard = ({
 
 export default PostCard;
 
-const styles = StyleSheet.create({
-	container: {
-		marginTop: 5,
-		backgroundColor: 'white',
-		paddingBottom: 25,
-	},
-
-	description: {
-		padding: 10,
-		height: 100,
-		width: '100%',
-	},
-	commentsContainer: {
-		width: '100%',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 15,
-	},
-	newComment: {
-		borderWidth: 1,
-		borderColor: 'gray',
-		alignSelf: 'center',
-		width: '80%',
-		justifyContent: 'space-between',
-		flexDirection: 'row',
-	},
-	newCommentText: {
-		width: '70%',
-	},
-	postTitleText: {
-		fontSize: 15,
-		alignSelf: 'flex-start',
-		paddingLeft: 18,
-		paddingBottom: 5,
-		position: 'relative',
-	},
-});

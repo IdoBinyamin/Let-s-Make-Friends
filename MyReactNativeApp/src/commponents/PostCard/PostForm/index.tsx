@@ -10,7 +10,6 @@ import {
 	Ionicons,
 	SimpleLineIcons,
 	MaterialCommunityIcons,
-	Feather,
 } from '@expo/vector-icons';
 import { styles } from './style';
 

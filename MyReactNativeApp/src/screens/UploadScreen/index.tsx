@@ -58,12 +58,7 @@ export function UploadScreen({}: UploadScreenProps) {
 		)
 			.then(() => {
 				setIsLoading(false);
-				setDesc('');
-				setTitle('');
-				setImages([]);
-				navigation.navigate(
-					lengConfig.screens.feedScreen
-				);
+				restartPost();
 			})
 			.catch((error: any) => {
 				setIsLoading(false);
@@ -96,10 +91,10 @@ export function UploadScreen({}: UploadScreenProps) {
 		}
 	};
 
-	const postImagesDelete = (uri) => {
+	const postImagesDelete = (uri: string) => {
 		setImages(
 			images.filter(
-				(image) => image.uri !== uri
+				(image: any) => image.uri !== uri
 			)
 		);
 	};
@@ -109,18 +104,16 @@ export function UploadScreen({}: UploadScreenProps) {
 			style={styles.container}
 		>
 			{isLoading ? (
-				<>
-					<View
-						style={
-							styles.loadingContainer
-						}
-					>
-						<ActivityIndicator
-							size={'large'}
-							color={'#2CE4C5'}
-						/>
-					</View>
-				</>
+				<View
+					style={
+						styles.loadingContainer
+					}
+				>
+					<ActivityIndicator
+						size={'large'}
+						color={'#2CE4C5'}
+					/>
+				</View>
 			) : (
 				<View
 					style={styles.formContainer}

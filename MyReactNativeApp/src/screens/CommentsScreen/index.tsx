@@ -13,13 +13,15 @@ export const CommentsScreen = ({
 	route,
 }: Props) => {
 	const { comments } = route.params;
+	console.log('comments: ', comments);
+
 	return (
 		<View>
-			{comments.map((com, idx) => (
+			{/* {comments.map((com, idx) => (
 				<View key={idx}>
-					<Text>{com.comment}</Text>
+					<Text>{com.text}</Text>
 				</View>
-			))}
+			))} */}
 		</View>
 	);
 };
