@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import {
+	Button,
 	Image,
 	Text,
 	TouchableOpacity,
@@ -9,7 +10,6 @@ import { Input } from '../../../Generic';
 import { FontAwesome } from '@expo/vector-icons';
 import { styles } from '../AuthStyles';
 import lengConfig from '../../../comons/leng';
-
 
 type SignUpProps = {
 	updateMode: () => void;
@@ -23,6 +23,7 @@ type SignUpProps = {
 		React.SetStateAction<string>
 	>;
 	profilePictureHandler: () => void;
+	pickNewImageHandler: () => void;
 	name: string;
 	email: string;
 	password: string;
@@ -39,6 +40,7 @@ export const SignUpScreen: FC<SignUpProps> = ({
 	email,
 	password,
 	photoURL,
+	pickNewImageHandler,
 }) => {
 	return (
 		<View style={styles.container}>
@@ -68,6 +70,10 @@ export const SignUpScreen: FC<SignUpProps> = ({
 						/>
 					)}
 				</TouchableOpacity>
+				<Button
+					title="Pick from album"
+					onPress={pickNewImageHandler}
+				/>
 				<Text style={styles.profileText}>
 					Add a profile pic
 				</Text>

@@ -23,6 +23,7 @@ import {
 	signup,
 } from '../../../config/FirebaseConfig';
 import { styles } from './Style';
+import * as ImagePicker from 'expo-image-picker';
 
 export const Auth = () => {
 	const [email, setEmail] = useState('');
@@ -80,6 +81,27 @@ export const Auth = () => {
 				);
 			}
 		};
+	const pickNewImageHandler = async () => {
+		let result =
+			await ImagePicker.launchImageLibraryAsync(
+				{
+					mediaTypes:
+						ImagePicker
+							.MediaTypeOptions.All,
+					allowsEditing: true,
+					aspect: [4, 3],
+					quality: 1,
+				}
+			);
+		console.log(result.assets[0].uri);
+		if (!result.canceled) {
+			const formattedImagePath =
+				Platform.OS === 'ios'
+					? `file://${result.assets[0].uri}`
+					: result.assets[0].uri;
+			setPhotoURL(formattedImagePath);
+		}
+	};
 
 	const registerHandler = async () => {
 		Keyboard.dismiss();
@@ -155,6 +177,9 @@ export const Auth = () => {
 						setName={setName}
 						profilePictureHandler={
 							profilePictureHandler
+						}
+						pickNewImageHandler={
+							pickNewImageHandler
 						}
 						name={name}
 						email={email}
