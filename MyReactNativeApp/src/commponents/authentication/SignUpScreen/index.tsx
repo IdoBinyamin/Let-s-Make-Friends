@@ -71,12 +71,9 @@ export const SignUpScreen: FC<SignUpProps> = ({
 					)}
 				</TouchableOpacity>
 				<Button
-					title="Pick from album"
+					title="Pick photo from album"
 					onPress={pickNewImageHandler}
 				/>
-				<Text style={styles.profileText}>
-					Add a profile pic
-				</Text>
 			</View>
 
 			<View>
@@ -124,7 +121,7 @@ export const SignUpScreen: FC<SignUpProps> = ({
 							styles.questionText
 						}
 					>
-						Already have an account?{' '}
+						Already have an account?
 					</Text>
 					<TouchableOpacity
 						onPress={updateMode}

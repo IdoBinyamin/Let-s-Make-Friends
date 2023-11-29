@@ -10,16 +10,16 @@ export const styles = StyleSheet.create({
 	},
 	choosePhotoContainer: {
 		position: 'relative',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		alignItems: 'center',
 		marginVertical: 10,
-		borderRadius: 120,
+		borderRadius: 150,
 		borderColor: '#2CE4C5',
 		borderWidth: 2,
-		width: 120,
-		height: 120,
+		width: 130,
+		height: 130,
 		backgroundColor: '#EBEBEB',
-		justifyContent: 'center',
-		alignItems: 'center',
-		alignContent: 'center',
 	},
 	logoContainer: {
 		height: 120,
@@ -31,13 +31,8 @@ export const styles = StyleSheet.create({
 		width: '100%',
 		borderRadius: 120,
 	},
-	profileText: {
-		alignSelf: 'center',
-		marginHorizontal: 5,
-		marginVertical: 15,
-	},
 	switchPageContainer: {
-		flexDirection: 'row',
+		alignItems: 'center',
 		marginTop: 10,
 		position: 'relative',
 		justifyContent: 'center',
@@ -45,11 +40,11 @@ export const styles = StyleSheet.create({
 	questionText: {
 		color: 'gray',
 		fontWeight: '600',
-		fontSize: 14,
+		fontSize: 18,
 	},
 	onPressText: {
 		fontWeight: '600',
-		fontSize: 14,
+		fontSize: 20,
 		color: '#2CE4C5',
 	},
 });

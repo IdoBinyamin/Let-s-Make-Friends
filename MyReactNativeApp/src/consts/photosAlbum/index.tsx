@@ -2,11 +2,12 @@ import {
 	Dimensions,
 	FlatList,
 	Image,
+	ScrollView,
 	StyleSheet,
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
@@ -36,61 +37,57 @@ const PhotosAlbum = ({
 			height: imageSize,
 		};
 	};
-
-	const renderItem = ({ item }: any) =>
-		isNewPost ? (
-			<View
-				style={{
-					justifyContent: 'center',
-				}}
-			>
-				<TouchableOpacity
-					style={styles.deleteImageBtn}
-					onPress={() => {
-						postImagesDelete(
-							item.uri
-						);
-					}}
-				>
-					<Ionicons
-						name="md-trash-outline"
-						size={30}
-						color="red"
-					/>
-				</TouchableOpacity>
-				<Image
-					source={{ uri: item.uri }}
-					style={{
-						...styles.image,
-						...calculateImageSize(),
-					}}
-				/>
-			</View>
-		) : (
-			<View>
-				<Image
-					source={{ uri: item.uri }}
-					style={{
-						...styles.image,
-						...calculateImageSize(),
-					}}
-				/>
-			</View>
-		);
-
 	return (
-		<FlatList
-			data={postImages}
-			numColumns={2}
-			renderItem={renderItem}
-			keyExtractor={(item) => item.uri}
-			contentContainerStyle={
-				styles.container
-			}
-		/>
+		<ScrollView horizontal>
+			{postImages?.length > 0 &&
+				postImages?.map((item, idx) =>
+					isNewPost ? (
+						<Fragment key={idx}>
+							<TouchableOpacity
+								style={
+									styles.deleteImageBtn
+								}
+								onPress={() => {
+									postImages?.length >
+										0 &&
+										postImagesDelete(
+											item.uri
+										);
+								}}
+							>
+								<Ionicons
+									name="md-trash-outline"
+									size={30}
+									color="red"
+								/>
+							</TouchableOpacity>
+							<Image
+								source={{
+									uri: item.uri,
+								}}
+								style={{
+									...styles.image,
+									...calculateImageSize(),
+								}}
+							/>
+						</Fragment>
+					) : (
+						<View key={idx}>
+							<Image
+								source={{
+									uri: item.uri,
+								}}
+								style={{
+									...styles.image,
+									...calculateImageSize(),
+								}}
+							/>
+						</View>
+					)
+				)}
+		</ScrollView>
 	);
 };
-
 export default PhotosAlbum;
 
 const styles = StyleSheet.create({
@@ -109,7 +106,7 @@ const styles = StyleSheet.create({
 	deleteImageBtn: {
 		position: 'absolute',
 		justifyContent: 'center',
-		alignSelf: 'center',
+		alignContent: 'center',
 		zIndex: 2,
 	},
 });

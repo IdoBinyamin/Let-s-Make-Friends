@@ -216,7 +216,6 @@ const PostCard = ({
 							/>
 						)}
 					</TouchableOpacity>
-
 					<PostButtonsBar
 						isLiked={() => {
 							console.log('Liked!');

@@ -13,6 +13,7 @@ import { FIREBASE_DB } from '../../../config/FirebaseConfig';
 import lengConfig from '../../comons/leng';
 import { pickImage } from '../../../util';
 import { PostForm } from '../../commponents/PostCard/PostForm';
+import * as ImagePicker from 'expo-image-picker';
 
 type UploadScreenProps = {};
 
@@ -90,6 +91,33 @@ export function UploadScreen({}: UploadScreenProps) {
 			console.log(error.message);
 		}
 	};
+	const pickNewImageHandler = async () => {
+		try {
+			let result =
+				await ImagePicker.launchImageLibraryAsync(
+					{
+						mediaTypes:
+							ImagePicker
+								.MediaTypeOptions
+								.All,
+						allowsEditing: true,
+						aspect: [4, 3],
+						quality: 1,
+					}
+				);
+			// console.log(result.assets[0].uri);
+			let image = result.assets[0].uri;
+			if (!result.canceled) {
+				const newImagesArray = [
+					...images,
+					{ uri: image },
+				];
+				setImages(newImagesArray);
+			}
+		} catch (error: Error) {
+			console.log('Error: ', error.message);
+		}
+	};
 
 	const postImagesDelete = (uri: string) => {
 		setImages(
@@ -127,6 +155,9 @@ export function UploadScreen({}: UploadScreenProps) {
 						postImagesHandler={
 							postImagesHandler
 						}
+						pickNewImageHandler={
+							pickNewImageHandler
+						}
 						createNewPost={
 							createNewPost
 						}
@@ -154,7 +185,5 @@ const styles = StyleSheet.create({
 	},
 	formContainer: {
 		justifyContent: 'center',
-		position: 'absolute',
-		alignSelf: 'center',
 	},
 });

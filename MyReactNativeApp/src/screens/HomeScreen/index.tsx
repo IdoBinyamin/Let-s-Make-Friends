@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
 	},
 	loadingPosts: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContenst: 'center',
 		alignItems: 'center',
 	},
 });
