@@ -23,6 +23,7 @@ export const InsideLayout = () => {
 				name={lengConfig.screens.Home}
 				component={HomeScreen}
 				options={{
+					gestureEnabled: false, // Disable back gesture for this screen
 					headerShown: false,
 					tabBarIcon: () => (
 						<IconSkilz
@@ -41,6 +42,7 @@ export const InsideLayout = () => {
 				}
 				component={FeedScreen}
 				options={{
+					gestureEnabled: false, // Disable back gesture for this screen
 					headerShown: false,
 					tabBarIcon: () => (
 						<MaterialCommunityIcons
@@ -58,6 +60,7 @@ export const InsideLayout = () => {
 				name={lengConfig.screens.upload}
 				component={UploadScreen}
 				options={{
+					gestureEnabled: false, // Disable back gesture for this screen
 					headerShown: false,
 					tabBarIcon: () => (
 						<Octicons
@@ -84,6 +87,7 @@ export const InsideLayout = () => {
 					),
 					tabBarActiveTintColor:
 						'#2ce4c5',
+					gestureEnabled: false, // Disable back gesture for this screen
 				}}
 			/>
 		</Tab.Navigator>

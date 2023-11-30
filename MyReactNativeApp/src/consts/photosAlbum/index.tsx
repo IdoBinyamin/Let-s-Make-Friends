@@ -28,7 +28,7 @@ const PhotosAlbum = ({
 			Dimensions.get('window').width;
 		const numColumns = Math.min(
 			postImages.length,
-			2
+			1
 		); // Maximum of 3 columns
 		const imageSize =
 			screenWidth / numColumns - 10; // Calculate the size based on the number of columns
@@ -42,7 +42,12 @@ const PhotosAlbum = ({
 			{postImages?.length > 0 &&
 				postImages?.map((item, idx) =>
 					isNewPost ? (
-						<Fragment key={idx}>
+						<View
+							key={idx}
+							style={
+								styles.container
+							}
+						>
 							<TouchableOpacity
 								style={
 									styles.deleteImageBtn
@@ -70,7 +75,7 @@ const PhotosAlbum = ({
 									...calculateImageSize(),
 								}}
 							/>
-						</Fragment>
+						</View>
 					) : (
 						<View key={idx}>
 							<Image
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
 	deleteImageBtn: {
 		position: 'absolute',
 		justifyContent: 'center',
-		alignContent: 'center',
+		alignSelf: 'center',
 		zIndex: 2,
 	},
 });

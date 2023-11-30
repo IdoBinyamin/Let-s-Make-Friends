@@ -49,7 +49,6 @@ export const PostForm = ({
 }: Props) => {
 	return (
 		<ScrollView
-			// style={styles.}
 			contentContainerStyle={
 				styles.container
 			}
