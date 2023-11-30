@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
 	postTitleText: {
 		fontSize: 15,
 		alignSelf: 'flex-start',
-		paddingLeft: 18,
+		paddingHorizontal: 8,
 		paddingBottom: 5,
 		position: 'relative',
 	},

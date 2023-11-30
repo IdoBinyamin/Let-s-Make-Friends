@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import {
+	KeyboardAvoidingView,
 	Text,
 	TouchableOpacity,
 	View,
@@ -30,7 +31,9 @@ export const LoginScreen: FC<LoginProps> = ({
 	password,
 }) => {
 	return (
-		<View style={styles.container}>
+		<KeyboardAvoidingView
+			style={styles.container}
+		>
 			<Icon height={250} />
 
 			<Input
@@ -72,6 +75,6 @@ export const LoginScreen: FC<LoginProps> = ({
 					</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</KeyboardAvoidingView>
 	);
 };

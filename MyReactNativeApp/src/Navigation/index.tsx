@@ -65,6 +65,7 @@ export const MainNavigator = () => {
 					gestureEnabled: false,
 				}}
 			/>
+
 			<Stack.Screen
 				name={
 					lengConfig.screens
